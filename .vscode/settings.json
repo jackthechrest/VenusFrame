@@ -1,0 +1,14 @@
+{
+    "workbench.colorCustomizations": {
+        "editor.selectionHighlightBackground": "#7f71ff93",
+        "editor.selectionHighlightBorder": "#7f71ff93",
+        "editor.wordHighlightBackground": "#19b3be00",
+        "editor.wordHighlightBorder": "#15e7d693",
+        "activityBar.background": "#07351C",
+        "titleBar.activeBackground": "#094A27",
+        "titleBar.activeForeground": "#F1FDF7"
+    },
+    "files.exclude": {
+      "**/.gitkeep": true
+    }
+}
