@@ -5,6 +5,9 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
+  @Column()
+  username: string;
+
   @Column({ unique: true })
   email: string;
 
@@ -16,4 +19,7 @@ export class User {
 
   @Column({ default: 0 })
   profileViews: number;
+
+  @Column({ default: true })
+  isSingle: boolean;
 }

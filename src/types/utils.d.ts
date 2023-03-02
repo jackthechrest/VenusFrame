@@ -5,6 +5,7 @@ type DatabaseConstraintError = {
 };
 
 type NewUserRequest = {
+  username: string;
   email: string;
   password: string;
 };

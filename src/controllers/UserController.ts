@@ -4,13 +4,13 @@ import { addUser, getUserByEmail } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function registerUser(req: Request, res: Response): Promise<void> {
-  const { email, password } = req.body as NewUserRequest;
+  const { username, email, password } = req.body as NewUserRequest;
 
   // hash user's password
   const passwordHash = await argon2.hash(password);
 
   try {
-    const newUser = await addUser(email, passwordHash);
+    const newUser = await addUser(username, email, passwordHash);
     console.log(`\nAdded new user: `);
     console.log(newUser);
     res.sendStatus(201); // 201 Created
@@ -25,7 +25,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body as NewUserRequest;
   const user = await getUserByEmail(email);
 
-  if (user == null) {
+  if (!user) {
     res.sendStatus(404); // 404 not found - email doesn't exist
     return;
   }
