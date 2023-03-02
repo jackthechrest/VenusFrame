@@ -37,6 +37,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  console.log(`${user.username} logged in`);
   res.sendStatus(200);
 }
 

@@ -19,5 +19,5 @@ app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 
 app.listen(PORT, () => {
-  console.log(`Listening at http://127.0.0.1:${PORT}`);
+  console.log(`Listening at http://localhost:${PORT}`);
 });

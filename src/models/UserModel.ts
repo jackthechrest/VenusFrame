@@ -22,7 +22,7 @@ async function getUserByEmail(email: string): Promise<User | null | undefined> {
 
   return queriedUser;
 }
-
+/*
 async function getUserById(userId: string): Promise<User | null> {
   const queriedUser = await userRepository.findOne({
     select: {
@@ -38,5 +38,5 @@ async function getUserById(userId: string): Promise<User | null> {
 
   return queriedUser;
 }
-
+*/
 export { addUser, getUserByEmail };
