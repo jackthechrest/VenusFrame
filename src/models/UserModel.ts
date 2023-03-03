@@ -38,5 +38,10 @@ async function getUserById(userId: string): Promise<User | null> {
 
   return queriedUser;
 }
+<<<<<<< Updated upstream
 */
 export { addUser, getUserByEmail };
+=======
+
+export { addUser, getUserByEmail, getUserById };
+>>>>>>> Stashed changes
