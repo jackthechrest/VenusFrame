@@ -17,6 +17,13 @@ async function addUser(username: string, email: string, passwordHash: string): P
   return newUser;
 }
 
+async function getAllUnverifiedUsers(): Promise<User[]> {
+  return userRepository.find({
+    select: { email: true, userId: true },
+    where: { verifiedEmail: false },
+  });
+}
+
 async function getUserByEmail(email: string): Promise<User | null | undefined> {
   const queriedUser = await userRepository.findOne({ where: { email } });
 
@@ -46,4 +53,29 @@ async function getUsersByViews(minViews: number): Promise<User[]> {
 
   return users;
 }
-export { addUser, getUserByEmail, getUserById, getUsersByViews };
+
+async function incrementProfileViews(userData: User): Promise<User> {
+  const updatedUser = userData;
+  updatedUser.profileViews += 1;
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ profileViews: updatedUser.profileViews })
+    .where({ userId: updatedUser.userId })
+    .execute();
+  return updatedUser;
+}
+
+async function updateEmailAddress(userId: string, newEmail: string): Promise<void> {
+  await userRepository.createQueryBuilder().update(User).set({ email: newEmail }).where({ userId });
+}
+
+export {
+  addUser,
+  getAllUnverifiedUsers,
+  getUserByEmail,
+  getUserById,
+  getUsersByViews,
+  incrementProfileViews,
+  updateEmailAddress,
+};

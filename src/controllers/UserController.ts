@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
-import { addUser, getUserByEmail } from '../models/UserModel';
+import {
+  addUser,
+  getUserByEmail,
+  incrementProfileViews,
+  getUserById,
+  updateEmailAddress,
+} from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function registerUser(req: Request, res: Response): Promise<void> {
@@ -41,4 +47,41 @@ async function logIn(req: Request, res: Response): Promise<void> {
   res.sendStatus(200);
 }
 
-export { registerUser, logIn };
+async function getUserProfileData(req: Request, res: Response): Promise<void> {
+  const { userId } = req.params as UserIdParam;
+  // Get the user account
+  let user = await getUserById(userId);
+  if (!user) {
+    res.sendStatus(404); // 404 Not Found
+    return;
+  }
+  // Now update their profile views
+  user = await incrementProfileViews(user);
+  res.json(user); // Send back the user's data
+}
+
+async function updateUserEmail(req: Request, res: Response): Promise<void> {
+  const { userId } = req.params;
+  const { email } = req.body;
+
+  try {
+    // Get the user by ID
+    const user = await getUserById(userId);
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    // Update the user's email
+    await updateEmailAddress(userId, email);
+
+    res.status(200).json({ message: 'Email updated successfully' });
+    console.log(`${userId}, ${email}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+export { registerUser, logIn, getUserProfileData, updateUserEmail };
