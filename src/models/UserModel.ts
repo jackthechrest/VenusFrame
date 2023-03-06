@@ -22,7 +22,6 @@ async function getUserByEmail(email: string): Promise<User | null | undefined> {
 
   return queriedUser;
 }
-/*
 async function getUserById(userId: string): Promise<User | null> {
   const queriedUser = await userRepository.findOne({
     select: {
@@ -35,13 +34,16 @@ async function getUserById(userId: string): Promise<User | null> {
     },
     where: { userId },
   });
-
   return queriedUser;
 }
-<<<<<<< Updated upstream
-*/
-export { addUser, getUserByEmail };
-=======
 
-export { addUser, getUserByEmail, getUserById };
->>>>>>> Stashed changes
+async function getUsersByViews(minViews: number): Promise<User[]> {
+  const users = await userRepository
+    .createQueryBuilder('user')
+    .where('profileViews >= :minViews', { minViews }) // NOTES: the parameter `:minViews` must match the key name `minViews`
+    .select(['user.email', 'user.profileViews', 'user.joinedOn', 'user.userId'])
+    .getMany();
+
+  return users;
+}
+export { addUser, getUserByEmail, getUserById, getUsersByViews };
