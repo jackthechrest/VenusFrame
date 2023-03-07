@@ -1,10 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Answer } from './Answer';
 
 @Entity()
 export class QuestionPrompt {
-  @PrimaryGeneratedColumn()
-  promptId: QuestionId;
+  @PrimaryGeneratedColumn('uuid')
+  promptId: string;
 
   @Column()
   question: string;
+
+  @OneToMany(() => Answer, (answer) => answer.questionPrompt)
+  answers: Answer[];
 }

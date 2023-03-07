@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column } from 'typeorm';
-import { Couple } from './Couple';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Partner } from './Partner';
+import { Answer } from './Answer';
+import { GameStatistics } from './GameStatistics';
 
 @Entity()
 export class User {
@@ -26,8 +28,4 @@ export class User {
 
   @Column({ default: true })
   isSingle: boolean;
-
-  @OneToOne((type) => Couple)
-  @JoinColumn()
-  couple: Couple;
 }
