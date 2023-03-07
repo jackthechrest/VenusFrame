@@ -17,3 +17,8 @@ type UserIdParam = {
 type NewEmailBody = {
   email: string;
 };
+
+// WIP: Store Question IDs here, use short names that line up with what question asks
+type QuestionId = 'PlaceholderID1' | 'PlaceholderID2';
+
+type QuestionData = Partial<Record<QuestionId, string>>;
