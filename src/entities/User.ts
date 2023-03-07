@@ -1,11 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column } from 'typeorm';
+import { Couple } from './Couple';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
+  coupleId: string;
+
+  @Column({ unique: true })
   username: string;
 
   @Column({ unique: true })
@@ -22,4 +26,8 @@ export class User {
 
   @Column({ default: true })
   isSingle: boolean;
+
+  @OneToOne((type) => Couple)
+  @JoinColumn()
+  couple: Couple;
 }
