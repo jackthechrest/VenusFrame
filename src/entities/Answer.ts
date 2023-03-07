@@ -1,21 +1,17 @@
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
-import { User } from './User';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
 import { QuestionPrompt } from './QuestionPrompt';
 
 @Entity()
 export class Answer {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   userId: string;
 
-  @PrimaryColumn()
   promptId: string;
 
   @Column()
   answer: string;
 
-  @ManyToOne(() => User, (user) => user.answers)
-  user: User;
-
-  @ManyToOne(() => QuestionPrompt, (prompt) => prompt.answers)
+  @ManyToOne(() => QuestionPrompt)
+  @JoinColumn()
   questionPrompt: QuestionPrompt;
 }

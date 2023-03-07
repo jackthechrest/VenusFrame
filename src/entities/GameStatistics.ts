@@ -1,24 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './User';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class GameStatistics {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
+  @PrimaryGeneratedColumn()
   userId: string;
 
-  @OneToOne(() => User, (user) => user.gameStatistics)
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  @Column({ default: 0 })
+  bestTimeOurPet: number;
 
   @Column({ default: 0 })
-  bestTimeGame1: number;
+  highestWinStreakRulesOfLove: number;
 
   @Column({ default: 0 })
-  highestWinStreakGame2: number;
-
-  @Column({ default: 0 })
-  highestRoundReachedGame3: number;
+  highestRoundReachedCopycat: number;
 }

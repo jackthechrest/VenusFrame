@@ -15,11 +15,11 @@ export class Couple {
   @Column({ nullable: true })
   marriageAnniversary: Date;
 
-  @OneToOne((type) => User, (user) => user.userId)
+  @OneToOne(() => User, (user) => user.userId)
   @JoinColumn()
-  user1Id: User['userId'];
+  partnerOne: User['userId'];
 
-  @OneToOne((type) => User, (user) => user.userId)
+  @OneToOne(() => User, (user) => user.userId)
   @JoinColumn()
-  user2Id: User['userId'];
+  partnerTwo: User['userId'];
 }
