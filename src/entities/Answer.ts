@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryColumn, Relation } from 'typeorm';
 import { User } from './User';
 import { QuestionPrompt } from './QuestionPrompt';
 
@@ -14,8 +14,8 @@ export class Answer {
   answer: string;
 
   @ManyToOne(() => User, (user) => user.answers)
-  user: User;
+  user: Relation<User>;
 
   @ManyToOne(() => QuestionPrompt, (prompt) => prompt.answers)
-  questionPrompt: QuestionPrompt;
+  questionPrompt: Relation<QuestionPrompt>;
 }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from 'typeorm';
 import { User } from './User';
 
 @Entity()
@@ -11,7 +11,7 @@ export class GameStatistics {
 
   @OneToOne(() => User, (user) => user.gameStatistics)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: Relation<User>;
 
   @Column({ default: 0 })
   bestTimeGame1: number;

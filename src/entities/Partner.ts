@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Relation } from 'typeorm';
+
 import { User } from './User';
 
 @Entity()
@@ -11,14 +12,14 @@ export class Partner {
 
   @OneToOne(() => User, (user) => user.partnerOne)
   @JoinColumn({ name: 'partnerOneId' })
-  partnerOne: User;
+  partnerOne: Relation<User>;
 
   @Column()
   partnerTwoId: string;
 
   @OneToOne(() => User, (user) => user.partnerTwo)
   @JoinColumn({ name: 'partnerTwoId' })
-  partnerTwo: User;
+  partnerTwo: Relation<User>;
 
   @Column({ default: false })
   married: boolean;

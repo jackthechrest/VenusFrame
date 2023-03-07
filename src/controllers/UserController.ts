@@ -62,25 +62,13 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 
 async function updateUserEmail(req: Request, res: Response): Promise<void> {
   const { userId } = req.params;
-  const { email } = req.body;
+  const newEmail = req.body.email;
 
   try {
-    // Get the user by ID
-    const user = await getUserById(userId);
-
-    if (!user) {
-      res.status(404).json({ message: 'User not found' });
-      return;
-    }
-
-    // Update the user's email
-    await updateEmailAddress(userId, email);
-
-    res.status(200).json({ message: 'Email updated successfully' });
-    console.log(`${userId}, ${email}`);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    await updateEmailAddress(userId, newEmail);
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(500);
   }
 }
 

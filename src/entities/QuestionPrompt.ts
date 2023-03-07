@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from 'typeorm';
 import { Answer } from './Answer';
 
 @Entity()
@@ -10,5 +10,5 @@ export class QuestionPrompt {
   question: string;
 
   @OneToMany(() => Answer, (answer) => answer.questionPrompt)
-  answers: Answer[];
+  answers: Relation<Answer>[];
 }

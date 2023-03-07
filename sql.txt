@@ -1,0 +1,49 @@
+Venus Frame
+
+CREATE TABLE IF NOT EXISTS Users (
+    userId TEXT PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE,
+    partnerId TEXT,
+    promptId TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    emailVerified BOOLEAN DEFAULT FALSE,
+    passwordHash TEXT NOT NULL UNIQUE,
+    isSingle BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (partnerId) REFERENCES Partner(partnerId),
+    FOREIGN KEY (promptId) REFERENCES QuestionPrompt(promptId)
+);
+
+CREATE TABLE IF NOT EXISTS Partner (
+    partnerOneId TEXT,
+    partnerTwoId TEXT,
+    married BOOLEAN DEFAULT FALSE,
+    datingAnniversery INTEGER NOT NULL,
+    marriageAniversary INTEGER NOT NULL,
+    FOREIGN KEY (partnerOneId) REFERENCES Users(userId)
+    FOREIGN KEY (partnerTwoId) REFERENCES Users(userId)
+
+);
+
+CREATE TABLE IF NOT EXISTS QuestionPrompt (
+    promptId TEXT PRIMARY KEY,
+    question TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Answer (
+    userID TEXT,     -- the user that wrote this answer
+    promptId TEXT,   -- the question they are answering
+    answer TEXT,     -- their answer
+
+    PRIMARY KEY (userID, promptId) -- no need for the answer in the primary key
+
+    FOREIGN KEY (userID) REFERENCES Users(userId)
+    FOREIGN KEY (promptId) REFERENCES QuestionPrompt(promptId)
+);
+
+CREATE TABLE IF NOT EXISTS GameStatistics(
+    userId TEXT NOT NULL,
+    bestTimeGame1 INTEGER DEFAULT 0,
+    highestWinStreakGame2 INTEGER DEFAULT 0,
+    highestRoundReachedGame3 INTEGER DEFAULT 0,
+    FOREIGN KEY (userId) REFERENCES Users(userId)
+);

@@ -67,7 +67,12 @@ async function incrementProfileViews(userData: User): Promise<User> {
 }
 
 async function updateEmailAddress(userId: string, newEmail: string): Promise<void> {
-  await userRepository.createQueryBuilder().update(User).set({ email: newEmail }).where({ userId });
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ email: newEmail })
+    .where({ userId })
+    .execute();
 }
 
 export {
