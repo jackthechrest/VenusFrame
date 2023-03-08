@@ -7,6 +7,7 @@ export class Answer {
   @PrimaryGeneratedColumn()
   userId: string;
 
+  @PrimaryGeneratedColumn()
   promptId: string;
 
   @Column()

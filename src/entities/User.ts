@@ -10,6 +10,7 @@ import {
 import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { GameStatistics } from './GameStatistics';
+import { Couple } from './Couple';
 
 @Entity()
 export class User {

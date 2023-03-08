@@ -20,6 +20,7 @@ const app: Express = express();
 app.use(express.json());
 const { PORT } = process.env;
 
+// app.get('/api/users', getAllUsers);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 app.get('/api/users/:userId', getUserProfileData);

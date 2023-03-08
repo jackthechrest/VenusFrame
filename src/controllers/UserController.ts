@@ -61,17 +61,25 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 }
 
 async function updateUserEmail(req: Request, res: Response): Promise<void> {
-  const { userId } = req.params;
-  const newEmail = req.body.email;
+  const { userId } = req.params as UserIdParam;
+  const { newEmail } = req.body.email as { newEmail: string };
 
+  const user = await getUserById(userId);
+  if (!user) {
+    res.sendStatus(404); // 404 not found
+    return;
+  }
   try {
     await updateEmailAddress(userId, newEmail);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
+<<<<<<< HEAD
     res.status(500).json(databaseErrorMessage);
+=======
+    res.sendStatus(500).json(databaseErrorMessage);
+>>>>>>> bae456b (update user email)
   }
 }
-
 export { registerUser, logIn, getUserProfileData, updateUserEmail };
