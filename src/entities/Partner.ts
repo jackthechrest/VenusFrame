@@ -5,28 +5,22 @@ import { User } from './User';
 @Entity()
 export class Partner {
   @PrimaryGeneratedColumn('uuid')
-  partnerId: string;
-
-  @Column()
-  partnerOneId: string;
+  partnerDataId: string;
 
   @OneToOne(() => User, (user) => user.partnerOne)
-  @JoinColumn({ name: 'partnerOneId' })
-  partnerOne: Relation<User>;
-
-  @Column()
-  partnerTwoId: string;
+  @JoinColumn()
+  userOne: Relation<User>;
 
   @OneToOne(() => User, (user) => user.partnerTwo)
-  @JoinColumn({ name: 'partnerTwoId' })
-  partnerTwo: Relation<User>;
+  @JoinColumn()
+  userTwo: Relation<User>;
 
   @Column({ default: false })
   married: boolean;
 
   @Column()
-  datingAnniversary: number;
+  datingAnniversary: Date;
 
-  @Column()
-  marriageAnniversary: number;
+  @Column({ nullable: true })
+  marriageAnniversary: Date;
 }

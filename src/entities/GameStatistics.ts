@@ -7,7 +7,7 @@ export class GameStatistics {
   gameStatsId: string;
 
   @OneToOne(() => User, (user) => user.gameStatistics)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn()
   user: Relation<User>;
 
   @Column({ default: 0 })
