@@ -75,11 +75,7 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
   } catch (err) {
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
-<<<<<<< HEAD
-    res.status(500).json(databaseErrorMessage);
-=======
     res.sendStatus(500).json(databaseErrorMessage);
->>>>>>> bae456b (update user email)
   }
 }
 export { registerUser, logIn, getUserProfileData, updateUserEmail };
