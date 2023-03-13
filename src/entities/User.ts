@@ -10,15 +10,11 @@ import {
 import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { GameStatistics } from './GameStatistics';
-import { Couple } from './Couple';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
-
-  @Column({ nullable: true })
-  coupleId: string;
 
   @Column({ unique: true })
   username: string;
@@ -38,12 +34,12 @@ export class User {
   @Column({ default: true })
   isSingle: boolean;
 
-  @OneToOne(() => Partner, (partner) => partner.partnerOne)
-  @JoinColumn({ name: 'partnerId' })
+  @OneToOne(() => Partner, (partner) => partner.userOne)
+  @JoinColumn()
   partnerOne: Relation<Partner>;
 
-  @OneToOne(() => Partner, (partner) => partner.partnerTwo)
-  @JoinColumn({ name: 'partnerId' })
+  @OneToOne(() => Partner, (partner) => partner.userTwo)
+  @JoinColumn()
   partnerTwo: Relation<Partner>;
 
   @OneToMany(() => Answer, (answer) => answer.user)

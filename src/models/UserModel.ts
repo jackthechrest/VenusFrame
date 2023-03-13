@@ -3,12 +3,6 @@ import { User } from '../entities/User';
 
 const userRepository = AppDataSource.getRepository(User);
 
-// questionIDs on the left each match up to a question body on the right
-const questions: QuestionData = {
-  PlaceholderID1: 'Placeholder Question 1',
-  PlaceholderID2: 'Placeholder Question 2',
-};
-
 // debugging function, should probably be removed later
 async function getAllUsers(): Promise<User[]> {
   return userRepository.find();
@@ -89,11 +83,6 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
     .execute();
 }
 
-// placeholder to stop compiler from complaining about questions never being read
-function placeholderQuestion(): void {
-  console.log(questions.PlaceholderID1);
-}
-
 export {
   getAllUsers,
   addUser,
@@ -103,5 +92,4 @@ export {
   getUsersByViews,
   incrementProfileViews,
   updateEmailAddress,
-  placeholderQuestion,
 };
