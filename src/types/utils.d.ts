@@ -11,13 +11,17 @@ type NewUserRequest = {
 };
 
 type UserIdParam = {
-  userId: string;
+  targetUserId: string;
 };
 
 type NewEmailBody = {
   email: string;
 };
 
+type AuthRequest = {
+  email: string;
+  password: string;
+};
 // WIP: Store Question IDs here, use short names that line up with what question asks
 type QuestionId = 'PlaceholderID1' | 'PlaceholderID2';
 

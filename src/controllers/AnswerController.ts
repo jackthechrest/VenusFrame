@@ -20,10 +20,10 @@ type NewAnswerRequest = {
 };
 
 async function addNewAnswer(req: Request, res: Response): Promise<void> {
-  // if (!req.session.isLoggedIn) {
-  //   res.sendStatus(401);
-  //   return;
-  // }
+  if (!req.session.isLoggedIn) {
+    res.sendStatus(401);
+    return;
+  }
   const { promptId, answer, user } = req.body as NewAnswerRequest;
   try {
     // IMPORTANT: Store the `passwordHash` and NOT the plaintext password

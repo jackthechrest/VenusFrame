@@ -3,53 +3,31 @@ import { User } from '../entities/User';
 
 const userRepository = AppDataSource.getRepository(User);
 
-// debugging function, should probably be removed later
-async function getAllUsers(): Promise<User[]> {
-  return userRepository.find();
-}
-
-async function addUser(username: string, email: string, passwordHash: string): Promise<User> {
-  // 1) Create a new user object and set the properties
+async function addUser(email: string, passwordHash: string): Promise<User> {
+  // Create the new user object
   let newUser = new User();
-  newUser.username = username;
   newUser.email = email;
   newUser.passwordHash = passwordHash;
 
-  // 2) Save it in the database
+  // Then save it to the database
+  // NOTES: We reassign to `newUser` so we can access
+  // NOTES: the fields the database autogenerates (the id & default columns)
   newUser = await userRepository.save(newUser);
 
-  // DEBUG: print out new list of users
-  console.log(await getAllUsers());
-
-  // 3) Return the created user
   return newUser;
 }
 
-async function getAllUnverifiedUsers(): Promise<User[]> {
-  return userRepository.find({
-    select: { email: true, userId: true },
-    where: { verifiedEmail: false },
-  });
+async function getUserByEmail(email: string): Promise<User | null> {
+  return userRepository.findOne({ where: { email } });
 }
 
-async function getUserByEmail(email: string): Promise<User | null | undefined> {
-  const queriedUser = await userRepository.findOne({ where: { email } });
-
-  return queriedUser;
+async function allUserData(): Promise<User[]> {
+  return userRepository.find();
 }
+
 async function getUserById(userId: string): Promise<User | null> {
-  const queriedUser = await userRepository.findOne({
-    select: {
-      userId: true,
-      username: true,
-      email: true,
-      verifiedEmail: true,
-      profileViews: true,
-      isSingle: true,
-    },
-    where: { userId },
-  });
-  return queriedUser;
+  const user = await userRepository.findOne({ where: { userId } });
+  return user;
 }
 
 async function getUsersByViews(minViews: number): Promise<User[]> {
@@ -65,13 +43,24 @@ async function getUsersByViews(minViews: number): Promise<User[]> {
 async function incrementProfileViews(userData: User): Promise<User> {
   const updatedUser = userData;
   updatedUser.profileViews += 1;
+
   await userRepository
     .createQueryBuilder()
     .update(User)
     .set({ profileViews: updatedUser.profileViews })
     .where({ userId: updatedUser.userId })
     .execute();
+
   return updatedUser;
+}
+
+async function resetAllProfileViews(): Promise<void> {
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ profileViews: 0 })
+    .where('verifiedEmail <> true')
+    .execute();
 }
 
 async function updateEmailAddress(userId: string, newEmail: string): Promise<void> {
@@ -84,12 +73,12 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
 }
 
 export {
-  getAllUsers,
   addUser,
-  getAllUnverifiedUsers,
   getUserByEmail,
   getUserById,
   getUsersByViews,
   incrementProfileViews,
+  allUserData,
+  resetAllProfileViews,
   updateEmailAddress,
 };

@@ -1,6 +1,5 @@
 import { AppDataSource } from '../dataSource';
 import { Partner } from '../entities/Partner';
-import { User } from '../entities/User';
 import { userRepository } from './UserModel';
 
 const partnerRepository = AppDataSource.getRepository(Partner);
