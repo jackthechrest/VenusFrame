@@ -26,5 +26,8 @@ async function saveAnswer(promptId: QuestionId, answer: string, user: User): Pro
 
   return newAnswer;
 }
+async function getAllAnswers(): Promise<Answer[]> {
+  return answerRepository.find();
+}
 
-export { getQuestionById, saveAnswer };
+export { getQuestionById, saveAnswer, getAllAnswers };
