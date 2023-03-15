@@ -5,7 +5,7 @@ import { User } from './User';
 @Entity()
 export class Partner {
   @PrimaryGeneratedColumn('uuid')
-  partnerDataId: string;
+  partnerId: string;
 
   @OneToOne(() => User, (user) => user.partnerOne)
   @JoinColumn()
