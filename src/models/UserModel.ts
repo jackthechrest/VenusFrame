@@ -81,4 +81,5 @@ export {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
+  userRepository,
 };
