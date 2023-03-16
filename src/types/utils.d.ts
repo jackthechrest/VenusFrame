@@ -19,6 +19,7 @@ type NewEmailBody = {
 };
 
 type AuthRequest = {
+  username: string;
   email: string;
   password: string;
 };

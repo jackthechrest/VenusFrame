@@ -12,6 +12,7 @@ import express, { Express } from 'express';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import {
+  getAllUserProfiles,
   registerUser,
   logIn,
   getUserProfileData,
@@ -35,7 +36,7 @@ app.use(
   })
 );
 app.use(express.json());
-// app.get('/api/users', getAllUsers);
+app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 app.get('/api/users/:userId', getUserProfileData);

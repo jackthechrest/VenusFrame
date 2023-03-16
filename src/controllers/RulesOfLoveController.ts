@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { startROL, getROLById } from '../models/RulesOfLoveModel';
+import { getUserById } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function playRulesOfLove(req: Request, res: Response): Promise<void> {
@@ -25,16 +26,25 @@ async function playRulesOfLove(req: Request, res: Response): Promise<void> {
   }
 
   // check to make sure not too many players before adding
-  if (game.players.length === 2) {
+  if (game.numOfPlayers === 2) {
     res.sendStatus(409); // 409 Conflict
     return;
   }
+
+  const user = await getUserById(authenticatedUser.userId);
+  if (!user) {
+    res.sendStatus(404); // 404 not found
+    return;
+  }
+
   try {
-    authenticatedUser.currentPlay = newPlay;
-    game.players.push(authenticatedUser);
+    user.currentPlay = newPlay;
+    game.players[game.numOfPlayers] = user;
+    game.numOfPlayers += 1;
+    console.log(`${user.username} has created/joined Rules of Love ${game.gameId}`);
 
     // if a game was joined, then the game can be played
-    if (game.players.length === 2) {
+    if (game.numOfPlayers === 2) {
       // players[0] wins
       if (
         (game.players[0].currentPlay === 'Rock Candy Heart' &&
