@@ -23,8 +23,8 @@ async function addPartner(
   datingAnniversary: Date
 ): Promise<Partner> {
   let newPartner = new Partner();
-  newPartner.userOne = await userRepository.findOne(userOneId);
-  newPartner.userTwo = await userRepository.findOne(userTwoId);
+  // newPartner.userOne = await userRepository.findOne(userOneId);
+  // newPartner.userTwo = await userRepository.findOne(userTwoId);
   newPartner.datingAnniversary = datingAnniversary;
 
   newPartner = await partnerRepository.save(newPartner);

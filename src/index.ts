@@ -12,11 +12,13 @@ import express, { Express } from 'express';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import {
+  getAllUserProfiles,
   registerUser,
   logIn,
   getUserProfileData,
   updateUserEmail,
 } from './controllers/UserController.js';
+import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 
 const app: Express = express();
 app.use(express.json());
@@ -34,11 +36,12 @@ app.use(
   })
 );
 app.use(express.json());
-// app.get('/api/users', getAllUsers);
+app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 app.get('/api/users/:userId', getUserProfileData);
 app.post('/api/users/:userId/email', updateUserEmail);
+app.post('/api/games/rulesoflove/:gameId/:userId', playRulesOfLove);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
