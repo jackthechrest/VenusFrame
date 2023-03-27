@@ -41,6 +41,7 @@
     "extensionless": "^1.1.0",
     "glob": "^8.1.0",
     "ip": "^1.1.8",
+    "nodemailer": "^6.9.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.4",
     "typeorm": "0.3.12"
