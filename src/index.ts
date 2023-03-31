@@ -21,7 +21,8 @@ import {
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 
 const app: Express = express();
-app.use(express.json());
+app.use(express.static('public', { extensions: ['html'] }));
+
 const { PORT, COOKIE_SECRET } = process.env;
 const SQLiteStore = connectSqlite3(session);
 
@@ -35,7 +36,11 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// endpoints
 app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
