@@ -29,7 +29,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     console.log(newUser);
 
     await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
-    res.sendStatus(201);
+    res.redirect('/login');
   } catch (err) {
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
