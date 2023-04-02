@@ -19,6 +19,7 @@ import {
   logIn,
   getUserProfileData,
   updateUserEmail,
+  deleteAccount,
 } from './controllers/UserController.js';
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 
@@ -62,6 +63,7 @@ app.post('/api/login', logIn);
 app.get('/api/users/:userId', getUserProfileData);
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/games/rulesoflove/:gameId/:userId', playRulesOfLove);
+app.post('/api/users/delete', deleteAccount);
 
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

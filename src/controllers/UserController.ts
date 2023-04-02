@@ -9,6 +9,7 @@ import {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
+  deleteUserById,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 // import { sendEmail } from '../services/emailService';
@@ -18,7 +19,7 @@ async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
 }
 
 async function registerUser(req: Request, res: Response): Promise<void> {
-  const { username, email, password } = req.body as AuthRequest;
+  const { username, email, password } = req.body as NewUserRequest;
 
   // IMPORTANT: Hash the password
   const passwordHash = await argon2.hash(password);
@@ -155,6 +156,36 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
   res.sendStatus(200);
 }
 
+async function deleteAccount(req: Request, res: Response): Promise<void> {
+  const { isLoggedIn, authenticatedUser } = req.session;
+  const { email, password } = req.body as AuthRequest;
+
+  if (!isLoggedIn) {
+    res.redirect('/login'); // not logged in
+    return;
+  }
+
+  const user = await getUserByEmail(email);
+  if (!user) {
+    res.redirect('/chat'); // 404 Not Found - email doesn't exist
+    return;
+  }
+
+  if (authenticatedUser.userId !== user.userId) {
+    res.redirect('/chat'); // trying to delete someone elses account
+    return;
+  }
+
+  const { passwordHash } = user;
+
+  if (!(await argon2.verify(passwordHash, password))) {
+    res.redirect('/chat'); // 404 not found - user w/ email/password doesn't exist
+  }
+
+  deleteUserById(user.userId);
+  res.redirect('/chat');
+}
+
 export {
   registerUser,
   logIn,
@@ -162,4 +193,5 @@ export {
   getAllUserProfiles,
   resetProfileViews,
   updateUserEmail,
+  deleteAccount,
 };

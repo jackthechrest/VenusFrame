@@ -82,6 +82,15 @@ async function updatePlay(userId: string, newPlay: RulesOfLoveOptions): Promise<
     .execute();
 }
 
+async function deleteUserById(userId: string): Promise<void> {
+  await userRepository
+    .createQueryBuilder('user')
+    .delete()
+    .from(User)
+    .where('userId = :userId', { userId })
+    .execute();
+}
+
 export {
   addUser,
   getUserByEmail,
@@ -92,5 +101,6 @@ export {
   resetAllProfileViews,
   updateEmailAddress,
   updatePlay,
+  deleteUserById,
   userRepository,
 };
