@@ -93,7 +93,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
   };
   req.session.isLoggedIn = true;
 
-  res.sendStatus(200);
+  res.redirect('/chat');
 }
 
 async function getUserProfileData(req: Request, res: Response): Promise<void> {

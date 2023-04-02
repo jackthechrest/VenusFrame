@@ -1,5 +1,9 @@
 {
   "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
@@ -15,6 +19,7 @@
   ],
   "rules": {
     "@typescript-eslint/prefer-as-const": "error",
+    "@typescript-eslint/return-await": "off",
     "no-console": "off",
     "@typescript-eslint/explicit-function-return-type": "warn",
     "prettier/prettier": "error",
