@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rules of Love | VenusFrame</title>
+</head>
+<body>
+  <h1>UNDER CONSTRUCTION</h1>
+  <h1>Rules of Love</h1>
+
+  <h2>Enter a Game ID of your choice and one of the three options considering the rules below.
+      If a player has started game with that ID is in session, you will be matched with them.
+      Otherwise, you will start a new game and someone else can enter your games ID to play against you.</h2>
+
+  <h3>Rules</h3>
+  <ul>
+    <li>Hard Candy Heart - Crushes Candle, Ignored in Favor of Box of Chocolates</li>
+    <li>Box of Chocolates - Picked Over Candy Heart, Melted by Candle</li>
+    <li>Candle - Melts Box of Chocolates, Crushed by Hard Candy Heart</li>
+  </ul>
+
+  <form method = "POST" action = "/api//api/games/rulesoflove/:gameId/:userId">
+    <label for = "gameId"></label>
+    <input name = "gameId" id = "gameId" class = "text" placeholder = "Game ID" type = "text" required>
+
+    <div>
+      <input type="radio" id="rolChoice" name="rolChoice" value="rolChoice" />
+      <label for="rolLove1">Hard Candy Heart</label>
+
+      <input type="radio" id="rolChoice" name="rolChoice" value="rolChoice" />
+      <label for="rolChoice">Box of Chocolates</label>
+
+      <input type="radio" id="rolChoice" name="rolChoice" value="rolChoice" />
+      <label for="rolChoice">Candle</label>
+    </div>
+
+    <button class = "btn">PLAY</button>
+
+</body>
+</html>

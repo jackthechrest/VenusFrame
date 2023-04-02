@@ -73,6 +73,15 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
     .execute();
 }
 
+async function updatePlay(userId: string, newPlay: RulesOfLoveOptions): Promise<void> {
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ currentPlay: newPlay })
+    .where({ userId })
+    .execute();
+}
+
 export {
   addUser,
   getUserByEmail,
@@ -82,5 +91,6 @@ export {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
+  updatePlay,
   userRepository,
 };

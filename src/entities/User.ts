@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { Partner } from './Partner';
 import { Answer } from './Answer';
-import { GameStatistics } from './GameStatistics';
 import { RulesOfLove } from './RulesOfLove';
 
 @Entity()
@@ -47,8 +46,9 @@ export class User {
   @OneToMany(() => Answer, (answer) => answer.user)
   answers: Relation<Answer>[];
 
-  @OneToOne(() => GameStatistics, (gameStats) => gameStats.user)
-  gameStatistics: Relation<GameStatistics>;
+  // OurPet
+  @Column({ default: 0 })
+  bestTime: number;
 
   // Rules Of Love
   @ManyToOne(() => RulesOfLove, (rol) => rol.players)
@@ -60,8 +60,14 @@ export class User {
   @Column({ default: 0 })
   currentWinStreak: number;
 
+  @Column({ default: 0 })
+  highestWinStreak: number;
+
   // Copycat
   // make sure to check for when both players are 'creator' role at beginning of game
   @Column({ default: 'creator' })
   currentCopycatRole: CopycatRoles;
+
+  @Column({ default: 0 })
+  highestRoundReachedCopycat: number;
 }

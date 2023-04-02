@@ -11,7 +11,7 @@ import {
   updateEmailAddress,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
-import { sendEmail } from '../services/emailService';
+// import { sendEmail } from '../services/emailService';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -28,7 +28,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     const newUser = await addUser(username, email, passwordHash);
     console.log(newUser);
 
-    await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
+    // await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
     res.redirect('/login');
   } catch (err) {
     console.error(err);
