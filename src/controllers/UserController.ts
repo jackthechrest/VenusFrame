@@ -94,7 +94,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
   };
   req.session.isLoggedIn = true;
 
-  res.redirect('/chat');
+  res.render('homePage', { email: user.email });
 }
 
 async function getUserProfileData(req: Request, res: Response): Promise<void> {
