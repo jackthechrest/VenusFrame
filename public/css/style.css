@@ -1,82 +1,146 @@
-.authBody {
-  display: flex;
-  width: 70%;
-  margin: auto;
-  background-color: rgb(186, 223, 220);
+@import url('https://meyerweb.com/eric/tools/css/reset/reset.css');
+
+:root {
+  --cell-background: #b5c3ed;
+  --cell-text: #2a2b2d;
+  --cell-accent: #536eb2;
+  --color-text-darker: #201b58;
 }
 
-#authForm {
-  display: flex;
-  flex-direction: column;
-}
-
-.authContainer {
-  margin: auto;
-}
-
-.chatBody {
-  margin: 0;
-  padding-bottom: 3rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
-
-#chatForm {
-  background: rgba(0, 0, 0, 0.15);
-  padding: 0.25rem;
-  position: fixed;
-  bottom: 0;
+.btn {
+  background-color: var(--cell-background);
+  color: var(--color-text-darker);
+  border: 2px solid var(--cell-border);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: rem;
+  position: relative;
+  transition: box-shadow 0.35s, top 0.3s, transform 0.45s;
+  top: 0;
   left: 0;
-  right: 0;
-  display: flex;
-  height: 3rem;
-  box-sizing: border-box;
-  backdrop-filter: blur(10px);
+  display: block;
+  box-shadow: 0 1px 0 0 var(--cell-border), 0 2px 0 0 var(--cell-border),
+    0 3px 0 0 var(--cell-border);
+  transform: rotateX(0) rotateY(0) rotateZ(0);
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 
-#chatMessage {
-  border: none;
-  padding: 0 1rem;
-  flex-grow: 1;
-  border-radius: 2rem;
-  margin: 0.25rem;
+.btn-small {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
 }
-#chatMessage:focus {
+
+.btn-large {
+  margin-top: 50px;
+  font-size: 1.75rem;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+}
+
+.btn:hover {
+  box-shadow: 0 0 0 0 var(--cell-border), 0 0 0 0 var(--cell-border), 0 0 0 0 var(--cell-border);
+  top: 3px;
+  transform: rotateX(5deg) rotateY(10deg) rotateZ(0.5deg);
+  cursor: pointer;
+}
+
+.gradient-text {
+  background-color: #3a308e;
+  background-image: linear-gradient(45deg, #0e0ba5, #302bc2);
+  background-size: 100%;
+  background-repeat: repeat;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  line-height: normal;
+}
+
+.homepage header {
+  margin-top: 1em;
+}
+
+.homepage h1 {
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 0;
+  margin-bottom: -0.25em;
+  font-size: 5rem;
+  margin-top: 10%;
+  margin-bottom: 2%;
+}
+
+.homepage h2 {
+  font-weight: normal;
+  font-size: 2.5em;
+}
+
+body.homepage {
+  color: rgb(40, 95, 109);
+  text-align: center;
+}
+
+body {
+  font-family: 'Bradley Hand', sans-serif;
+  min-height: 100vh;
+  max-height: 100vh;
+  background-image: url('/imgs/background.jpg');
+  background-size: cover;
+}
+
+.formCard {
+  min-height: 90vh;
+  display: flex;
+}
+
+.form-container {
+  color: white;
+  background: #111b1e31;
+  backdrop-filter: blur(0.5rem);
+  margin: auto;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2), 0px 10px 20px rgba(0, 0, 0, 0.3),
+    0px 30px 60px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 10px 30px 20px 30px;
+}
+
+.form-container {
+  text-align: center;
+}
+
+.form-container h1 {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+
+.form-container h2 {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+input {
+  border: none;
+  background: none;
+  box-shadow: 0px 2px 0px 0px white;
+  width: 100%;
+  color: white;
+  font-size: 1.25em;
   outline: none;
 }
-#chatForm > button {
-  background: #333;
-  border: none;
-  padding: 0 1rem;
-  margin: 0.25rem;
-  border-radius: 3px;
-  outline: none;
-  color: #fff;
+
+form input {
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
-#messages {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-#messages > li {
-  padding: 0.5rem 1rem;
-}
-#messages {
-  display: flex;
-  flex-direction: column;
-  row-gap: 5px;
+input::placeholder {
+  color: #6ba3ed;
 }
 
-.hidden {
-  display: none;
-}
-
-.chatMessage {
-  background-color: rgb(254, 94, 134);
-}
-.enterChatMessage {
-  background-color: rgb(140, 209, 234);
-}
-.transferReceiveMessage {
-  background-color: rgb(165, 238, 165);
+label {
+  visibility: hidden;
 }

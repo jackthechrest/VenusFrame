@@ -59,7 +59,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
 
   const user = await getUserByEmail(email);
   if (!user) {
-    res.sendStatus(404); // 404 Not Found - email doesn't exist
+    res.redirect('/login'); // 404 Not Found - email doesn't exist
     return;
   }
 
@@ -80,7 +80,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
       req.session.logInAttempts = 0; // NOTES: Reset their attempts
     }
 
-    res.sendStatus(404); // 404 Not Found - user with email/pass doesn't exist
+    res.redirect('/login'); // 404 Not Found - user with email/pass doesn't exist
     return;
   }
 
@@ -104,7 +104,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   let user = await getUserById(targetUserId);
 
   if (!user) {
-    res.sendStatus(404); // 404 Not Found
+    res.redirect('/login'); // 404 Not Found
     return;
   }
 
@@ -138,7 +138,7 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
   const user = await getUserById(targetUserId);
 
   if (!user) {
-    res.sendStatus(404); // 404 Not Found
+    res.redirect('/login'); // 404 Not Found
     return;
   }
 
