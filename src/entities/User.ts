@@ -11,6 +11,7 @@ import {
 import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { RulesOfLove } from './RulesOfLove';
+import { Reminder } from './Reminder';
 
 @Entity()
 export class User {
@@ -70,4 +71,7 @@ export class User {
 
   @Column({ default: 0 })
   highestRoundReachedCopycat: number;
+
+  @OneToMany(() => Reminder, (reminder) => reminder.user)
+  reminders: Reminder[];
 }

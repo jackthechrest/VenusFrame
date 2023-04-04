@@ -12,7 +12,8 @@ import {
   deleteUserById,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
-// import { sendEmail } from '../services/emailService';
+import { sendEmail } from '../services/emailService';
+import { addReminder } from '../models/ReminderModel';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -29,7 +30,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     const newUser = await addUser(username, email, passwordHash);
     console.log(newUser);
 
-    // await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
+    await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
     res.redirect('/login');
   } catch (err) {
     console.error(err);
@@ -186,6 +187,20 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
   res.redirect('/chat');
 }
 
+async function createReminder(req: Request, res: Response): Promise<void> {
+  if (!req.session.isLoggedIn) {
+    res.sendStatus(401); // 401 Unauthorized
+    return;
+  }
+
+  const { authenticatedUser } = req.session;
+  const user = await getUserById(authenticatedUser.userId);
+
+  const { sendNotificationOn, items } = req.body as CreateReminderBody;
+  await addReminder(sendNotificationOn, items, user);
+
+  res.sendStatus(201);
+}
 export {
   registerUser,
   logIn,
@@ -194,4 +209,5 @@ export {
   resetProfileViews,
   updateUserEmail,
   deleteAccount,
+  createReminder,
 };
