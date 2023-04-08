@@ -7,7 +7,6 @@
   <title>Rules of Love | VenusFrame</title>
 </head>
 <body>
-  <h1>UNDER CONSTRUCTION</h1>
   <h1>Rules of Love</h1>
 
   <h2>Enter a Game ID of your choice and one of the three options considering the rules below.
@@ -21,13 +20,13 @@
     <li>Candle - Melts Box of Chocolates, Crushed by Hard Candy Heart</li>
   </ul>
 
-  <form method = "POST" action = "/api/games/rulesoflove/:gameId/:userId">
+  <form method = "POST" action = "/games/rulesoflove/<%=gameId%>">
     <label for = "gameId"></label>
     <input name = "gameId" id = "gameId" class = "text" placeholder = "Game ID" type = "text" required>
 
     <div>
       <input type="radio" id="rolChoice" name="rolChoice" value="rolChoice" />
-      <label for="rolLove1">Hard Candy Heart</label>
+      <label for="rolChoice">Hard Candy Heart</label>
 
       <input type="radio" id="rolChoice" name="rolChoice" value="rolChoice" />
       <label for="rolChoice">Box of Chocolates</label>

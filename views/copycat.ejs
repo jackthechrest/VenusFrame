@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copycat | VenusFrame</title>
+</head>
+<body>
+  <h1>Copycat</h1>
+
+  <h2>Enter a Game ID of your choice and one of the three options considering the rules below.
+      If a player has started game with that ID is in session, you will be matched with them.
+      Otherwise, you will start a new game and someone else can enter your games ID to play against you.</h2>
+
+  <h3>Rules</h3>
+  <div>If you are starting a game, you will make a 5x5 pixel art drawing for the other player to copy.</div>
+  <div>If you are joining a game, you will be the one trying to copy the first player's image.</div>
+  <div>Failing to copy the image or at least get close to it will result in a life being lost for the group.</div>
+  <div>You have three lives and your goal is to reach the highest round.  Good luck!</div>
+
+  <form method = "POST" action = "/games/copycat/<%=gameId%>">
+    <label for = "gameId"></label>
+    <input name = "gameId" id = "gameId" class = "text" placeholder = "Game ID" type = "text" required>
+
+    <button class = "btn">PLAY</button>
+
+</body>
+</html>
