@@ -1,14 +1,21 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { Entity, Column, OneToOne, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { User } from './User';
+import { Question } from './Question';
 
 @Entity()
 export class Answer {
-  @PrimaryGeneratedColumn()
-  promptId: QuestionId;
+  @PrimaryGeneratedColumn('uuid')
+  answerId: string;
 
   @Column()
-  answer: string;
+  answerMood: string;
 
-  @ManyToOne(() => User, (user) => user.answers)
+  @Column()
+  answerText: string;
+
+  @OneToOne(() => User, (user) => user.answers, { cascade: ['insert', 'update'] })
   user: Relation<User>;
+
+  @ManyToOne(() => Question, (question) => question.answer, { cascade: ['insert', 'update'] })
+  question: Relation<Question>;
 }
