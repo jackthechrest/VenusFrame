@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { User } from './User';
 import { Question } from './Question';
 
@@ -13,7 +13,7 @@ export class Answer {
   @Column()
   answerText: string;
 
-  @OneToOne(() => User, (user) => user.answers, { cascade: ['insert', 'update'] })
+  @ManyToOne(() => User, (user) => user.answers, { cascade: ['insert', 'update'] })
   user: Relation<User>;
 
   @ManyToOne(() => Question, (question) => question.answer, { cascade: ['insert', 'update'] })
