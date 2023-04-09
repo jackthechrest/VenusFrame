@@ -8,7 +8,7 @@ export class Copycat {
   @Column()
   puzzleToMatch: string;
 
-  @Column({ default: 5 })
+  @Column({ default: 3 })
   livesLeft: number;
 
   @Column({ default: 0 })

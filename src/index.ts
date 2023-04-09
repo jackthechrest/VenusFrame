@@ -63,7 +63,8 @@ app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
 app.get('/api/users/:userId', getUserProfileData);
 app.post('/api/users/:userId/email', updateUserEmail);
-app.post('/api/games/rulesoflove/:gameId/:userId', playRulesOfLove);
+app.post('/games/rulesoflove/:gameId', playRulesOfLove);
+// app.post('/games/copycat/:gameId', playCopycat);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
 
