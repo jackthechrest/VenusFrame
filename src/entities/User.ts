@@ -12,6 +12,7 @@ import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { RulesOfLove } from './RulesOfLove';
 import { Reminder } from './Reminder';
+import { Question } from './Question';
 
 @Entity()
 export class User {
@@ -44,8 +45,11 @@ export class User {
   @JoinColumn()
   partnerTwo: Relation<Partner>;
 
-  @OneToMany(() => Answer, (answer) => answer.user)
-  answers: Relation<Answer>[];
+  @OneToOne(() => Answer, (answer) => answer.user)
+  answers: Relation<Answer>;
+
+  @OneToOne(() => Question, (question) => question.user)
+  questions: Relation<Answer>;
 
   // OurPet
   @Column({ default: 0 })

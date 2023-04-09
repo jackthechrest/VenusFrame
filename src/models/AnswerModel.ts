@@ -1,33 +1,53 @@
 import { AppDataSource } from '../dataSource';
 import { Answer } from '../entities/Answer';
 import { User } from '../entities/User';
+import { Question } from '../entities/Question';
 
 const answerRepository = AppDataSource.getRepository(Answer);
 
-// questionIDs on the left each match up to a question body on the right
-const questions: QuestionData = {
-  PlaceholderID1: 'Placeholder Question 1',
-  PlaceholderID2: 'Placeholder Question 2',
-};
+// // questionIDs on the left each match up to a question body on the right
+// const questions: QuestionData = {
+//   PlaceholderID1: 'Placeholder Question 1',
+//   PlaceholderID2: 'Placeholder Question 2',
+// };
 
 // retrieve a question body by its id
-function getQuestionById(questionId: QuestionId): string | undefined {
-  return questions[questionId];
+async function getAnswerById(answerId: string): Promise<Answer | null> {
+  return await answerRepository.findOne({ where: { answerId } });
 }
 
 // save a user's answer to a given question
-async function saveAnswer(promptId: QuestionId, answer: string, user: User): Promise<Answer> {
+async function saveAnswer(
+  answerMood: string,
+  answerText: string,
+  byUser: User,
+  forQuestion: Question
+): Promise<Answer> {
   let newAnswer = new Answer();
-  newAnswer.promptId = promptId;
-  newAnswer.answer = answer;
-  newAnswer.user = user;
+  newAnswer.answerMood = answerMood;
+  newAnswer.answerText = answerText;
+  newAnswer.user = byUser;
+  newAnswer.question = forQuestion;
 
   newAnswer = await answerRepository.save(newAnswer);
 
   return newAnswer;
 }
+
 async function getAllAnswers(): Promise<Answer[]> {
   return answerRepository.find();
 }
 
-export { getQuestionById, saveAnswer, getAllAnswers };
+async function userHasAnswerForQuestion(userId: string, questionId: string): Promise<boolean> {
+  const answerExists = await answerRepository
+    .createQueryBuilder('answer')
+    .leftJoinAndSelect('answer.user', 'user')
+    .leftJoinAndSelect('answer.question', 'question')
+    .where('user.userId = :userId', { userId })
+    .andWhere('question.questionId = :questionId', { questionId })
+    .getExists();
+
+  return answerExists;
+}
+
+export { getAnswerById, saveAnswer, getAllAnswers, userHasAnswerForQuestion };
