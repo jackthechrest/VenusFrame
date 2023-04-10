@@ -11,7 +11,7 @@ import 'express-async-errors'; // Enable default error handling for async errors
 
 import express, { Express, Request, Response, NextFunction } from 'express';
 import session from 'express-session';
-import { Server /* Socket */ } from 'socket.io';
+import { Server } from 'socket.io';
 import connectSqlite3 from 'connect-sqlite3';
 import {
   getAllUserProfiles,
@@ -25,14 +25,15 @@ import {
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 
 const app: Express = express();
+app.set('view engine', 'ejs');
 app.use(express.static('public', { extensions: ['html'] }));
 
 const { PORT, COOKIE_SECRET } = process.env;
 const SQLiteStore = connectSqlite3(session);
-
+const store = new SQLiteStore({ db: 'session.sqlite' });
 app.use(
   session({
-    store: new SQLiteStore({ db: 'sessions.sqlite' }),
+    store,
     secret: COOKIE_SECRET,
     cookie: { maxAge: 8 * 60 * 60 * 1000 }, // 8 hours
     name: 'session',
@@ -40,7 +41,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(express.json());
 
 const sessionMiddleware = session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
@@ -52,8 +52,6 @@ const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
-
-app.use(express.static('public', { extensions: ['html'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -61,7 +59,8 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
-app.get('/api/users/:userId', getUserProfileData);
+// app.get('/api/login', logIn);
+app.get('/api/users/:targerUserId', getUserProfileData);
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/games/rulesoflove/:gameId', playRulesOfLove);
 // app.post('/games/copycat/:gameId', playCopycat);

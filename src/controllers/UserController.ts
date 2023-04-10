@@ -94,8 +94,8 @@ async function logIn(req: Request, res: Response): Promise<void> {
     email: user.email,
   };
   req.session.isLoggedIn = true;
-
-  res.render('homePage', { email: user.email });
+  res.redirect('/chat');
+  // res.render('ProfilePage', { email: user.email });
 }
 
 async function getUserProfileData(req: Request, res: Response): Promise<void> {
@@ -105,14 +105,15 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   let user = await getUserById(targetUserId);
 
   if (!user) {
-    res.redirect('/login'); // 404 Not Found
+    res.redirect('/chat'); // 404 Not Found
     return;
   }
 
   // Now update their profile views
   user = await incrementProfileViews(user);
 
-  res.json(user);
+  // res.json(user);
+  res.render('ProfilePage', { email: user.email, profileViws: user.profileViews });
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {

@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { saveAnswer, getAllAnswers, userHasAnswerForQuestion } from '../models/AnswerModel';
+import {
+  saveAnswer,
+  getAllAnswers,
+  userHasAnswerForQuestion,
+  answerBelongsToUser,
+  deleteAnswerById,
+} from '../models/AnswerModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { getUserById } from '../models/UserModel';
 import { getQuestionById } from '../models/QuestionModel';
@@ -13,7 +19,7 @@ async function getAnswers(req: Request, res: Response): Promise<void> {
 async function addNewAnswer(req: Request, res: Response): Promise<void> {
   const { authenticatedUser, isLoggedIn } = req.session;
   if (!isLoggedIn) {
-    res.sendStatus(401);
+    res.redirect('/login');
     return;
   }
 
@@ -47,4 +53,23 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
 async function addAnswerForQuestion(req: Request, res: Response): Promise<void> {
   res.sendStatus(501);
 }
-export { getAnswers, addNewAnswer, addAnswerForQuestion };
+
+async function deleteUserAnswer(req: Request, res: Response): Promise<void> {
+  const { isLoggedIn, authenticatedUser } = req.session;
+  if (!isLoggedIn) {
+    res.sendStatus(401); // 401 Unauthorized
+    return;
+  }
+
+  const { answerId } = req.params as AnswerIdParam;
+
+  const answerExists = await answerBelongsToUser(answerId, authenticatedUser.userId);
+  if (!answerExists) {
+    res.sendStatus(403); // 403 Forbidden
+    return;
+  }
+
+  await deleteAnswerById(answerId);
+  res.sendStatus(204); // 204 No Content
+}
+export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer };

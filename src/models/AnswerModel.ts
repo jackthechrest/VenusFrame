@@ -50,4 +50,30 @@ async function userHasAnswerForQuestion(userId: string, questionId: string): Pro
   return answerExists;
 }
 
-export { getAnswerById, saveAnswer, getAllAnswers, userHasAnswerForQuestion };
+async function answerBelongsToUser(answerId: string, userId: string): Promise<boolean> {
+  const answerExists = await answerRepository
+    .createQueryBuilder('answer')
+    .leftJoinAndSelect('answer.user', 'user')
+    .where('answer.answerId = :answerId', { answerId })
+    .andWhere('user.userId = :userId', { userId })
+    .getExists();
+
+  return answerExists;
+}
+
+async function deleteAnswerById(answerId: string): Promise<void> {
+  await answerRepository
+    .createQueryBuilder('answer')
+    .delete()
+    .where('answerId = :answerId', { answerId })
+    .execute();
+}
+
+export {
+  getAnswerById,
+  saveAnswer,
+  getAllAnswers,
+  userHasAnswerForQuestion,
+  answerBelongsToUser,
+  deleteAnswerById,
+};
