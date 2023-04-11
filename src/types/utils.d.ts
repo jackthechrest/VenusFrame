@@ -31,6 +31,7 @@ type QuestionData = Partial<Record<QuestionId, string>>;
 type RulesOfLoveOptions = 'Rock Candy Heart' | 'Box of Chocolates' | 'Candle' | 'NONE';
 
 type RulesOfLoveBody = {
+  gameId: string;
   newPlay: RulesOfLoveOptions;
 };
 

@@ -23,6 +23,7 @@ import {
   createReminder,
 } from './controllers/UserController.js';
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
+import { playCopycat } from './controllers/CopycatController';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -59,13 +60,16 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 app.post('/api/login', logIn);
-// app.get('/api/login', logIn);
-app.get('/api/users/:targerUserId', getUserProfileData);
+app.get('/users/:targerUserId', getUserProfileData);
 app.post('/api/users/:userId/email', updateUserEmail);
-app.post('/games/rulesoflove/:gameId', playRulesOfLove);
-// app.post('/games/copycat/:gameId', playCopycat);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
+
+// rules of love
+app.post('/rulesoflove/play', playRulesOfLove);
+
+// copycat
+app.post('/copycat/play', playCopycat);
 
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

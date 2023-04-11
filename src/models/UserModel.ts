@@ -87,7 +87,6 @@ async function deleteUserById(userId: string): Promise<void> {
   await userRepository
     .createQueryBuilder('user')
     .delete()
-    .from(User)
     .where('userId = :userId', { userId })
     .execute();
 }

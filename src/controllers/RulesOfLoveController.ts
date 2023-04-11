@@ -4,8 +4,7 @@ import { getUserById } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function playRulesOfLove(req: Request, res: Response): Promise<void> {
-  const { gameId, userId } = req.params;
-  const { newPlay } = req.body as RulesOfLoveBody;
+  const { gameId, newPlay } = req.body as RulesOfLoveBody;
 
   // NOTES: Access the data from `req.session`
   const { isLoggedIn, authenticatedUser } = req.session;
@@ -14,11 +13,6 @@ async function playRulesOfLove(req: Request, res: Response): Promise<void> {
   //        they are try to modify their own user account
   if (!isLoggedIn) {
     res.redirect('/login');
-    return;
-  }
-
-  if (authenticatedUser.userId !== userId) {
-    res.sendStatus(403); // 403 Forbidden
     return;
   }
 

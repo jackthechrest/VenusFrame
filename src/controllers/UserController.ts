@@ -113,7 +113,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   user = await incrementProfileViews(user);
 
   // res.json(user);
-  res.render('ProfilePage', { email: user.email, profileViws: user.profileViews });
+  res.render('ProfilePage', { user });
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {
@@ -185,7 +185,7 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
   }
 
   deleteUserById(user.userId);
-  res.redirect('/chat');
+  res.redirect('/index');
 }
 
 async function createReminder(req: Request, res: Response): Promise<void> {
