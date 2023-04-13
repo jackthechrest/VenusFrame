@@ -50,9 +50,11 @@ async function logIn(req: Request, res: Response): Promise<void> {
   if (logInTimeout && isBefore(now, logInTimeout)) {
     // NOTES: This will create a human friendly duration message
     const timeRemaining = formatDistanceToNow(logInTimeout);
-    const message = `You have ${timeRemaining} remaining.`;
+
+    const message = `Log in Time out.You have ${timeRemaining} remaining.`;
     // NOTES: Reject their request
     res.status(429).send(message); // 429 Too Many Requests
+
     return;
   }
 
@@ -60,6 +62,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
 
   const user = await getUserByEmail(email);
   if (!user) {
+    // req.flash('error', 'Email does not exist.');
     res.redirect('/login'); // 404 Not Found - email doesn't exist
     return;
   }

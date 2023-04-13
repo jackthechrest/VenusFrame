@@ -12,6 +12,7 @@ import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { RulesOfLove } from './RulesOfLove';
 import { Reminder } from './Reminder';
+import { Anniversary } from './Anniversary';
 
 @Entity()
 export class User {
@@ -74,4 +75,8 @@ export class User {
 
   @OneToMany(() => Reminder, (reminder) => reminder.user)
   reminders: Reminder[];
+
+  @OneToOne(() => Anniversary, (anniversary) => anniversary.user)
+  @JoinColumn()
+  anniversary: Relation<Anniversary>;
 }

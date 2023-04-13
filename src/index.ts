@@ -24,6 +24,11 @@ import {
 } from './controllers/UserController.js';
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
+import {
+  insertAnniversary,
+  getAllAnniversary,
+  getAnniversary,
+} from './controllers/AnniversaryController';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -70,6 +75,10 @@ app.post('/rulesoflove/play', playRulesOfLove);
 
 // copycat
 app.post('/copycat/play', playCopycat);
+
+app.get('/anniversaries/:anniversaryId', getAnniversary);
+app.get('/anniversaries', getAllAnniversary);
+app.post('/api/anniversaires', insertAnniversary);
 
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

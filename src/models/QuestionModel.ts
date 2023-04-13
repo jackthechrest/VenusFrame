@@ -3,7 +3,7 @@ import { Question } from '../entities/Question';
 
 const questionRepository = AppDataSource.getRepository(Question);
 
-async function addQuesetion(questionMood: string, questionText: string): Promise<Question> {
+async function addQuestion(questionMood: string, questionText: string): Promise<Question> {
   let newQuestion = new Question();
   newQuestion.questionMood = questionMood;
   newQuestion.questionText = questionText;
@@ -20,4 +20,4 @@ async function getAllQuestions(): Promise<Question[]> {
   return await questionRepository.find();
 }
 
-export { addQuesetion, getQuestionById, getAllQuestions };
+export { addQuestion, getQuestionById, getAllQuestions };
