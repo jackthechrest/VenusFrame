@@ -219,11 +219,11 @@ label {
 }
 
 .chatMessage {
-  background-color: rgb(254, 94, 134);
+  background-color: rgb(75, 142, 187);
 }
 .enterChatMessage {
-  background-color: rgb(140, 209, 234);
+  background-color: rgb(140, 234, 201);
 }
 .transferReceiveMessage {
-  background-color: rgb(165, 238, 165);
+  background-color: rgb(246, 246, 246);
 }

@@ -94,10 +94,10 @@ async function logIn(req: Request, res: Response): Promise<void> {
   // NOTES: Now we can add whatever data we want to the session
   req.session.authenticatedUser = {
     userId: user.userId,
-    email: user.email,
+    username: user.username,
   };
   req.session.isLoggedIn = true;
-  res.redirect('/chat');
+  res.redirect('/preview');
   // res.render('ProfilePage', { email: user.email });
 }
 

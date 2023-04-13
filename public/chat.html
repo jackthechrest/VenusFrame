@@ -1,71 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/css/style.css" />
     <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="/css/style.css">
 
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="/js/clientChat.js" defer></script>
-    <style>
-      h1 {
-        font-size: 30px;
-        font-weight: bold;
-      }
-    </style>
-
   </head>
   <body class="chatBody">
-
-
-    <form id="transferForm" action="">
-      <label for="to">To:<input name="to" id="to" autocomplete="off" /></label>
-      <label for="amount">Amount:<input name="amount" id="amount" autocomplete="off" /></label>
-      <!-- <button>Transfer</button> -->
-    </form>
-    <h1>PREVIEW : </h1>
 
     <ul id="messages"></ul>
 
     <form id="chatForm" action="">
       <input id="chatMessage" autocomplete="off" /><button>Send</button>
     </form>
-
-    <ul>
-      <li><a href = "/users" class = "btn btn-large">
-        View Profile 👓
-      </a></li>
-
-      <li><a href = "finduser" class = "btn btn-large">
-        Search Users 🔍
-      </a></li>
-
-      <li><a href = "/text" class = "btn btn-large">
-        Text my Partner 💬
-      </a></li>
-
-      <li><a href = "/addAnniversary" class = "btn btn-large">
-        Add Anniversary 🎉
-      </a></li>
-
-      <li><a href = "/question" class = "btn btn-large">
-        Daily Question 💌
-      </a></li>
-
-      <li><a href = "/ourpet" class = "btn btn-large">
-        Play ourPet 🐾
-      </a></li>
-
-      <li><a href = "/rulesoflove" class = "btn btn-large">
-        Play Rules of Love 🎮
-      </a></li>
-
-      <li><a href = "/copycat" class = "btn btn-large">
-        Play Copycat 👾
-      </a></li>
-
-      <li><a href = "/delete" class = "btn btn-large">
-        Delete Account ✏️
-      </a></li>
-  </ul>
   </body>
 </html>

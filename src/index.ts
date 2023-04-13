@@ -32,21 +32,9 @@ import {
 
 const app: Express = express();
 app.set('view engine', 'ejs');
-app.use(express.static('public', { extensions: ['html'] }));
 
 const { PORT, COOKIE_SECRET } = process.env;
 const SQLiteStore = connectSqlite3(session);
-const store = new SQLiteStore({ db: 'session.sqlite' });
-app.use(
-  session({
-    store,
-    secret: COOKIE_SECRET,
-    cookie: { maxAge: 8 * 60 * 60 * 1000 }, // 8 hours
-    name: 'session',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
 const sessionMiddleware = session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
@@ -58,6 +46,7 @@ const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
+app.use(express.static('public', { extensions: ['html'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -117,54 +106,20 @@ socketServer.on('connection', (socket) => {
   }
 
   const { authenticatedUser } = req.session;
-  const { email } = authenticatedUser;
-
-  console.log(`${email} has connected`);
-  connectedClients[email] = socket;
+  const { username } = authenticatedUser;
+  console.log(`${username} has connected`);
+  connectedClients[username] = socket;
 
   socket.on('disconnect', () => {
-    delete connectedClients[email];
-    console.log(`${email} has disconnected`);
-    socketServer.emit('exitedChat', `${email} has left the chat.`);
+    delete connectedClients[username];
+    console.log(`${username} has disconnected`);
+    socketServer.emit('exitedChat', `${username} has left the chat.`);
   });
 
-  socketServer.emit('enteredChat', `${email} has entered the chat`);
+  socketServer.emit('enteredChat', `${username} has entered the chat`);
 
   socket.on('chatMessage', (msg: string) => {
-    console.log(`received a chatMessage event from the client: ${email}`);
-    socketServer.emit('chatMessage', email, msg);
-  });
-  // Set their coins to 100 if they haven't been set yet.
-  if (req.session.coins === null || req.session.coins === undefined) {
-    req.session.coins = 100;
-    req.session.save();
-  }
-  socket.on('sendCoins', (to: string, amount: number): void => {
-    console.log(`${email} is attempting to send ${amount} coins to ${to}`);
-    if (!(to in connectedClients)) {
-      console.log(`${to} not connected`);
-      return;
-    }
-
-    const receiverSocket = connectedClients[to];
-    const { session: senderSession } = socket.request;
-    const { session: receiverSession } = receiverSocket.request;
-
-    if (senderSession.coins < amount) {
-      console.log(
-        `${email} doesn't have enough coins. Has ${senderSession.coins} and is sending ${amount}`
-      );
-      return;
-    }
-
-    senderSession.coins -= amount;
-    receiverSession.coins += amount;
-    senderSession.save();
-    receiverSession.save();
-
-    const toSocket = connectedClients[to];
-    const newBalance = receiverSession.coins;
-    toSocket.emit('receiveCoins', email, amount, newBalance);
-    console.log('receiveCoins', email, amount, newBalance);
+    console.log(`received a chatMessage event from the client: ${username}`);
+    socketServer.emit('chatMessage', username, msg);
   });
 });
