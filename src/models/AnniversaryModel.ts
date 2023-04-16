@@ -31,8 +31,19 @@ async function getAnniversaryById(anniversaryId: string): Promise<Anniversary | 
     .getOne();
 }
 
+async function userHasAnniversary(userId: string, anniversaryId: string): Promise<boolean> {
+  const anniversaryExists = await anniversaryRepository
+    .createQueryBuilder('anniversary')
+    .leftJoinAndSelect('anniversary.user', 'user')
+    .where('user.userId = :userId', { userId })
+    .andWhere('anniversary.anniversaryId = :anniversaryId', { anniversaryId })
+    .getExists();
+
+  return anniversaryExists;
+}
+
 async function getAnniversaries(): Promise<Anniversary[]> {
   return await anniversaryRepository.find();
 }
 
-export { addAnniversary, getAnniversaryById, getAnniversaries };
+export { addAnniversary, getAnniversaryById, getAnniversaries, userHasAnniversary };

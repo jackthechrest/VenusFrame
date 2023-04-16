@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
-  saveAnswer,
-  getAllAnswers,
+  addAnswer,
+  getAnswerById,
   userHasAnswerForQuestion,
   answerBelongsToUser,
   deleteAnswerById,
@@ -13,18 +13,27 @@ import { getQuestionById } from '../models/QuestionModel';
 // async function displayPartnerResponse(req: Request, res: Response): Promise<void> {}
 
 async function getAnswers(req: Request, res: Response): Promise<void> {
-  res.json(await getAllAnswers());
+  const { answerId } = req.params as { answerId: string };
+
+  const answer = await getAnswerById(answerId);
+
+  if (!answer) {
+    res.sendStatus(404);
+    return;
+  }
+
+  res.status(200).json(answer);
 }
 
 async function addNewAnswer(req: Request, res: Response): Promise<void> {
+  const { questionId } = req.params as { questionId: string };
   const { authenticatedUser, isLoggedIn } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login');
     return;
   }
-
+  const { answerMood, answerText } = req.body as NewAnswerRequest;
   const user = await getUserById(authenticatedUser.userId);
-  const { questionId } = req.params as QuestionIdRequest;
   const question = await getQuestionById(questionId);
   if (!question || !user) {
     res.sendStatus(404);
@@ -36,9 +45,9 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
     res.sendStatus(409); // 409 Conflict
     return;
   }
-  const { answerMood, answerText } = req.body as NewAnswerRequest;
+
   try {
-    const answer = await saveAnswer(answerMood, answerText, user, question);
+    const answer = await addAnswer(answerMood, answerText, user, question);
     console.log(answer);
     answer.user = undefined;
 
@@ -48,6 +57,7 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
     const databaseErrorMessage = parseDatabaseError(err);
     res.status(500).json(databaseErrorMessage);
   }
+  res.redirect(`/questions/${questionId}`);
 }
 
 async function addAnswerForQuestion(req: Request, res: Response): Promise<void> {
@@ -72,4 +82,11 @@ async function deleteUserAnswer(req: Request, res: Response): Promise<void> {
   await deleteAnswerById(answerId);
   res.sendStatus(204); // 204 No Content
 }
-export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer };
+
+async function renderquestionPage(req: Request, res: Response): Promise<void> {
+  const { questionId } = req.params as QuestionIdParam;
+  const question = await getQuestionById(questionId);
+
+  res.render('dailyquestion', { question });
+}
+export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer, renderquestionPage };

@@ -1,6 +1,5 @@
 import { AppDataSource } from '../dataSource';
 import { Partner } from '../entities/Partner';
-import { userRepository } from './UserModel';
 
 const partnerRepository = AppDataSource.getRepository(Partner);
 
@@ -44,4 +43,4 @@ async function updateMarriageAnniversary(
     .execute();
 }
 
-export { getAllPartners, addPartner, getPartnerById, updateMarriageAnniversary, userRepository };
+export { getAllPartners, addPartner, getPartnerById, updateMarriageAnniversary };

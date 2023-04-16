@@ -1,4 +1,4 @@
-import { addWeeks } from 'date-fns';
+import addDays from 'date-fns/addDays';
 import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
 
@@ -91,15 +91,15 @@ async function deleteUserById(userId: string): Promise<void> {
     .execute();
 }
 
-async function getRemindersDueInOneWeek(): Promise<User[]> {
+async function getRemindersDueInOneDay(): Promise<User[]> {
   const today = new Date();
-  const oneWeekFromToday = addWeeks(today, 2);
+  const oneDayFromToday = addDays(today, 1);
 
   const users = await userRepository
     .createQueryBuilder('user')
     .leftJoinAndSelect('user.reminders', 'reminders')
     .select(['user.userId', 'user.email', 'user.username', 'reminders'])
-    .where('reminders.sendNotificationOn <= :oneWeekFromToday', { oneWeekFromToday })
+    .where('reminders.sendNotificationOn <= :oneDayFromToday', { oneDayFromToday })
     .andWhere('reminders.sendNotificationOn > :today', { today })
     .getMany();
 
@@ -117,6 +117,5 @@ export {
   updateEmailAddress,
   updatePlay,
   deleteUserById,
-  userRepository,
-  getRemindersDueInOneWeek,
+  getRemindersDueInOneDay,
 };

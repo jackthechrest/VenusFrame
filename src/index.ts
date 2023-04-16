@@ -13,6 +13,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import { Server } from 'socket.io';
 import connectSqlite3 from 'connect-sqlite3';
+import { scheduleJob } from 'node-schedule';
 import {
   getAllUserProfiles,
   registerUser,
@@ -22,6 +23,7 @@ import {
   deleteAccount,
   createReminder,
 } from './controllers/UserController.js';
+import { addNewQuestion } from './controllers/QuestionController';
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
 import {
@@ -29,6 +31,7 @@ import {
   getAllAnniversary,
   getAnniversary,
 } from './controllers/AnniversaryController';
+import { sendOneDayReminders } from './services/reminderService';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -59,6 +62,8 @@ app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
 
+// questions
+app.post('/api/questions', addNewQuestion);
 // rules of love
 app.post('/rulesoflove/play', playRulesOfLove);
 
@@ -123,3 +128,5 @@ socketServer.on('connection', (socket) => {
     socketServer.emit('chatMessage', username, msg);
   });
 });
+
+scheduleJob('0 0 8 * * *', sendOneDayReminders);

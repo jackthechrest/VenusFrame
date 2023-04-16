@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daily Questions</title>Venus Frame</title>
+</head>
+
+<body>
+
+<form method="POST" action="/api/questions">
+    <div>
+        <label for="questionMood">Question Mood:</label>
+        <input type="string" id="questionId" name="questionMood" required>
+    </div>
+
+    <div>
+        <label for="dailyQuestion[0]">Question Text:</label>
+        <input type="string" id="questionId" name="questionText" required>
+    </div>
+
+
+    <button>Submit</button>
+</form>
+</body>
+
+</html>

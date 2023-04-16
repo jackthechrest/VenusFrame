@@ -116,7 +116,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   user = await incrementProfileViews(user);
 
   // res.json(user);
-  res.render('ProfilePage', { user });
+  res.render('ProfilePage', { username: user.username });
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {

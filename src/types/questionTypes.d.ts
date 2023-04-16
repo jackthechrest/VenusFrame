@@ -3,6 +3,12 @@ type NewQuestionRequest = {
   questionText: string;
 };
 
-type QuestionIdRequest = {
+type QuestionIdParam = {
   questionId: string;
+};
+
+type DailyQuestion = {
+  answerId: string;
+  question: string;
+  answers: string[];
 };
