@@ -1,23 +1,22 @@
 import { AppDataSource } from '../dataSource';
 import { RulesOfLove } from '../entities/RulesOfLove';
-import { User } from '../entities/User';
-import { updatePlay } from './UserModel';
+import { addROL, getUserById } from './UserModel';
 
 // rules of love repository
 const rolRepository = AppDataSource.getRepository(RulesOfLove);
 
+async function getROLById(gameId: string): Promise<RulesOfLove | null> {
+  return rolRepository.findOne({ where: { gameId }, relations: ['players'] });
+}
+
 async function startROL(
   gameId: string,
-  player: User,
+  userId: string,
   play: RulesOfLoveOptions
 ): Promise<RulesOfLove> {
   let newROL = new RulesOfLove();
   newROL.gameId = gameId;
-
-  const { players } = newROL;
-  players.push(player);
-  newROL.players = players;
-  await updatePlay(player.userId, play);
+  await addROL(userId, play, newROL);
 
   newROL = await rolRepository.save(newROL);
 
@@ -25,21 +24,18 @@ async function startROL(
 }
 
 async function joinROL(
-  game: RulesOfLove,
-  player: User,
+  gameId: string,
+  userId: string,
   play: RulesOfLoveOptions
 ): Promise<RulesOfLove> {
-  const updatedGame = game;
-  updatedGame.players.push(player);
-  await updatePlay(player.userId, play);
+  const updatedROL = await getROLById(gameId);
+  await addROL(userId, play, updatedROL);
 
-  await rolRepository.save(updatedGame);
+  updatedROL.players.push(await getUserById(userId));
 
-  return updatedGame;
-}
+  await rolRepository.save(updatedROL);
 
-async function getROLById(gameId: string): Promise<RulesOfLove | null> {
-  return rolRepository.findOne({ where: { gameId } });
+  return updatedROL;
 }
 
 async function getAllROL(): Promise<RulesOfLove[]> {

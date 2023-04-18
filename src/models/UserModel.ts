@@ -74,13 +74,15 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
     .execute();
 }
 
-async function updatePlay(userId: string, newPlay: RulesOfLoveOptions): Promise<void> {
-  await userRepository
-    .createQueryBuilder()
-    .update(User)
-    .set({ currentPlay: newPlay })
-    .where({ userId })
-    .execute();
+async function addROL(
+  userId: string,
+  newPlay: RulesOfLoveOptions,
+  rol: RulesOfLove
+): Promise<void> {
+  let user = await userRepository.findOne({ where: { userId } });
+  user.currentPlay = newPlay;
+  user.rolInfo = rol;
+  user = await userRepository.save(user);
 }
 
 async function deleteUserById(userId: string): Promise<void> {
@@ -115,7 +117,7 @@ export {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
-  updatePlay,
+  addROL,
   deleteUserById,
   getRemindersDueInOneDay,
 };

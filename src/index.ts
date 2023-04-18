@@ -23,8 +23,8 @@ import {
   deleteAccount,
   createReminder,
 } from './controllers/UserController.js';
-import { addNewQuestion, getQuestion, renderQuestionPage } from './controllers/QuestionController';
-import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
+import { addNewQuestion } from './controllers/QuestionController';
+import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
 import {
   insertAnniversary,
@@ -67,8 +67,10 @@ app.get('/questions/:questionId/answerQuestion', renderQuestionPage);
 
 app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
+
 // rules of love
-app.post('/rulesoflove/play', playRulesOfLove);
+app.post('/rulesoflove/play', intermediateRulesOfLove);
+app.get('/rulesoflove/:gameId', playRulesOfLove);
 
 // copycat
 app.post('/copycat/play', playCopycat);
