@@ -24,7 +24,7 @@ import {
   createReminder,
 } from './controllers/UserController.js';
 import { addNewQuestion } from './controllers/QuestionController';
-import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
+import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
 import {
   insertAnniversary,
