@@ -64,8 +64,10 @@ app.post('/api/reminders', createReminder);
 
 // questions
 app.post('/api/questions', addNewQuestion);
+
 // rules of love
-app.post('/rulesoflove/play', playRulesOfLove);
+app.post('/rulesoflove/play', intermediateRulesOfLove);
+app.get('/rulesoflove/:gameId', playRulesOfLove);
 
 // copycat
 app.post('/copycat/play', playCopycat);
