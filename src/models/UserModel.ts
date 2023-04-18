@@ -1,6 +1,7 @@
 import addDays from 'date-fns/addDays';
 import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
+import { RulesOfLove } from '../entities/RulesOfLove';
 
 const userRepository = AppDataSource.getRepository(User);
 
