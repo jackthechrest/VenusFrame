@@ -7,6 +7,12 @@
   <title>Rules of Love | Venus Frame</title>
 </head>
 <body>
-
+  <% if (isDraw) { %>
+  <h1>DRAW!</h1>
+  <h2>Both players' win streaks stay the same</h2>
+  <% } else { %>
+  <h1><%= winner.username %> beat <%= loser.username %> with <%= winner.currentPlay %> </h1>
+  <h2>Their win streak is now <%= winner.currentWinStreak + 1 %></h2>
+  <% } %>
 </body>
 </html>
