@@ -5,13 +5,23 @@ import { RulesOfLove } from '../entities/RulesOfLove';
 
 const userRepository = AppDataSource.getRepository(User);
 
+function generateTypeCode(): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const length = 6;
+  for (let i = 0; i < length; i += 1) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 async function addUser(username: string, email: string, passwordHash: string): Promise<User> {
   // Create the new user object
   let newUser = new User();
   newUser.username = username;
   newUser.email = email;
   newUser.passwordHash = passwordHash;
-
+  newUser.typeCode = generateTypeCode();
   // Then save it to the database
   // NOTES: We reassign to `newUser` so we can access
   // NOTES: the fields the database autogenerates (the id & default columns)
@@ -121,4 +131,5 @@ export {
   addROL,
   deleteUserById,
   getRemindersDueInOneDay,
+  generateTypeCode,
 };

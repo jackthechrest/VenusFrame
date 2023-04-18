@@ -21,7 +21,6 @@ async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
 
 async function registerUser(req: Request, res: Response): Promise<void> {
   const { username, email, password } = req.body as NewUserRequest;
-
   // IMPORTANT: Hash the password
   const passwordHash = await argon2.hash(password);
 
@@ -116,7 +115,11 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   user = await incrementProfileViews(user);
 
   // res.json(user);
-  res.render('ProfilePage', { username: user.username, profileViews: user.profileViews });
+  res.render('ProfilePage', {
+    username: user.username,
+    profileViews: user.profileViews,
+    typeCode: user.typeCode,
+  });
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {

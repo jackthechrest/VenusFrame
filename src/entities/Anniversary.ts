@@ -10,16 +10,22 @@ export class Anniversary {
   datingAnniversary: number;
 
   @Column()
-  weddingAnniversary: number;
-
-  @Column()
   birthday: number;
 
-  @Column()
+  @Column({ nullable: true })
+  weddingAnniversary: number;
+
+  @Column({ nullable: true })
   specialday: string;
 
-  @Column()
+  @Column({ nullable: true })
   specialdate: number;
+
+  @Column({ default: false })
+  married: boolean;
+
+  @Column({ nullable: true })
+  marriageAnniversary: Date;
 
   @OneToOne(() => User, (user) => user.anniversary)
   @JoinColumn()

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Relation } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from 'typeorm';
 
 import { User } from './User';
 
@@ -14,13 +14,4 @@ export class Partner {
   @OneToOne(() => User, (user) => user.partnerTwo)
   @JoinColumn()
   userTwo: Relation<User>;
-
-  @Column({ default: false })
-  married: boolean;
-
-  @Column()
-  datingAnniversary: Date;
-
-  @Column({ nullable: true })
-  marriageAnniversary: Date;
 }

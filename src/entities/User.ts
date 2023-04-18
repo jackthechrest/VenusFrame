@@ -79,4 +79,7 @@ export class User {
   @OneToOne(() => Anniversary, (anniversary) => anniversary.user)
   @JoinColumn()
   anniversary: Relation<Anniversary>;
+
+  @Column({ nullable: true })
+  typeCode: string;
 }

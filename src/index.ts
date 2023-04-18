@@ -23,7 +23,7 @@ import {
   deleteAccount,
   createReminder,
 } from './controllers/UserController.js';
-import { addNewQuestion } from './controllers/QuestionController';
+import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
 import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
 import {
@@ -32,6 +32,7 @@ import {
   getAnniversary,
 } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
+// import { getPartnerId } from './controllers/PartnerController';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -64,9 +65,11 @@ app.post('/api/reminders', createReminder);
 
 // questions
 app.get('/questions/:questionId/answerQuestion', renderQuestionPage);
-
 app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
+
+// partners
+// app.get('/partners/:partnerId', getPartnerId);
 
 // rules of love
 app.post('/rulesoflove/play', intermediateRulesOfLove);
@@ -75,7 +78,8 @@ app.get('/rulesoflove/:gameId', playRulesOfLove);
 // copycat
 app.post('/copycat/play', playCopycat);
 
-app.get('/anniversaries/:anniversaryId/inserAnniversary', getAnniversary);
+// anniversary
+app.get('/anniversaries/:anniversaryId/insertAnniversary', getAnniversary);
 app.get('/anniversaries', getAllAnniversary);
 app.post('/api/anniversaries', insertAnniversary);
 
