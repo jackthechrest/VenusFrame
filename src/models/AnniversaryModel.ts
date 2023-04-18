@@ -5,10 +5,10 @@ const anniversaryRepository = AppDataSource.getRepository(Anniversary);
 
 async function addAnniversary(
   datingAnniversary: number,
-  weddingAnniversary: number,
+  weddingAnniversary: number | undefined,
   birthday: number,
-  specialday: string,
-  specialdate: number
+  specialday: string | undefined,
+  specialdate: number | undefined
 ): Promise<Anniversary> {
   // Create the anniversary
   let newAnniversary = new Anniversary();

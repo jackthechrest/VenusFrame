@@ -121,7 +121,6 @@ async function postDailyQuestion(question: string): Promise<DailyQuestion> {
   };
   return savedDailyQuestion;
 }
-
 async function postDailyQuestionAtScheduledTime(): Promise<void> {
   const questions = await getQuestions();
 

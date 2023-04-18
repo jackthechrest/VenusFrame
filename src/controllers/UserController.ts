@@ -98,7 +98,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
   };
   req.session.isLoggedIn = true;
   res.redirect('/preview');
-  // res.render('ProfilePage', { email: user.email });
+  // res.redirect(`/users/${user.userId}`);
 }
 
 async function getUserProfileData(req: Request, res: Response): Promise<void> {
@@ -108,7 +108,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   let user = await getUserById(targetUserId);
 
   if (!user) {
-    res.redirect('/chat'); // 404 Not Found
+    res.redirect('/preview'); // 404 Not Found
     return;
   }
 
@@ -116,7 +116,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   user = await incrementProfileViews(user);
 
   // res.json(user);
-  res.render('ProfilePage', { username: user.username });
+  res.render('ProfilePage', { username: user.username, profileViews: user.profileViews });
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {

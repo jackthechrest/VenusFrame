@@ -17,12 +17,13 @@ async function getQuestion(req: Request, res: Response): Promise<void> {
 }
 
 async function addNewQuestion(req: Request, res: Response): Promise<void> {
+  // const { questionId } = req.params as { questionId: string };
   const { isLoggedIn } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login'); // 401 Unauthorized
     return;
   }
-  const { questionMood, questionText } = req.body as NewQuestionRequest;
+  const { questionMood, questionText } = req.body as { questionMood: string; questionText: string };
 
   try {
     // Attempt to add the book
@@ -39,4 +40,11 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
   res.render(`dailyquestion`, { questionMood, questionText });
 }
 
-export { getQuestion, addNewQuestion };
+async function renderQuestionPage(req: Request, res: Response): Promise<void> {
+  const { questionId } = req.params as QuestionIdParam;
+  const question = await getQuestionById(questionId);
+
+  res.render('QuestionPage', { question });
+}
+
+export { getQuestion, addNewQuestion, renderQuestionPage };

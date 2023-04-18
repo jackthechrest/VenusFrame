@@ -18,7 +18,7 @@ async function insertAnniversary(req: Request, res: Response): Promise<void> {
     specialdate
   );
 
-  res.redirect(`/anniversary/${anniversaryInfo.anniversaryId}`);
+  res.render('anniversaryPage', { anniversaryInfo });
 }
 
 async function getAnniversary(req: Request, res: Response): Promise<void> {

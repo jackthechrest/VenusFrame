@@ -1,7 +1,7 @@
 type NewAnniversaryRequest = {
   datingAnniversary: number;
-  weddingAnniversary: number;
+  weddingAnniversary: number | undefined;
   birthday: number;
-  specialday: string;
-  specialdate: number;
+  specialday: string | undefined;
+  specialdate: number | undefined;
 };

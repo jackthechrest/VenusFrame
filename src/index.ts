@@ -23,7 +23,7 @@ import {
   deleteAccount,
   createReminder,
 } from './controllers/UserController.js';
-import { addNewQuestion } from './controllers/QuestionController';
+import { addNewQuestion, getQuestion, renderQuestionPage } from './controllers/QuestionController';
 import { playRulesOfLove } from './controllers/RulesOfLoveController.js';
 import { playCopycat } from './controllers/CopycatController';
 import {
@@ -63,6 +63,9 @@ app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
 
 // questions
+app.get('/questions/:questionId/answerQuestion', renderQuestionPage);
+
+app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
 // rules of love
 app.post('/rulesoflove/play', playRulesOfLove);
@@ -70,9 +73,9 @@ app.post('/rulesoflove/play', playRulesOfLove);
 // copycat
 app.post('/copycat/play', playCopycat);
 
-app.get('/anniversaries/:anniversaryId', getAnniversary);
+app.get('/anniversaries/:anniversaryId/inserAnniversary', getAnniversary);
 app.get('/anniversaries', getAllAnniversary);
-app.post('/api/anniversaires', insertAnniversary);
+app.post('/api/anniversaries', insertAnniversary);
 
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

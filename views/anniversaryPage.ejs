@@ -9,29 +9,16 @@
 </head>
 
 <body>
-    <h1><%= book.title %></h1>
 
-    <h2>Reviews</h2>
-    <div><a href="/anniversary/<%= anniversary.anniversaryId %>/insertAnniversary">Write a review for this book</a></div>
-    <% if (book.reviews.length === 0) { %>
-    <p>There are no reviews yet.</p>
+  <h1>Anniversary !!!</h1>
+  <h3>Your Dating Anniversary is <%= anniversaryInfo.datingAnniversary%></h3>
+  <h3>Your Birthday is <%= anniversaryInfo.birthday%></h3>
+  <% if (anniversaryInfo.weddingAnniversary !== undefined) { %>
+    <h3>Your Wedding Anniversary is <%= anniversaryInfo.weddingAnniversary%> </h3>
     <% } else { %>
-    <ul>
-        <% for( const review of book.reviews ) { %>
-        <li>
-            <p><a href="/users/<%= review.user.userId %>"><%= review.user.email %></a></p>
-            <p><%= review.rating %>/5</p>
-            <p><%= review.reviewText %></p>
-        </li>
-        <% } %>
-    </ul>
+    <h3>You did not put your Wedding Anniversary. Do you want to enter?</h3>
     <% } %>
 
-    <!--
-        The line below is an example of how you can render raw json data on the page.
-        Don't do it in production but it can be useful for debugging.
-    -->
-    <!-- <pre><%= JSON.stringify(book, null, 4) %></pre> -->
 </body>
 
 </html>
