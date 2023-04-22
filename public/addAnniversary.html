@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" href="/css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,34 +10,34 @@
 </head>
 
 <body>
-  <h1>🎉Let's celebrate!🎉 </h1>
-  <h2>Tell us your anniversary dates so we can send the notification on each days to your special days!💌</h2>
+  <h1 class = "big-title">🎉Let's celebrate!🎉 </h1>
+  <h2 class="big-text">Tell us your anniversary dates so we can send the notification on each days to your special days!💌</h2>
 </body>
 <form method="POST" action="/api/anniversaries">
     <div>
-        <label for="datingAnniversary">Dating Anniversary:</label>
+        <labelclass"aniversary-title" for="datingAnniversary">Dating Anniversary:</label>
         <input type="date" id="datingAnniversary" name="datingAnniversary" required>
     </div>
 
   <div>
-    <label for="birthday">Birthday:</label>
+    <labelaniversary-title for="birthday">Birthday:</label>
     <input type="date" id="birthday" name="birthday" required>
 </div>
 <div>
-  <label for="weddingAnniversary">Wedding Anniversary (optional):</label>
+  <labelaniversary-title for="weddingAnniversary">Wedding Anniversary (optional):</label>
   <input type="date" id="weddingAnniversary" name="weddingAnniversary">
 </div>
 <div>
-  <label for="specialday">Special Day (optional):</label>
+  <labelaniversary-title  for="specialday">Special Day (optional):</label>
   <input type="text" id="specialday" name="specialday">
 </div>
 
 <div>
-  <label for="specialdate">Special Date (optional):</label>
+  <labelaniversary-title for="specialdate">Special Date (optional):</label>
   <input type="date" id="specialdate" name="specialdate">
 </div>
 
-    <button>Upload</button>
+    <button type="submit" class="btn">Upload</button>
 </form>
 
 </html>

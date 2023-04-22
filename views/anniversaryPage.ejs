@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" href="/css/style.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,13 +11,13 @@
 
 <body>
 
-  <h1>Anniversary !!!</h1>
-  <h3>Your Dating Anniversary is <%= anniversaryInfo.datingAnniversary%></h3>
-  <h3>Your Birthday is <%= anniversaryInfo.birthday%></h3>
+  <h1 class="big-title">Anniversary !!!</h1>
+  <h3 class="big-text">Your Dating Anniversary is <%= anniversaryInfo.datingAnniversary%></h3>
+  <h3 class="big-text">Your Birthday is <%= anniversaryInfo.birthday%></h3>
   <% if (anniversaryInfo.weddingAnniversary !== undefined) { %>
-    <h3>Your Wedding Anniversary is <%= anniversaryInfo.weddingAnniversary%> </h3>
+    <h3 class="big-text">Your Wedding Anniversary is <%= anniversaryInfo.weddingAnniversary%> </h3>
     <% } else { %>
-    <h3>You did not put your Wedding Anniversary. Do you want to enter?</h3>
+    <h3 class="big-text">You did not put your Wedding Anniversary. Do you want to enter?</h3>
     <% } %>
 
 </body>

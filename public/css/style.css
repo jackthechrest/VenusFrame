@@ -7,6 +7,30 @@
   --color-text-darker: #201b58;
 }
 
+.big-text {
+  text-align: center;
+  font-family: 'times new roman', sans-serif;
+  font-size: 2rem;
+  padding: 0.5rem 0.5rem;
+  font-weight: bold;
+}
+
+.aniversary-title {
+  color : black;
+  font-family: 'times new roman', sans-serif;
+  font-size: 2rem;
+  padding: 0.5rem 0.5rem;
+  font-weight: bold;
+}
+
+.big-title {
+  text-align: center;
+  margin-top: 100px;
+  font-family: 'times new roman', sans-serif;
+  font-size: 3em;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+}
 .btn {
   background-color: var(--cell-background);
   color: var(--color-text-darker);
@@ -123,9 +147,9 @@ body {
 input {
   border: none;
   background: none;
-  box-shadow: 0px 2px 0px 0px white;
+  box-shadow: 0px 2px 0px 0px rgb(251, 251, 251);
   width: 100%;
-  color: white;
+  color: rgb(47, 61, 124);
   font-size: 1.25em;
   outline: none;
 }

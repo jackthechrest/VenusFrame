@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "node --experimental-loader=extensionless --es-module-specifier-resolution=node --no-warning ./dist/index.js",
+    "start": "node --experimental-loader=extensionless --es-module-specifier-resolution=node --no-warnings ./dist/index.js",
     "compile": "npm run clean && npx tsc --watch",
     "clean": "rimraf ./dist/",
     "start-dev": "node --experimental-loader=extensionless --es-module-specifier-resolution=node --no-warnings --watch ./dist/index.js",

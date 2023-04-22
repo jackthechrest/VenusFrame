@@ -69,7 +69,7 @@ app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
 
 // partners
-// app.get('/partners/:partnerId', getPartnerId);
+app.get('/users/:partnerId', getUserProfileData);
 
 // rules of love
 app.post('/rulesoflove/play', intermediateRulesOfLove);
