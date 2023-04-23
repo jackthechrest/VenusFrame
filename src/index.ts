@@ -25,7 +25,6 @@ import {
 } from './controllers/UserController.js';
 import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
 import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
-import { playCopycat } from './controllers/CopycatController';
 import {
   insertAnniversary,
   getAllAnniversary,
@@ -74,9 +73,6 @@ app.get('/users/:partnerId', getUserProfileData);
 // rules of love
 app.post('/rulesoflove/play', intermediateRulesOfLove);
 app.get('/rulesoflove/:gameId', playRulesOfLove);
-
-// copycat
-app.post('/copycat/play', playCopycat);
 
 // anniversary
 app.get('/anniversaries/:anniversaryId/insertAnniversary', getAnniversary);

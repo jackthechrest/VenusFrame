@@ -48,10 +48,6 @@ export class User {
   @OneToMany(() => Answer, (answer) => answer.user)
   answers: Relation<Answer>[];
 
-  // OurPet
-  @Column({ default: 0 })
-  bestTime: number;
-
   // Rules Of Love
   @ManyToOne(() => RulesOfLove, (rol) => rol.players)
   rolInfo: Relation<RulesOfLove>;
@@ -64,14 +60,6 @@ export class User {
 
   @Column({ default: 0 })
   highestWinStreak: number;
-
-  // Copycat
-  // make sure to check for when both players are 'creator' role at beginning of game
-  @Column({ default: 'creator' })
-  currentCopycatRole: CopycatRoles;
-
-  @Column({ default: 0 })
-  highestRoundReachedCopycat: number;
 
   @OneToMany(() => Reminder, (reminder) => reminder.user)
   reminders: Reminder[];
