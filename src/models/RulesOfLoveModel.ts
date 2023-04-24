@@ -46,9 +46,12 @@ async function endROLById(gameId: string): Promise<void> {
   await rolRepository
     .createQueryBuilder('rol')
     .delete()
-    .from(RulesOfLove)
     .where('gameId = :gameId', { gameId })
     .execute();
 }
 
-export { startROL, joinROL, getROLById, getAllROL, endROLById };
+async function clearAllROL(): Promise<void> {
+  await rolRepository.createQueryBuilder('rol').delete().execute();
+}
+
+export { startROL, joinROL, getROLById, getAllROL, endROLById, clearAllROL };

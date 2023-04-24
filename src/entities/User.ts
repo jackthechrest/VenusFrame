@@ -49,7 +49,7 @@ export class User {
   answers: Relation<Answer>[];
 
   // Rules Of Love
-  @ManyToOne(() => RulesOfLove, (rol) => rol.players)
+  @ManyToOne(() => RulesOfLove, (rol) => rol.players, { cascade: ['insert', 'update'] })
   rolInfo: Relation<RulesOfLove>;
 
   @Column({ default: 'NONE' })

@@ -34,9 +34,3 @@ type RulesOfLoveBody = {
   gameId: string;
   newPlay: RulesOfLoveOptions;
 };
-
-// color options for Copycat (in order): white (blank), red, yellow, blue, orange, purple, green
-type ColorOptions = 'w' | 'r' | 'y' | 'b' | 'o' | 'p' | 'g';
-
-// roles in Copycat
-type CopycatRoles = 'creator' | 'recreator';

@@ -6,6 +6,6 @@ export class RulesOfLove {
   @PrimaryColumn()
   gameId: string;
 
-  @OneToMany(() => User, (user) => user.rolInfo)
+  @OneToMany(() => User, (user) => user.rolInfo, { cascade: ['insert', 'update'] })
   players: Relation<User>[];
 }
