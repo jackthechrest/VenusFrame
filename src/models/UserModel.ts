@@ -90,10 +90,12 @@ async function addROL(
   newPlay: RulesOfLoveOptions,
   rol: RulesOfLove
 ): Promise<void> {
-  let user = await userRepository.findOne({ where: { userId } });
-  user.currentPlay = newPlay;
-  user.rolInfo = rol;
-  user = await userRepository.save(user);
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ currentPlay: newPlay, rolInfo: rol })
+    .where({ userId })
+    .execute();
 }
 
 async function deleteUserById(userId: string): Promise<void> {
@@ -102,6 +104,10 @@ async function deleteUserById(userId: string): Promise<void> {
     .delete()
     .where('userId = :userId', { userId })
     .execute();
+}
+
+async function deleteAllUsers(): Promise<void> {
+  await userRepository.createQueryBuilder('user').delete().execute();
 }
 
 async function getRemindersDueInOneDay(): Promise<User[]> {
@@ -130,6 +136,7 @@ export {
   updateEmailAddress,
   addROL,
   deleteUserById,
+  deleteAllUsers,
   getRemindersDueInOneDay,
   generateTypeCode,
 };

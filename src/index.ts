@@ -22,11 +22,13 @@ import {
   updateUserEmail,
   deleteAccount,
   createReminder,
-  renderPreviewPage,
-  renderConnectPage,
 } from './controllers/UserController.js';
 import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
-import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
+import {
+  deleteAllROL,
+  intermediateRulesOfLove,
+  playRulesOfLove,
+} from './controllers/RulesOfLoveController.js';
 import {
   insertAnniversary,
   getAllAnniversary,
@@ -66,6 +68,10 @@ app.get('/users/:targerUserId/FindPartnerId', renderConnectPage);
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
+
+// DEBUG
+app.get('/api/users/DELETEALL', deleteAllAccounts);
+app.get('/api/rulesoflove/DELETEALL', deleteAllROL);
 
 // questions
 app.get('/questions/:questionId/answerQuestion', renderQuestionPage);

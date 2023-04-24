@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../entities/User';
-import { startROL, getROLById, joinROL } from '../models/RulesOfLoveModel';
+import { startROL, getROLById, joinROL, clearAllROL } from '../models/RulesOfLoveModel';
 import { getUserById } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
@@ -13,15 +13,14 @@ async function intermediateRulesOfLove(req: Request, res: Response): Promise<voi
 
   if (!isLoggedIn) {
     res.redirect('/login');
-    return;
   }
 
   const user = await getUserById(authenticatedUser.userId);
   if (!user) {
     // res.sendStatus(404); // 404 not found
     res.redirect('/index');
-    return;
   }
+
   // try to join game with the id
   let game = await getROLById(gameId);
 
@@ -80,4 +79,9 @@ async function playRulesOfLove(req: Request, res: Response): Promise<void> {
   res.render('rolResults', { isDraw, winner, loser });
 }
 
-export { intermediateRulesOfLove, playRulesOfLove };
+async function deleteAllROL(req: Request, res: Response): Promise<void> {
+  await clearAllROL();
+  res.redirect('/index');
+}
+
+export { intermediateRulesOfLove, playRulesOfLove, deleteAllROL };

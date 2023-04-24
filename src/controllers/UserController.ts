@@ -10,6 +10,7 @@ import {
   resetAllProfileViews,
   updateEmailAddress,
   deleteUserById,
+  deleteAllUsers,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
@@ -193,6 +194,11 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
   res.redirect('/index');
 }
 
+async function deleteAllAccounts(req: Request, res: Response): Promise<void> {
+  await deleteAllUsers();
+  res.redirect('/index');
+}
+
 async function createReminder(req: Request, res: Response): Promise<void> {
   if (!req.session.isLoggedIn) {
     res.sendStatus(401); // 401 Unauthorized
@@ -229,6 +235,7 @@ export {
   resetProfileViews,
   updateUserEmail,
   deleteAccount,
+  deleteAllAccounts,
   createReminder,
   renderPreviewPage,
   renderConnectPage,
