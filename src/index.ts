@@ -22,6 +22,9 @@ import {
   updateUserEmail,
   deleteAccount,
   createReminder,
+  renderConnectPage,
+  renderPreviewPage,
+  deleteAllAccounts,
 } from './controllers/UserController.js';
 import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
 import {
