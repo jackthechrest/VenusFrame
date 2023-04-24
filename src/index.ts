@@ -25,8 +25,9 @@ import {
   renderConnectPage,
   renderPreviewPage,
   deleteAllAccounts,
+  renderQuestionPage,
 } from './controllers/UserController.js';
-import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
+import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import {
   deleteAllROL,
   intermediateRulesOfLove,
@@ -77,7 +78,7 @@ app.get('/api/users/DELETEALL', deleteAllAccounts);
 app.get('/api/rulesoflove/DELETEALL', deleteAllROL);
 
 // questions
-app.get('/questions/:questionId/answerQuestion', renderQuestionPage);
+app.get('/users/:targerUserId/QuestionPage', renderQuestionPage);
 app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
 

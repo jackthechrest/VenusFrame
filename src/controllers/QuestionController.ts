@@ -40,11 +40,4 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
   res.render(`dailyquestion`, { questionMood, questionText });
 }
 
-async function renderQuestionPage(req: Request, res: Response): Promise<void> {
-  const { questionId } = req.params as QuestionIdParam;
-  const question = await getQuestionById(questionId);
-
-  res.render('QuestionPage', { question });
-}
-
-export { getQuestion, addNewQuestion, renderQuestionPage };
+export { getQuestion, addNewQuestion };

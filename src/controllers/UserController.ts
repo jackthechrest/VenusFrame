@@ -227,6 +227,13 @@ async function renderConnectPage(req: Request, res: Response): Promise<void> {
 
   res.render('FindPartnerId', { user });
 }
+
+async function renderQuestionPage(req: Request, res: Response): Promise<void> {
+  const { targetUserId } = req.params as UserIdParam;
+  const user = await getUserById(targetUserId);
+
+  res.render('QuestionPage', { user });
+}
 export {
   registerUser,
   logIn,
@@ -239,4 +246,5 @@ export {
   createReminder,
   renderPreviewPage,
   renderConnectPage,
+  renderQuestionPage,
 };
