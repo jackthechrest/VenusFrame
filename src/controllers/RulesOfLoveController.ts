@@ -7,10 +7,10 @@ import { parseDatabaseError } from '../utils/db-utils';
 async function intermediateRulesOfLove(req: Request, res: Response): Promise<void> {
   const { gameId, newPlay } = req.body as RulesOfLoveBody;
   console.log(`GameId: ${gameId}\nnewPlay: ${newPlay}`);
-  console.log('bababooey');
+
   // NOTES: Access the data from `req.session`
   const { isLoggedIn, authenticatedUser } = req.session;
-  console.log('bababooey');
+
   if (!isLoggedIn) {
     res.redirect('/login');
   }
