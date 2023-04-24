@@ -96,7 +96,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
     username: user.username,
   };
   req.session.isLoggedIn = true;
-  res.redirect('/preview');
+  res.render('PreviewPage', { user });
   // res.redirect(`/users/${user.userId}`);
 }
 
@@ -107,13 +107,13 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   let user = await getUserById(targetUserId);
 
   if (!user) {
-    res.redirect('/preview'); // 404 Not Found
+    res.render(' PreviewPage', { user }); // 404 Not Found
     return;
   }
 
   // Now update their profile views
   user = await incrementProfileViews(user);
-
+  console.log(user);
   res.render('ProfilePage', {
     username: user.username,
     profileViews: user.profileViews,
@@ -207,6 +207,20 @@ async function createReminder(req: Request, res: Response): Promise<void> {
 
   res.sendStatus(201);
 }
+
+async function renderPreviewPage(req: Request, res: Response): Promise<void> {
+  const { targetUserId } = req.params as UserIdParam;
+  const user = await getUserById(targetUserId);
+
+  res.render('PreviewPage', { user });
+}
+
+async function renderConnectPage(req: Request, res: Response): Promise<void> {
+  const { targetUserId } = req.params as UserIdParam;
+  const user = await getUserById(targetUserId);
+
+  res.render('FindPartnerId', { user });
+}
 export {
   registerUser,
   logIn,
@@ -216,4 +230,6 @@ export {
   updateUserEmail,
   deleteAccount,
   createReminder,
+  renderPreviewPage,
+  renderConnectPage,
 };

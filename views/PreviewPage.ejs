@@ -21,12 +21,12 @@
     <h1>PREVIEW : </h1>
 
     <ul>
-      <li><a href = "/users/:targerUserId" class = "btn btn-large">
+      <li><a href = "/users/<%= user.userId %>/ProfilePage" class = "btn btn-large">
         View Profile 👓
       </a></li>
 
-      <li><a href = "/users/:partnerId" class = "btn btn-large">
-        Find my partner 🔍
+      <li><a href = "/users/<%= user.userId %>/FindPartnerId" class = "btn btn-large">
+        Connect with my partner 🔍
       </a></li>
 
       <li><a href = "/chat" class = "btn btn-large">
@@ -37,7 +37,7 @@
         Add Anniversary 🎉
       </a></li>
 
-      <li><a href = "/questions/<%= question.questionId %>/answerQuestion" class = "btn btn-large">
+      <li><a href = "/questions/<%= user.questionId %>/answerQuestion" class = "btn btn-large">
         Daily Question 💌
       </a></li>
 

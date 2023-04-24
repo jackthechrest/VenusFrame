@@ -22,6 +22,8 @@ import {
   updateUserEmail,
   deleteAccount,
   createReminder,
+  renderPreviewPage,
+  renderConnectPage,
 } from './controllers/UserController.js';
 import { addNewQuestion, renderQuestionPage, getQuestion } from './controllers/QuestionController';
 import { intermediateRulesOfLove, playRulesOfLove } from './controllers/RulesOfLoveController.js';
@@ -56,8 +58,11 @@ app.use(express.urlencoded({ extended: false }));
 // endpoints
 app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
+
 app.post('/api/login', logIn);
-app.get('/users/:targerUserId', getUserProfileData);
+app.get('/users/:targerUserId/PreviewPage', renderPreviewPage);
+app.get('/users/:targetUserId/ProfilePage', getUserProfileData);
+app.get('/users/:targerUserId/FindPartnerId', renderConnectPage);
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
