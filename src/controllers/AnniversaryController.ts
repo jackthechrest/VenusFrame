@@ -17,27 +17,27 @@ async function insertAnniversary(req: Request, res: Response): Promise<void> {
     specialday,
     specialdate
   );
-
+  console.log(anniversaryInfo);
   res.render('anniversaryPage', { anniversaryInfo });
 }
 
-async function getAnniversary(req: Request, res: Response): Promise<void> {
-  const { anniversaryId } = req.params as { anniversaryId: string };
+async function getAnniversaryProfileData(req: Request, res: Response): Promise<void> {
+  const { targetAnniversaryId } = req.params as AnniversaryIdParam;
 
-  const anniversaryInfo = await getAnniversaryById(anniversaryId);
+  const anniversaryInfo = await getAnniversaryById(targetAnniversaryId);
 
   if (!anniversaryInfo) {
-    res.sendStatus(404);
+    res.redirect('/login');
     return;
   }
-
+  console.log(anniversaryInfo);
   res.render('anniversaryPage', { anniversaryInfo });
 }
 
-async function getAllAnniversary(req: Request, res: Response): Promise<void> {
+async function getAllAnniversaries(req: Request, res: Response): Promise<void> {
   const anniversaries = await getAnniversaries();
 
   res.render('anniversaryPage', { anniversaries });
 }
 
-export { insertAnniversary, getAnniversary, getAllAnniversary };
+export { insertAnniversary, getAnniversaryProfileData, getAllAnniversaries };

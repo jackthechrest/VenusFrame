@@ -3,6 +3,10 @@ import { Anniversary } from '../entities/Anniversary';
 
 const anniversaryRepository = AppDataSource.getRepository(Anniversary);
 
+async function getAnniversaries(): Promise<Anniversary[]> {
+  return await anniversaryRepository.find();
+}
+
 async function addAnniversary(
   datingAnniversary: number,
   weddingAnniversary: number | undefined,
@@ -22,13 +26,14 @@ async function addAnniversary(
   return newAnniversary;
 }
 
-async function getAnniversaryById(anniversaryId: string): Promise<Anniversary | null> {
-  return await anniversaryRepository
+async function getAnniversaryByUserId(userId: string): Promise<Anniversary> {
+  const anniversaries = await anniversaryRepository
     .createQueryBuilder('anniversary')
     .leftJoinAndSelect('anniversary.user', 'user')
     .select(['anniversary', 'user.userId', 'user.email'])
-    .where('anniversaryId = :anniversaryId', { anniversaryId })
+    .where('user.userId = :userId', { userId })
     .getOne();
+  return anniversaries;
 }
 
 async function userHasAnniversary(userId: string, anniversaryId: string): Promise<boolean> {
@@ -42,8 +47,25 @@ async function userHasAnniversary(userId: string, anniversaryId: string): Promis
   return anniversaryExists;
 }
 
-async function getAnniversaries(): Promise<Anniversary[]> {
-  return await anniversaryRepository.find();
+async function getAnniversaryById(anniversaryId: string): Promise<Anniversary | null> {
+  return await anniversaryRepository
+    .createQueryBuilder('anniversary')
+    .where({ where: { anniversaryId } })
+    .leftJoin('anniversary.user', 'user')
+    .select([
+      'anniversary.anniversaryId',
+      'anniversary.datingAnniversary',
+      'anniversary.birthday',
+      'anniversary.weddingAnniversary',
+      'anniversary.specialday',
+      'anniversary.specialdate',
+    ])
+    .getOne();
 }
-
-export { addAnniversary, getAnniversaryById, getAnniversaries, userHasAnniversary };
+export {
+  addAnniversary,
+  getAnniversaryByUserId,
+  userHasAnniversary,
+  getAnniversaryById,
+  getAnniversaries,
+};

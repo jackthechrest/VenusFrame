@@ -8,7 +8,6 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { Partner } from './Partner';
 import { Answer } from './Answer';
 import { RulesOfLove } from './RulesOfLove';
 import { Reminder } from './Reminder';
@@ -34,19 +33,22 @@ export class User {
   @Column({ default: 0 })
   profileViews: number;
 
-  @Column({ default: true })
-  isSingle: boolean;
+  @Column({ unique: true, nullable: true })
+  typeCode: string;
 
-  @OneToOne(() => Partner, (partner) => partner.userOne)
+  @OneToOne(() => User, (user) => user.partner)
   @JoinColumn()
-  partnerOne: Relation<Partner>;
-
-  @OneToOne(() => Partner, (partner) => partner.userTwo)
-  @JoinColumn()
-  partnerTwo: Relation<Partner>;
+  partner: Relation<User>;
 
   @OneToMany(() => Answer, (answer) => answer.user)
   answers: Relation<Answer>[];
+
+  @OneToMany(() => Reminder, (reminder) => reminder.user)
+  reminders: Reminder[];
+
+  @OneToOne(() => Anniversary, (anniversary) => anniversary.user)
+  @JoinColumn()
+  anniversary: Relation<Anniversary>;
 
   // Rules Of Love
   @ManyToOne(() => RulesOfLove, (rol) => rol.players, { cascade: ['insert', 'update'] })
@@ -63,15 +65,4 @@ export class User {
 
   @Column({ default: false })
   inGame: boolean;
-  // End of ROL
-
-  @OneToMany(() => Reminder, (reminder) => reminder.user)
-  reminders: Reminder[];
-
-  @OneToOne(() => Anniversary, (anniversary) => anniversary.user)
-  @JoinColumn()
-  anniversary: Relation<Anniversary>;
-
-  @Column({ nullable: true })
-  typeCode: string;
 }

@@ -21,12 +21,6 @@ export class Anniversary {
   @Column({ nullable: true })
   specialdate: number;
 
-  @Column({ default: false })
-  married: boolean;
-
-  @Column({ nullable: true })
-  marriageAnniversary: Date;
-
   @OneToOne(() => User, (user) => user.anniversary)
   @JoinColumn()
   user: Relation<User>;

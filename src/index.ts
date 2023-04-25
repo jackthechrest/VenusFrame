@@ -26,6 +26,9 @@ import {
   renderPreviewPage,
   deleteAllAccounts,
   renderQuestionPage,
+  renderaddAnniversaryPage,
+  handleFindPartner,
+  renderFoundPartnerPage,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import {
@@ -35,11 +38,10 @@ import {
 } from './controllers/RulesOfLoveController.js';
 import {
   insertAnniversary,
-  getAllAnniversary,
-  getAnniversary,
+  getAnniversaryProfileData,
+  getAllAnniversaries,
 } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
-// import { getPartnerId } from './controllers/PartnerController';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -67,8 +69,8 @@ app.post('/api/users', registerUser);
 
 app.post('/api/login', logIn);
 app.get('/users/:targerUserId/PreviewPage', renderPreviewPage);
-app.get('/users/:targetUserId/ProfilePage', getUserProfileData);
-app.get('/users/:targerUserId/FindPartnerId', renderConnectPage);
+app.get('/users/:targetUserId', getUserProfileData);
+
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
@@ -78,22 +80,25 @@ app.get('/api/users/DELETEALL', deleteAllAccounts);
 app.get('/api/rulesoflove/DELETEALL', deleteAllROL);
 
 // questions
-app.get('/users/:targerUserId/QuestionPage', renderQuestionPage);
+app.get('/users/:targertUserId/QuestionPage', renderQuestionPage);
 app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
 
 // partners
-app.get('/users/:partnerId', getUserProfileData);
+app.get('/users/:targetUserId/FindPartnerId', renderConnectPage);
+app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
+app.get('/users/:userId/partner', handleFindPartner);
+app.post('/api/partner', handleFindPartner);
 
 // rules of love
 app.post('/rulesoflove/play', intermediateRulesOfLove);
 app.get('/rulesoflove/:gameId', playRulesOfLove);
 
 // anniversary
-app.get('/anniversaries/:anniversaryId/insertAnniversary', getAnniversary);
-app.get('/anniversaries', getAllAnniversary);
+app.get('/anniversaries/:targetUserId', renderaddAnniversaryPage);
 app.post('/api/anniversaries', insertAnniversary);
-
+app.get('/anniversaries/:targetAnniversaryId', getAnniversaryProfileData);
+app.get('/anniversaries', getAllAnniversaries);
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
 });

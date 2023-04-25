@@ -11,6 +11,7 @@ import {
   updateEmailAddress,
   deleteUserById,
   deleteAllUsers,
+  addPartnerToUserByTypeCode,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
@@ -30,7 +31,11 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     const newUser = await addUser(username, email, passwordHash);
     console.log(newUser);
 
-    await sendEmail(email, 'Welcome!', `Thank you for joining my application!`);
+    await sendEmail(
+      email,
+      'Welcome!',
+      `You have successfully created your account in Venus Frame!`
+    );
     res.redirect('/login');
   } catch (err) {
     console.error(err);
@@ -108,7 +113,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   let user = await getUserById(targetUserId);
 
   if (!user) {
-    res.render(' PreviewPage', { user }); // 404 Not Found
+    res.redirect('/login'); // 404 Not Found
     return;
   }
 
@@ -221,6 +226,13 @@ async function renderPreviewPage(req: Request, res: Response): Promise<void> {
   res.render('PreviewPage', { user });
 }
 
+async function renderaddAnniversaryPage(req: Request, res: Response): Promise<void> {
+  const { targetUserId } = req.params as UserIdParam;
+  const user = await getUserById(targetUserId);
+
+  res.render('addAnniversaryPage', { user });
+}
+
 async function renderConnectPage(req: Request, res: Response): Promise<void> {
   const { targetUserId } = req.params as UserIdParam;
   const user = await getUserById(targetUserId);
@@ -234,6 +246,26 @@ async function renderQuestionPage(req: Request, res: Response): Promise<void> {
 
   res.render('QuestionPage', { user });
 }
+
+async function handleFindPartner(req: Request, res: Response): Promise<void> {
+  const { userId, partnerTypeCode } = req.body;
+
+  const user = await addPartnerToUserByTypeCode(userId, partnerTypeCode);
+
+  if (!user) {
+    res.redirect('/login');
+  }
+
+  res.render('FoundPartner', { user });
+}
+
+async function renderFoundPartnerPage(req: Request, res: Response): Promise<void> {
+  const { targetUserId } = req.params as UserIdParam;
+  const user = await getUserById(targetUserId);
+
+  res.render('FoundPartner', { user });
+}
+
 export {
   registerUser,
   logIn,
@@ -247,4 +279,7 @@ export {
   renderPreviewPage,
   renderConnectPage,
   renderQuestionPage,
+  renderaddAnniversaryPage,
+  handleFindPartner,
+  renderFoundPartnerPage,
 };

@@ -17,6 +17,15 @@ function generateTypeCode(): string {
 
 async function addUser(username: string, email: string, passwordHash: string): Promise<User> {
   // Create the new user object
+  let typeCode;
+  const isTypeCodeUnique = false;
+  while (!isTypeCodeUnique) {
+    typeCode = generateTypeCode();
+    const existingUser = await userRepository.findOne({ where: { typeCode } });
+    if (!existingUser) {
+      break;
+    }
+  }
   let newUser = new User();
   newUser.username = username;
   newUser.email = email;
@@ -125,6 +134,32 @@ async function getRemindersDueInOneDay(): Promise<User[]> {
   return users;
 }
 
+async function addPartnerToUserByTypeCode(
+  userId: string,
+  partnerTypeCode: string
+): Promise<User | null> {
+  // Find the user by their ID
+  const user = await getUserById(userId);
+
+  if (!user) {
+    return null;
+  }
+
+  // Find the partner by their typeCode
+  const partner = await userRepository.findOne({ where: { typeCode: partnerTypeCode } });
+
+  if (!partner) {
+    return null;
+  }
+
+  // Associate the partner with the user
+  user.partner = partner;
+
+  // Save the changes to the database
+  const savedUser = await userRepository.save(user);
+
+  return savedUser;
+}
 export {
   addUser,
   getUserByEmail,
@@ -139,4 +174,5 @@ export {
   deleteAllUsers,
   getRemindersDueInOneDay,
   generateTypeCode,
+  addPartnerToUserByTypeCode,
 };

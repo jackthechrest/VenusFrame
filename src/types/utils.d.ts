@@ -14,6 +14,10 @@ type UserIdParam = {
   targetUserId: string;
 };
 
+type AnniversaryIdParam = {
+  targetAnniversaryId: string;
+};
+
 type NewEmailBody = {
   email: string;
 };
