@@ -99,12 +99,10 @@ async function addROL(
   newPlay: RulesOfLoveOptions,
   rol: RulesOfLove
 ): Promise<void> {
-  await userRepository
-    .createQueryBuilder()
-    .update(User)
-    .set({ currentPlay: newPlay, rolInfo: rol })
-    .where({ userId })
-    .execute();
+  const user = await getUserById(userId);
+  user.currentPlay = newPlay;
+  user.rolInfo = rol;
+  await userRepository.save(user);
 }
 
 async function deleteUserById(userId: string): Promise<void> {
