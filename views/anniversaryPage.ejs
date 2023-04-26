@@ -19,7 +19,16 @@
     <% } else { %>
     <h3 class="big-text">You did not put your Wedding Anniversary. Do you want to enter?</h3>
     <% } %>
-
+  <% if (anniversaryInfo.specialday) { %>
+    <h3 class="big-text">Your speical day is <%= anniversaryInfo.specialday%> </h3>
+    <% } else { %>
+    <h3 class="big-text">You did not put your special day. Do you want to enter?</h3>
+    <% } %>
+  <% if (anniversaryInfo.specialdate) { %>
+    <h3 class="big-text">Your Wedding Anniversary is <%= anniversaryInfo.specialdate%> </h3>
+    <% } else { %>
+    <h3 class="big-text">You did not put your special date. Do you want to enter?</h3>
+    <% } %>
 </body>
 
 </html>

@@ -12,6 +12,7 @@ import {
   deleteUserById,
   deleteAllUsers,
   addPartnerToUserByTypeCode,
+  typeCodeExists,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
@@ -248,9 +249,9 @@ async function renderQuestionPage(req: Request, res: Response): Promise<void> {
 }
 
 async function handleFindPartner(req: Request, res: Response): Promise<void> {
-  const { userId, partnerTypeCode } = req.body;
+  const { partnerTypeCode } = req.body;
 
-  const user = await addPartnerToUserByTypeCode(userId, partnerTypeCode);
+  const user = await addPartnerToUserByTypeCode(partnerTypeCode);
 
   if (!user) {
     res.redirect('/login');
@@ -264,6 +265,23 @@ async function renderFoundPartnerPage(req: Request, res: Response): Promise<void
   const user = await getUserById(targetUserId);
 
   res.render('FoundPartner', { user });
+}
+
+async function insertTypeCode(req: Request, res: Response): Promise<void> {
+  const { isLoggedIn } = req.session;
+  if (!isLoggedIn) {
+    res.redirect('/login');
+    return;
+  }
+  const { typeCode } = req.body as TypeCode;
+  if (!(await typeCodeExists(typeCode))) {
+    // res.render('FindPartnerId', { typeCode });
+    res.redirect('/users/:targetUserId/FindPartnerId');
+  }
+
+  const typeCodeData = await addPartnerToUserByTypeCode(typeCode);
+
+  res.render('FoundPartner', { typeCodeData });
 }
 
 export {
@@ -282,4 +300,5 @@ export {
   renderaddAnniversaryPage,
   handleFindPartner,
   renderFoundPartnerPage,
+  insertTypeCode,
 };

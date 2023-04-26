@@ -33,7 +33,7 @@ export class User {
   @Column({ default: 0 })
   profileViews: number;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ unique: true })
   typeCode: string;
 
   @OneToOne(() => User, (user) => user.partner)

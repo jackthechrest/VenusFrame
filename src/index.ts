@@ -29,6 +29,7 @@ import {
   renderaddAnniversaryPage,
   handleFindPartner,
   renderFoundPartnerPage,
+  insertTypeCode,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import {
@@ -86,10 +87,9 @@ app.post('/api/questions', addNewQuestion);
 
 // partners
 app.get('/users/:targetUserId/FindPartnerId', renderConnectPage);
-app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
 app.get('/users/:userId/partner', handleFindPartner);
-app.post('/api/partner', handleFindPartner);
-
+app.post('/api/partner', insertTypeCode);
+app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
 // rules of love
 app.post('/rulesoflove/play', intermediateRulesOfLove);
 app.get('/rulesoflove/:gameId', playRulesOfLove);

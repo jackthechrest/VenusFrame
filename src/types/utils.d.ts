@@ -38,3 +38,7 @@ type RulesOfLoveBody = {
   gameId: string;
   newPlay: RulesOfLoveOptions;
 };
+
+type TypeCode = {
+  typeCode: string;
+};

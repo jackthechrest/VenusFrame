@@ -132,17 +132,17 @@ async function getRemindersDueInOneDay(): Promise<User[]> {
   return users;
 }
 
-async function addPartnerToUserByTypeCode(
-  userId: string,
-  partnerTypeCode: string
-): Promise<User | null> {
-  // Find the user by their ID
-  const user = await getUserById(userId);
+async function typeCodeExists(typeCode: string): Promise<boolean> {
+  const reviewExists = await userRepository
+    .createQueryBuilder('user')
+    .where('typeCode = :typeCode', { typeCode })
+    .getExists();
 
-  if (!user) {
-    return null;
-  }
+  return reviewExists;
+}
 
+async function addPartnerToUserByTypeCode(partnerTypeCode: string): Promise<User | null> {
+  const user = new User();
   // Find the partner by their typeCode
   const partner = await userRepository.findOne({ where: { typeCode: partnerTypeCode } });
 
@@ -173,4 +173,5 @@ export {
   getRemindersDueInOneDay,
   generateTypeCode,
   addPartnerToUserByTypeCode,
+  typeCodeExists,
 };

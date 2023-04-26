@@ -12,7 +12,6 @@ async function getQuestion(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // res.status(200).json(book);
   res.render('dailyquestion', { question });
 }
 
@@ -26,13 +25,11 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
   const { questionText } = req.body as { questionText: string };
 
   try {
-    // Attempt to add the book
     const question = await addQuestion(questionText);
     console.log(question);
 
     res.status(201).json(question);
   } catch (err) {
-    // It failed for some reason so we respond with an error message
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
     res.status(500).json(databaseErrorMessage);
