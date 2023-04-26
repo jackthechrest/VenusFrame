@@ -6,9 +6,3 @@ type NewQuestionRequest = {
 type QuestionIdParam = {
   questionId: string;
 };
-
-type DailyQuestion = {
-  answerId: string;
-  question: string;
-  answers: string[];
-};

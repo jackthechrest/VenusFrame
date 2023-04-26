@@ -32,6 +32,7 @@ import {
   insertTypeCode,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
+import { addNewAnswer, renderAnswerPage } from './controllers/AnswerController';
 import {
   deleteAllROL,
   intermediateRulesOfLove,
@@ -69,7 +70,8 @@ app.get('/api/users', getAllUserProfiles);
 app.post('/api/users', registerUser);
 
 app.post('/api/login', logIn);
-app.get('/users/:targerUserId/PreviewPage', renderPreviewPage);
+app.get('/users/PreviewPage', renderPreviewPage);
+app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);
 
 app.post('/api/users/:userId/email', updateUserEmail);
@@ -85,8 +87,10 @@ app.get('/users/:targertUserId/QuestionPage', renderQuestionPage);
 app.get('/api/questions', getQuestion);
 app.post('/api/questions', addNewQuestion);
 
+// answers
+app.get('/question/:questionId/answers/:answerId', renderAnswerPage);
+app.post('/api/question/:questionId/answers', addNewAnswer);
 // partners
-app.get('/users/:targetUserId/FindPartnerId', renderConnectPage);
 app.get('/users/:userId/partner', handleFindPartner);
 app.post('/api/partner', insertTypeCode);
 app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
@@ -154,4 +158,4 @@ socketServer.on('connection', (socket) => {
   });
 });
 
-scheduleJob('0 13 * * *', sendOneDayReminders);
+scheduleJob('21 15 * * *', sendOneDayReminders);

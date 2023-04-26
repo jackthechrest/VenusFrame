@@ -1,4 +1,3 @@
-import addDays from 'date-fns/addDays';
 import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
 import { RulesOfLove } from '../entities/RulesOfLove';
@@ -48,7 +47,10 @@ async function allUserData(): Promise<User[]> {
 }
 
 async function getUserById(userId: string): Promise<User | null> {
-  const user = await userRepository.findOne({ where: { userId } });
+  const user = await userRepository.findOne({
+    where: { userId },
+    relations: ['partner', 'answers', 'reminders', 'anniversary'],
+  });
   return user;
 }
 
@@ -118,16 +120,12 @@ async function deleteAllUsers(): Promise<void> {
 }
 
 async function getRemindersDueInOneDay(): Promise<User[]> {
-  const today = new Date();
-  const oneDayFromToday = addDays(today, 1);
-
   const users = await userRepository
     .createQueryBuilder('user')
-    .leftJoinAndSelect('user.reminders', 'reminders')
-    .select(['user.userId', 'user.email', 'user.username', 'reminders'])
-    .where('reminders.sendNotificationOn <= :oneDayFromToday', { oneDayFromToday })
-    .andWhere('reminders.sendNotificationOn > :today', { today })
+    .select(['user.userId', 'user.email', 'user.username'])
     .getMany();
+
+  console.log(`sending reminders to ${users.length} users`);
 
   return users;
 }
@@ -141,8 +139,11 @@ async function typeCodeExists(typeCode: string): Promise<boolean> {
   return reviewExists;
 }
 
-async function addPartnerToUserByTypeCode(partnerTypeCode: string): Promise<User | null> {
-  const user = new User();
+async function addPartnerToUserByTypeCode(
+  userId: string,
+  partnerTypeCode: string
+): Promise<User | null> {
+  const user = await getUserById(userId);
   // Find the partner by their typeCode
   const partner = await userRepository.findOne({ where: { typeCode: partnerTypeCode } });
 
@@ -152,11 +153,12 @@ async function addPartnerToUserByTypeCode(partnerTypeCode: string): Promise<User
 
   // Associate the partner with the user
   user.partner = partner;
+  partner.partner = user;
 
   // Save the changes to the database
-  const savedUser = await userRepository.save(user);
-
-  return savedUser;
+  await userRepository.save(user);
+  await userRepository.save(partner);
+  return await getUserById(userId);
 }
 export {
   addUser,

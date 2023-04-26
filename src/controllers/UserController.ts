@@ -17,6 +17,7 @@ import {
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
 import { addReminder } from '../models/ReminderModel';
+import { getTodayQuestion } from '../models/QuestionModel';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -103,7 +104,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
     username: user.username,
   };
   req.session.isLoggedIn = true;
-  res.render('PreviewPage', { user });
+  res.redirect('/users/PreviewPage');
   // res.redirect(`/users/${user.userId}`);
 }
 
@@ -221,8 +222,8 @@ async function createReminder(req: Request, res: Response): Promise<void> {
 }
 
 async function renderPreviewPage(req: Request, res: Response): Promise<void> {
-  const { targetUserId } = req.params as UserIdParam;
-  const user = await getUserById(targetUserId);
+  const { authenticatedUser } = req.session;
+  const user = await getUserById(authenticatedUser.userId);
 
   res.render('PreviewPage', { user });
 }
@@ -235,8 +236,9 @@ async function renderaddAnniversaryPage(req: Request, res: Response): Promise<vo
 }
 
 async function renderConnectPage(req: Request, res: Response): Promise<void> {
-  const { targetUserId } = req.params as UserIdParam;
-  const user = await getUserById(targetUserId);
+  const { authenticatedUser } = req.session;
+  console.log('render connect page');
+  const user = await getUserById(authenticatedUser.userId);
 
   res.render('FindPartnerId', { user });
 }
@@ -244,14 +246,16 @@ async function renderConnectPage(req: Request, res: Response): Promise<void> {
 async function renderQuestionPage(req: Request, res: Response): Promise<void> {
   const { targetUserId } = req.params as UserIdParam;
   const user = await getUserById(targetUserId);
+  const question = await getTodayQuestion();
 
-  res.render('QuestionPage', { user });
+  res.render('QuestionPage', { user, question });
 }
 
 async function handleFindPartner(req: Request, res: Response): Promise<void> {
+  const { authenticatedUser } = req.session;
   const { partnerTypeCode } = req.body;
 
-  const user = await addPartnerToUserByTypeCode(partnerTypeCode);
+  const user = await addPartnerToUserByTypeCode(authenticatedUser.userId, partnerTypeCode);
 
   if (!user) {
     res.redirect('/login');
@@ -268,7 +272,7 @@ async function renderFoundPartnerPage(req: Request, res: Response): Promise<void
 }
 
 async function insertTypeCode(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn } = req.session;
+  const { isLoggedIn, authenticatedUser } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login');
     return;
@@ -276,10 +280,11 @@ async function insertTypeCode(req: Request, res: Response): Promise<void> {
   const { typeCode } = req.body as TypeCode;
   if (!(await typeCodeExists(typeCode))) {
     // res.render('FindPartnerId', { typeCode });
-    res.redirect('/users/:targetUserId/FindPartnerId');
+    res.redirect(`/users/FindPartnerId`);
+    return;
   }
 
-  const typeCodeData = await addPartnerToUserByTypeCode(typeCode);
+  const typeCodeData = await addPartnerToUserByTypeCode(authenticatedUser.userId, typeCode);
 
   res.render('FoundPartner', { typeCodeData });
 }

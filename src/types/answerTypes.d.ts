@@ -4,5 +4,6 @@ type NewAnswerRequest = {
 };
 
 type AnswerIdParam = {
+  questionId: string;
   answerId: string;
 };

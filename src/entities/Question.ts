@@ -9,9 +9,6 @@ export class Question {
   @Column()
   questionText: string;
 
-  @Column()
-  date: number;
-
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: ['insert', 'update'] })
   answer: Relation<Answer>[];
 }

@@ -6,13 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Daily Questions |Venus Frame</title>
+    <title>Daily Questions | Venus Frame</title>
 </head>
 
 <body>
   <h3 class="big-text">Daily question of the day!!!</h3>
-  <label for = "answer"></label>
-  <input name = "answer" id = "answer" class = "answer" placeholder = "answer" type = "answer">
+  <h3> Question: <%= question.questionText %> </h3>
+  <form method="POST" action="/api/question/<%= question.questionId %>/answers">
+  <label for = "answerText"></label>
+  <input name = "answerText" id = "answerText" class = "answer" placeholder = "answer" type = "text">
     <button>Submit</button>
 </form>
 </body>

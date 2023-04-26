@@ -7,7 +7,7 @@
     "compile": "npm run clean && npx tsc --watch",
     "clean": "rimraf ./dist/",
     "start-dev": "node --experimental-loader=extensionless --es-module-specifier-resolution=node --no-warnings --watch ./dist/index.js",
-    "start-dev-browserSync": "node -e \"setTimeout(() => process.exit(0), 2000)\"; node --no-warnings --watch bsync.mjs",
+    "start-dev-browserSync": "node --no-warnings --watch bsync.mjs",
     "start-dev-ui": "concurrently -c cyan,green -n server,browserSync \"npm:start-dev\" \"npm:start-dev-browserSync\"",
     "start-once": "node --experimental-loader=extensionless --es-module-specifier-resolution=node --no-warnings ./dist/index.js",
     "lint": "eslint . --ext .ts"

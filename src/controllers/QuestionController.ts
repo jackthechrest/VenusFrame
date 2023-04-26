@@ -34,7 +34,6 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
     const databaseErrorMessage = parseDatabaseError(err);
     res.status(500).json(databaseErrorMessage);
   }
-  res.render(`dailyquestion`, { questionText });
 }
 
 export { getQuestion, addNewQuestion };

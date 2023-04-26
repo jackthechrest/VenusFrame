@@ -8,9 +8,6 @@ export class Answer {
   answerId: string;
 
   @Column()
-  answerMood: string;
-
-  @Column()
   answerText: string;
 
   @ManyToOne(() => User, (user) => user.answers, { cascade: ['insert', 'update'] })

@@ -5,6 +5,7 @@ import {
   userHasAnswerForQuestion,
   answerBelongsToUser,
   deleteAnswerById,
+  getAnswerByPartner,
 } from '../models/AnswerModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { getUserById } from '../models/UserModel';
@@ -27,19 +28,19 @@ async function getAnswers(req: Request, res: Response): Promise<void> {
 
 async function addNewAnswer(req: Request, res: Response): Promise<void> {
   const { questionId } = req.params as { questionId: string };
+  console.log({ questionId });
   const { authenticatedUser, isLoggedIn } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login');
     return;
   }
-  const { answerMood, answerText } = req.body as NewAnswerRequest;
+  const { answerText } = req.body as NewAnswerRequest;
   const user = await getUserById(authenticatedUser.userId);
   const question = await getQuestionById(questionId);
   if (!question || !user) {
     res.sendStatus(404);
     return;
   }
-
   const answerExists = await userHasAnswerForQuestion(authenticatedUser.userId, questionId);
   if (answerExists) {
     res.sendStatus(409); // 409 Conflict
@@ -47,17 +48,15 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const answer = await addAnswer(answerMood, answerText, user, question);
+    const answer = await addAnswer(answerText, user, question);
     console.log(answer);
     answer.user = undefined;
-
-    res.status(201).json(answer);
+    res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);
   } catch (err) {
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
     res.status(500).json(databaseErrorMessage);
   }
-  res.redirect(`/questions/${questionId}`);
 }
 
 async function addAnswerForQuestion(req: Request, res: Response): Promise<void> {
@@ -83,10 +82,13 @@ async function deleteUserAnswer(req: Request, res: Response): Promise<void> {
   res.sendStatus(204); // 204 No Content
 }
 
-async function renderquestionPage(req: Request, res: Response): Promise<void> {
-  const { questionId } = req.params as QuestionIdParam;
-  const question = await getQuestionById(questionId);
-
-  res.render('dailyquestion', { question });
+async function renderAnswerPage(req: Request, res: Response): Promise<void> {
+  const { answerId, questionId } = req.params as AnswerIdParam;
+  const answer = await getAnswerById(answerId);
+  const { authenticatedUser } = req.session;
+  const user = await getUserById(authenticatedUser.userId);
+  const partnerId = user.partner.userId;
+  const partnerAnswer = await getAnswerByPartner(partnerId, questionId);
+  res.render('answerPage', { answer, partnerAnswer });
 }
-export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer, renderquestionPage };
+export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer, renderAnswerPage };

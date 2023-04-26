@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="/css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Answered Questions | Venus Frame</title>
+</head>
+
+<body>
+  <h3 class="big-text">The answers: <%= answer.answerText %></h3>
+  <% if (!partnerAnswer) { %>
+   Partner has not answered yet.
+<% } else { %>
+  <h3 class="big-text">Partners answers: <%= partnerAnswer.answerText %></h3>
+
+
+  <% } %>
+</body>
+
+</html>

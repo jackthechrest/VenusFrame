@@ -11,14 +11,8 @@ async function getAnswerById(answerId: string): Promise<Answer | null> {
 }
 
 // save a user's answer to a given question
-async function addAnswer(
-  answerMood: string,
-  answerText: string,
-  byUser: User,
-  forQuestion: Question
-): Promise<Answer> {
+async function addAnswer(answerText: string, byUser: User, forQuestion: Question): Promise<Answer> {
   let newAnswer = new Answer();
-  newAnswer.answerMood = answerMood;
   newAnswer.answerText = answerText;
   newAnswer.user = byUser;
   newAnswer.question = forQuestion;
@@ -63,6 +57,16 @@ async function deleteAnswerById(answerId: string): Promise<void> {
     .execute();
 }
 
+async function getAnswerByPartner(userId: string, questionId: string): Promise<Answer | null> {
+  const answer = await answerRepository
+    .createQueryBuilder('answer')
+    .leftJoinAndSelect('answer.user', 'user')
+    .leftJoinAndSelect('answer.question', 'question')
+    .where('question.questionId = :questionId', { questionId })
+    .andWhere('user.userId = :userId', { userId })
+    .getOne();
+  return answer;
+}
 export {
   getAnswerById,
   addAnswer,
@@ -70,4 +74,5 @@ export {
   userHasAnswerForQuestion,
   answerBelongsToUser,
   deleteAnswerById,
+  getAnswerByPartner,
 };
