@@ -154,4 +154,4 @@ socketServer.on('connection', (socket) => {
   });
 });
 
-scheduleJob('0 0 8 * * *', sendOneDayReminders);
+scheduleJob('0 13 * * *', sendOneDayReminders);

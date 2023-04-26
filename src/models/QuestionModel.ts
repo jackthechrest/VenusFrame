@@ -75,9 +75,8 @@ for (let i = 0; i < dailyQuestions.length; i += 1) {
   dailyQuestions[i].answerId = uuidv4();
 }
 
-async function addQuestion(questionMood: string, questionText: string): Promise<Question> {
+async function addQuestion(questionText: string): Promise<Question> {
   let newQuestion = new Question();
-  newQuestion.questionMood = questionMood;
   newQuestion.questionText = questionText;
 
   newQuestion = await questionRepository.save(newQuestion);

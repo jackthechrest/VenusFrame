@@ -23,11 +23,11 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
     res.redirect('/login'); // 401 Unauthorized
     return;
   }
-  const { questionMood, questionText } = req.body as { questionMood: string; questionText: string };
+  const { questionText } = req.body as { questionText: string };
 
   try {
     // Attempt to add the book
-    const question = await addQuestion(questionMood, questionText);
+    const question = await addQuestion(questionText);
     console.log(question);
 
     res.status(201).json(question);
@@ -37,7 +37,7 @@ async function addNewQuestion(req: Request, res: Response): Promise<void> {
     const databaseErrorMessage = parseDatabaseError(err);
     res.status(500).json(databaseErrorMessage);
   }
-  res.render(`dailyquestion`, { questionMood, questionText });
+  res.render(`dailyquestion`, { questionText });
 }
 
 export { getQuestion, addNewQuestion };

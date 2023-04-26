@@ -7,9 +7,6 @@ export class Question {
   questionId: string;
 
   @Column()
-  questionMood: string;
-
-  @Column()
   questionText: string;
 
   @Column()
