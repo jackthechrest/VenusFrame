@@ -160,6 +160,17 @@ async function addPartnerToUserByTypeCode(
   await userRepository.save(partner);
   return await getUserById(userId);
 }
+
+/*
+async function addFollow(requestingUserId: string, targetedUserId: string): Promise<User[]> {
+
+}
+
+async function removeFollow(requestingUserId: string, targetedUserId: string): Promise<User[]> {
+
+}
+*/
+
 export {
   addUser,
   getUserByEmail,

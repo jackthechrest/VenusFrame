@@ -289,6 +289,24 @@ async function insertTypeCode(req: Request, res: Response): Promise<void> {
   res.render('FoundPartner', { typeCodeData });
 }
 
+/*
+async function followUser(req: Request, res: Response): Promise<void> {
+
+}
+
+async function unfollowUser(req: Request, res: Response): Promise<void> {
+
+}
+
+async function renderFollowingPage(req: Request, res: Response): Promise<void> {
+
+}
+
+async function renderFollowersPage(req: Request, res: Response): Promise<void> {
+
+}
+*/
+
 export {
   registerUser,
   logIn,

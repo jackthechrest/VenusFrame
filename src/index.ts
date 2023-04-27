@@ -74,6 +74,12 @@ app.get('/users/PreviewPage', renderPreviewPage);
 app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);
 
+// Following/Followers
+// app.post('/users/follow', followUser);
+// app.post('/users/unfollow', unfollowUser);
+// app.get('/users/:targetUserId/following, renderFollowingPage);
+// app.get('/users/:targetUserId/followers, renderFollowersPage);
+
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);

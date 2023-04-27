@@ -50,6 +50,12 @@ export class User {
   @JoinColumn()
   anniversary: Relation<Anniversary>;
 
+  @OneToMany(() => User, (user) => user.following)
+  following: Relation<User>[];
+
+  @OneToMany(() => User, (user) => user.followers)
+  followers: Relation<User>[];
+
   // Rules Of Love
   @ManyToOne(() => RulesOfLove, (rol) => rol.players, { cascade: ['insert', 'update'] })
   rolInfo: Relation<RulesOfLove>;
