@@ -50,10 +50,10 @@ export class User {
   @JoinColumn()
   anniversary: Relation<Anniversary>;
 
-  @OneToMany(() => User, (user) => user.following)
+  @OneToMany(() => User, (user) => user.following, { cascade: ['insert', 'update'] })
   following: Relation<User>[];
 
-  @OneToMany(() => User, (user) => user.followers)
+  @OneToMany(() => User, (user) => user.followers, { cascade: ['insert', 'update'] })
   followers: Relation<User>[];
 
   // Rules Of Love

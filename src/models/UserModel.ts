@@ -49,7 +49,7 @@ async function allUserData(): Promise<User[]> {
 async function getUserById(userId: string): Promise<User | null> {
   const user = await userRepository.findOne({
     where: { userId },
-    relations: ['partner', 'answers', 'reminders', 'anniversary', 'following', 'followers'],
+    relations: ['partner', 'answers', 'reminders', 'anniversary'], // 'following', 'followers'],
   });
   return user;
 }
