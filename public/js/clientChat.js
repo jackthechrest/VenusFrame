@@ -19,15 +19,19 @@ socket.on('exitedChat', (msg) => {
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });
+
 chatForm.addEventListener('submit', (e) => {
+  console.log('form was submitted');
   e.preventDefault();
   if (chatMessage.value) {
+    console.log('emitting message');
     socket.emit('chatMessage', chatMessage.value);
     chatMessage.value = '';
   }
 });
 
 socket.on('chatMessage', (name, msg) => {
+  console.log('got chat message');
   const item = document.createElement('li');
   item.classList.add('chatMessage');
   item.textContent = `${name}: ${msg}`;

@@ -128,6 +128,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
     username: user.username,
     profileViews: user.profileViews,
     typeCode: user.typeCode,
+    partner: user.partner,
   });
 }
 

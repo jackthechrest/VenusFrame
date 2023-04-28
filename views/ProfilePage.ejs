@@ -11,8 +11,12 @@
     <h1 class="big-title">Profile Page</h1>
     <h1 class="big-text">Welcome to your profile page, <%= username %> !!!</h1>
     <h3 class="big-text">You have <%= profileViews %>  views</h3>
-    <h3 class="big-text">Your code is  <%= typeCode %> ! Share it with your partner.</h3>
-
+    <% if (partner) { %>
+      <h3 class="big-text">Your partner is <%= partner %> </h3>
+      <% } else { %>
+      <h3 class="big-text">Your code is  <%= typeCode %> ! Share it with your partner.</h3>
+      <h3 class="big-text">You do not have your partner yet.</h3>
+      <% } %>
 
   </body>
 </html>

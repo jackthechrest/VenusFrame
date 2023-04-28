@@ -4,7 +4,7 @@ import { Anniversary } from '../entities/Anniversary';
 const anniversaryRepository = AppDataSource.getRepository(Anniversary);
 
 async function getAnniversaries(): Promise<Anniversary[]> {
-  return await anniversaryRepository.find();
+  return await anniversaryRepository.find({ relations: ['user'] });
 }
 
 async function addAnniversary(

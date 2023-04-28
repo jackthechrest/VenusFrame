@@ -48,6 +48,7 @@ import {
   getAllAnniversaries,
 } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
+import { sendRemiderAnniversary } from './services/anniversaryReminderService';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -169,3 +170,5 @@ socketServer.on('connection', (socket) => {
 });
 
 scheduleJob('21 15 * * *', sendOneDayReminders);
+
+scheduleJob('21 15 * * *', sendRemiderAnniversary);
