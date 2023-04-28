@@ -30,6 +30,10 @@ import {
   handleFindPartner,
   renderFoundPartnerPage,
   insertTypeCode,
+  followUser,
+  unfollowUser,
+  renderFollowingPage,
+  renderFollowersPage,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import { addNewAnswer, renderAnswerPage } from './controllers/AnswerController';
@@ -75,10 +79,10 @@ app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);
 
 // Following/Followers
-// app.post('/users/follow', followUser);
-// app.post('/users/unfollow', unfollowUser);
-// app.get('/users/:targetUserId/following, renderFollowingPage);
-// app.get('/users/:targetUserId/followers, renderFollowersPage);
+app.post('/users/follow/:targetUserId', followUser);
+app.post('/users/unfollow/:targetUserId', unfollowUser);
+app.get('/users/:targetUserId/following', renderFollowingPage);
+app.get('/users/:targetUserId/followers', renderFollowersPage);
 
 app.post('/api/users/:userId/email', updateUserEmail);
 app.post('/api/users/delete', deleteAccount);

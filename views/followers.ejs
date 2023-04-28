@@ -7,6 +7,19 @@
   <title><%= user.username %>'s Followers | Venus Frame</title>
 </head>
 <body>
+  <h1><%= user.username %>'s Followers</h1>
+
+  <% if (user.followers.length === 0) { %>
+   <p>No Followers</p>
+  <% } else { %>
+  <ul>
+    <% for( const follower of user.followers) { %>
+      <li>
+        <p><a href="/users/<%= follower.userId %>"><%= follower.username %></a></p>
+      </li>
+    <% } %>
+  </ul>
+  <% } %>
 
 </body>
 </html>

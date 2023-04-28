@@ -49,7 +49,7 @@ async function allUserData(): Promise<User[]> {
 async function getUserById(userId: string): Promise<User | null> {
   const user = await userRepository.findOne({
     where: { userId },
-    relations: ['partner', 'answers', 'reminders', 'anniversary'],
+    relations: ['partner', 'answers', 'reminders', 'anniversary', 'following', 'followers'],
   });
   return user;
 }
@@ -161,15 +161,38 @@ async function addPartnerToUserByTypeCode(
   return await getUserById(userId);
 }
 
-/*
-async function addFollow(requestingUserId: string, targetedUserId: string): Promise<User[]> {
+async function addFollow(requestingUserId: string, targetedUserId: string): Promise<void> {
+  // Get users
+  const requestingUser = await getUserById(requestingUserId);
+  const targetedUser = await getUserById(targetedUserId);
 
+  // update requesting user's following and targeted user's followers
+  requestingUser.following.push(targetedUser);
+  targetedUser.followers.push(requestingUser);
+
+  // save changes to repository
+  await userRepository.save(requestingUser);
+  await userRepository.save(targetedUser);
 }
 
-async function removeFollow(requestingUserId: string, targetedUserId: string): Promise<User[]> {
+async function removeFollow(requestingUserId: string, targetedUserId: string): Promise<void> {
+  // Get users
+  const requestingUser = await getUserById(requestingUserId);
+  const targetedUser = await getUserById(targetedUserId);
 
+  // update requesting user's following and targeted user's followers
+  const followingIndex = requestingUser.following.indexOf(targetedUser);
+  const followerIndex = targetedUser.followers.indexOf(requestingUser);
+
+  if (followingIndex !== -1) {
+    requestingUser.following.splice(followingIndex, 1);
+    targetedUser.followers.splice(followerIndex, 1);
+  }
+
+  // save changes to repository
+  await userRepository.save(requestingUser);
+  await userRepository.save(targetedUser);
 }
-*/
 
 export {
   addUser,
@@ -187,4 +210,6 @@ export {
   generateTypeCode,
   addPartnerToUserByTypeCode,
   typeCodeExists,
+  addFollow,
+  removeFollow,
 };
