@@ -5,18 +5,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= username %> ProfilePage | VenusFrame </title>
+    <title><%= user.username %>'s Profile Page | VenusFrame </title>
   </head>
   <body>
-    <h1 class="big-title">Profile Page</h1>
-    <h1 class="big-text">Welcome to your profile page, <%= username %> !!!</h1>
-    <h3 class="big-text">You have <%= profileViews %>  views</h3>
-    <% if (partner) { %>
-      <h3 class="big-text">Your partner is <%= partner %> </h3>
-      <% } else { %>
-      <h3 class="big-text">Your code is  <%= typeCode %> ! Share it with your partner.</h3>
-      <h3 class="big-text">You do not have your partner yet.</h3>
+    <h1 class="big-title"><%= user.username %>'s Profile Page</h1>
+    <h3 class="big-text"><%= user.profileViews %> Views</h3>
+    <% if (user.partner) { %>
+      <h3 class="big-text">Taken By: <a href = '/users/<%= user.partner.userId %>'>user.partner.username</a></h3>
+    <% } else { %>
+      <h3 class="big-text">Single</h3>
+    <% } %>
+
+    <% if (user.userId === authenticatedId) { %>
+      <h1 class="big-text">Welcome to your profile page!</h1>
+      <% if (!user.partner) { %>
+        <h3 class="big-text">You do not have your partner yet.</h3>
+        <h3 class="big-text">Your code is  <%= user.typeCode %> : Share it with your partner.</h3>
       <% } %>
+    <% } else { %>
+      <p>Logic for follow/unfollow button here</p>
+    <% } %>
+    <h1 class="big-text"><a href = '/users/<%= user.userId %>/following'>Following: <%= user.following.length %> Users</a></h1>
+    <h1 class="big-text"><a href = '/users/<%= user.userId %>/followers'>Followers: <%= user.followers.length %> Users</a></h1>
 
   </body>
 </html>
