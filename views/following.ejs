@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="/css/style.css" />
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= user.username %> Following | Venus Frame</title>
 </head>
 <body>
-  <h1><%= user.username %> Following</h1>
+  <style>
+    h1 {
+      font-size: 50px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    p {
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+
+  <h1><%= user.username %> Following:</h1>
 
   <% if (user.following.length === 0) { %>
    <p>Not Following Anyone</p>
@@ -15,7 +29,7 @@
   <ul>
     <% for (const followed of user.following) { %>
       <li>
-        <p><a href="/users/<%= followed.targetUserId %>"><%= followed.targetUsername %></a></p>
+        <p>- <a href="/users/<%= followed.targetUserId %>"><%= followed.targetUsername %></a></p>
       </li>
     <% } %>
   </ul>
