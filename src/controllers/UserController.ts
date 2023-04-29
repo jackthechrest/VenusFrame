@@ -18,6 +18,7 @@ import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
 import { addReminder } from '../models/ReminderModel';
 import { getTodayQuestion } from '../models/QuestionModel';
+import { getFollowById } from '../models/FollowModel';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -122,9 +123,16 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   // Now update their profile views
   user = await incrementProfileViews(user);
   console.log(user);
+
+  const { isLoggedIn, authenticatedUser } = req.session;
+  const viewingUser = await getUserById(authenticatedUser.userId);
+  const targetFollow = await getFollowById(user.username + viewingUser.username);
+
   res.render('ProfilePage', {
     user,
-    authenticatedId: req.session.authenticatedUser.userId,
+    authenticatedId: viewingUser.userId,
+    loggedIn: isLoggedIn,
+    following: viewingUser.following.includes(targetFollow),
   });
 }
 

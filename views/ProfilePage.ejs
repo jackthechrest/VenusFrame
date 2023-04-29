@@ -10,20 +10,26 @@
   <body>
     <h1 class="big-title"><%= user.username %>'s Profile Page</h1>
     <h3 class="big-text"><%= user.profileViews %> Views</h3>
+    <h3 class="big-text">Highest Win Streak in Rules of Love: <%= user.highestWinStreak %> Games</h3>
+
     <% if (user.partner) { %>
       <h3 class="big-text">Taken By: <a href = '/users/<%= user.partner.userId %>'>user.partner.username</a></h3>
     <% } else { %>
       <h3 class="big-text">Single</h3>
     <% } %>
 
-    <% if (user.userId === authenticatedId) { %>
+    <% if (loggedIn && user.userId === authenticatedId) { %>
       <h1 class="big-text">Welcome to your profile page!</h1>
       <% if (!user.partner) { %>
         <h3 class="big-text">You do not have your partner yet.</h3>
         <h3 class="big-text">Your code is  <%= user.typeCode %> : Share it with your partner.</h3>
       <% } %>
-    <% } else { %>
-      <p>Logic for follow/unfollow button here</p>
+    <% } else if (loggedIn) { %>
+      <% if (following) { %>
+        <h3 class="big-text"><a href = '/users/unfollow/<%= user.userId %>'>Unfollow</a></h3>
+      <% } else { %>
+        <h3 class="big-text"><a href = '/users/follow/<%= user.userId %>'>Follow</a></h3>
+      <% } %>
     <% } %>
     <h1 class="big-text"><a href = '/users/<%= user.userId %>/following'>Following: <%= user.following.length %> Users</a></h1>
     <h1 class="big-text"><a href = '/users/<%= user.userId %>/followers'>Followers: <%= user.followers.length %> Users</a></h1>
