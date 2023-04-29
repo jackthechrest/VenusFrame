@@ -52,10 +52,10 @@ export class User {
   anniversary: Relation<Anniversary>;
 
   // follow
-  @OneToMany(() => Follow, (follow) => follow.targetedUser, { cascade: ['insert', 'update'] })
+  @OneToMany(() => Follow, (follow) => follow.requestingUser, { cascade: ['insert', 'update'] })
   following: Relation<Follow>[];
 
-  @OneToMany(() => Follow, (follow) => follow.requestingUser, { cascade: ['insert', 'update'] })
+  @OneToMany(() => Follow, (follow) => follow.targetedUser, { cascade: ['insert', 'update'] })
   followers: Relation<Follow>[];
 
   // Rules Of Love
@@ -74,4 +74,3 @@ export class User {
   @Column({ default: false })
   inGame: boolean;
 }
-

@@ -13,9 +13,9 @@
    <p>Not Following Anyone</p>
   <% } else { %>
   <ul>
-    <% for( const followed of user.following) { %>
+    <% for (const followed of user.following) { %>
       <li>
-        <p><a href="/users/<%= followed.userId %>"><%= followed.username %></a></p>
+        <p><a href="/users/<%= followed.targetUserId %>"><%= followed.targetUsername %></a></p>
       </li>
     <% } %>
   </ul>

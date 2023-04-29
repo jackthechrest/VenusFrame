@@ -82,8 +82,8 @@ app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);
 
 // Following/Followers
-app.post('/users/follow/:targetUserId', followUser);
-app.post('/users/unfollow/:targetUserId', unfollowUser);
+app.get('/users/follow/:targetUserId', followUser);
+app.get('/users/unfollow/:targetUserId', unfollowUser);
 app.get('/users/:targetUserId/following', renderFollowingPage);
 app.get('/users/:targetUserId/followers', renderFollowersPage);
 

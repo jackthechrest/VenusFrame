@@ -18,7 +18,7 @@ import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
 import { addReminder } from '../models/ReminderModel';
 import { getTodayQuestion } from '../models/QuestionModel';
-import { getFollowById } from '../models/FollowModel';
+import { clearFollowsById, deleteAllFollows, getFollowById } from '../models/FollowModel';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -122,7 +122,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 
   // Now update their profile views
   user = await incrementProfileViews(user);
-  console.log(user);
+  // console.log(user);
 
   const { isLoggedIn, authenticatedUser } = req.session;
   const viewingUser = await getUserById(authenticatedUser.userId);
@@ -132,7 +132,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
     user,
     authenticatedId: viewingUser.userId,
     loggedIn: isLoggedIn,
-    following: viewingUser.following.includes(targetFollow),
+    following: targetFollow,
   });
 }
 
@@ -189,26 +189,28 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
 
   const user = await getUserByEmail(email);
   if (!user) {
-    res.redirect('/chat'); // 404 Not Found - email doesn't exist
+    res.redirect('/users/PreviewPage'); // 404 Not Found - email doesn't exist
     return;
   }
 
   if (authenticatedUser.userId !== user.userId) {
-    res.redirect('/chat'); // trying to delete someone elses account
+    res.redirect('/users/PreviewPage'); // trying to delete someone elses account
     return;
   }
 
   const { passwordHash } = user;
 
   if (!(await argon2.verify(passwordHash, password))) {
-    res.redirect('/chat'); // 404 not found - user w/ email/password doesn't exist
+    res.redirect('/users/PreviewPage'); // 404 not found - user w/ email/password doesn't exist
   }
 
-  deleteUserById(user.userId);
+  await clearFollowsById(user.userId);
+  await deleteUserById(user.userId);
   res.redirect('/index');
 }
 
 async function deleteAllAccounts(req: Request, res: Response): Promise<void> {
+  await deleteAllFollows();
   await deleteAllUsers();
   res.redirect('/index');
 }

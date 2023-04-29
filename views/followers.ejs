@@ -15,7 +15,7 @@
   <ul>
     <% for( const follower of user.followers) { %>
       <li>
-        <p><a href="/users/<%= follower.userId %>"><%= follower.username %></a></p>
+        <p><a href="/users/<%= follower.requestUserId %>"><%= follower.requestUsername %></a></p>
       </li>
     <% } %>
   </ul>
