@@ -13,8 +13,6 @@ import {
   deleteAllUsers,
   addPartnerToUserByTypeCode,
   typeCodeExists,
-  addFollow,
-  removeFollow,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
@@ -292,78 +290,6 @@ async function insertTypeCode(req: Request, res: Response): Promise<void> {
   res.render('FoundPartner', { typeCodeData });
 }
 
-async function followUser(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn, authenticatedUser } = req.session;
-
-  if (!isLoggedIn) {
-    res.redirect('/login');
-  }
-
-  const { targetUserId } = req.params;
-  const targetUser = await getUserById(targetUserId);
-  const requestingUser = await getUserById(authenticatedUser.userId);
-
-  if (!targetUser || targetUser.followers.includes(requestingUser)) {
-    res.redirect(`/users/${authenticatedUser.userId}`);
-  }
-
-  await addFollow(authenticatedUser.userId, targetUserId);
-  res.redirect(`/users/${targetUserId}`);
-}
-
-async function unfollowUser(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn, authenticatedUser } = req.session;
-
-  if (!isLoggedIn) {
-    res.redirect('/login');
-  }
-
-  const { targetUserId } = req.params;
-  const targetUser = await getUserById(targetUserId);
-  const requestingUser = await getUserById(authenticatedUser.userId);
-
-  if (!targetUser || !targetUser.followers.includes(requestingUser)) {
-    res.redirect(`/users/${authenticatedUser.userId}`);
-  }
-
-  await removeFollow(authenticatedUser.userId, targetUserId);
-  res.redirect(`/users/${targetUserId}`);
-}
-
-async function renderFollowingPage(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn, authenticatedUser } = req.session;
-  const { targetUserId } = req.params;
-
-  const targetUser = await getUserById(targetUserId);
-
-  if (!targetUser) {
-    if (!isLoggedIn) {
-      res.redirect(`/index`);
-    } else {
-      res.redirect(`/users/${authenticatedUser.userId}`);
-    }
-  }
-
-  res.render('following', { targetUser });
-}
-
-async function renderFollowersPage(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn, authenticatedUser } = req.session;
-  const { targetUserId } = req.params;
-
-  const targetUser = await getUserById(targetUserId);
-
-  if (!targetUser) {
-    if (!isLoggedIn) {
-      res.redirect(`/index`);
-    } else {
-      res.redirect(`/users/${authenticatedUser.userId}`);
-    }
-  }
-
-  res.render('followers', { targetUser });
-}
-
 export {
   registerUser,
   logIn,
@@ -381,8 +307,4 @@ export {
   handleFindPartner,
   renderFoundPartnerPage,
   insertTypeCode,
-  followUser,
-  unfollowUser,
-  renderFollowingPage,
-  renderFollowersPage,
 };
