@@ -30,10 +30,6 @@ import {
   handleFindPartner,
   renderFoundPartnerPage,
   insertTypeCode,
-  followUser,
-  unfollowUser,
-  renderFollowingPage,
-  renderFollowersPage,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import { addNewAnswer, renderAnswerPage } from './controllers/AnswerController';
@@ -49,6 +45,12 @@ import {
 } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
 import { sendRemiderAnniversary } from './services/anniversaryReminderService';
+import {
+  followUser,
+  unfollowUser,
+  renderFollowingPage,
+  renderFollowersPage,
+} from './controllers/FollowController';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
