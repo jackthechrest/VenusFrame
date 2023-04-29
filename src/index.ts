@@ -90,7 +90,7 @@ app.get('/users/:targetUserId/following', renderFollowingPage);
 app.get('/users/:targetUserId/followers', renderFollowersPage);
 
 app.post('/api/users/:userId/email', updateUserEmail);
-app.post('/api/users/delete', deleteAccount);
+app.post('/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
 
 // DEBUG

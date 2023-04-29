@@ -144,6 +144,7 @@ async function findUser(req: Request, res: Response): Promise<void> {
 
   if (!user) {
     res.redirect('/search');
+    return;
   }
 
   res.redirect(`/users/${user.userId}`);
