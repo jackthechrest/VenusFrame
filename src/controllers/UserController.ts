@@ -123,10 +123,8 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
   user = await incrementProfileViews(user);
   console.log(user);
   res.render('ProfilePage', {
-    username: user.username,
-    profileViews: user.profileViews,
-    typeCode: user.typeCode,
-    partner: user.partner,
+    user,
+    authenticatedId: req.session.authenticatedUser.userId,
   });
 }
 
