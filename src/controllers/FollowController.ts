@@ -14,13 +14,13 @@ async function followUser(req: Request, res: Response): Promise<void> {
   const targetUser = await getUserById(targetUserId);
   const requestingUser = await getUserById(authenticatedUser.userId);
 
-  const followData = await getFollowById(targetUser.username + requestingUser.username);
+  const followData = await getFollowById(targetUser.userId + requestingUser.userId);
   if (!targetUser || followData) {
     res.redirect(`/users/${authenticatedUser.userId}`);
   }
 
   try {
-    await addFollow(authenticatedUser.userId, targetUserId);
+    await addFollow(requestingUser.userId, targetUserId);
     res.redirect(`/users/${targetUserId}`);
   } catch (err) {
     console.error(err);
@@ -40,7 +40,7 @@ async function unfollowUser(req: Request, res: Response): Promise<void> {
   const targetUser = await getUserById(targetUserId);
   const requestingUser = await getUserById(authenticatedUser.userId);
 
-  const followData = await getFollowById(targetUser.username + requestingUser.username);
+  const followData = await getFollowById(targetUser.userId + requestingUser.userId);
   if (!targetUser || !followData) {
     res.redirect(`/users/${authenticatedUser.userId}`);
   }

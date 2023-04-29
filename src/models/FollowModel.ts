@@ -17,7 +17,7 @@ async function addFollow(requestingUserId: string, targetedUserId: string): Prom
 
   // update requesting user's following and targeted user's followers, save
   let newFollow = new Follow();
-  newFollow.followId = targetedUser.username + requestingUser.username;
+  newFollow.followId = targetedUserId + requestingUserId;
   newFollow.targetUserId = targetedUserId;
   newFollow.targetUsername = targetedUser.username;
   newFollow.targetedUser = targetedUser;
@@ -30,12 +30,8 @@ async function addFollow(requestingUserId: string, targetedUserId: string): Prom
 }
 
 async function removeFollow(requestingUserId: string, targetedUserId: string): Promise<void> {
-  // Get users
-  const requestingUser = await getUserById(requestingUserId);
-  const targetedUser = await getUserById(targetedUserId);
-
   // delete
-  const followId = targetedUser.username + requestingUser.username;
+  const followId = targetedUserId + requestingUserId;
 
   await followRepository
     .createQueryBuilder('follow')

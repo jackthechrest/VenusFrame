@@ -54,6 +54,13 @@ async function getUserById(userId: string): Promise<User | null> {
   return user;
 }
 
+async function getUserByUsername(username: string): Promise<User | null> {
+  const user = await userRepository.findOne({
+    where: { username },
+  });
+  return user;
+}
+
 async function getUsersByViews(minViews: number): Promise<User[]> {
   const users = await userRepository
     .createQueryBuilder('user')
@@ -165,6 +172,7 @@ export {
   addUser,
   getUserByEmail,
   getUserById,
+  getUserByUsername,
   getUsersByViews,
   incrementProfileViews,
   allUserData,

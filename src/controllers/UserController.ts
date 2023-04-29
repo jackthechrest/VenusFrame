@@ -5,6 +5,7 @@ import {
   addUser,
   getUserByEmail,
   getUserById,
+  getUserByUsername,
   incrementProfileViews,
   allUserData,
   resetAllProfileViews,
@@ -126,7 +127,7 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 
   const { isLoggedIn, authenticatedUser } = req.session;
   const viewingUser = await getUserById(authenticatedUser.userId);
-  const targetFollow = await getFollowById(user.username + viewingUser.username);
+  const targetFollow = await getFollowById(user.userId + viewingUser.userId);
 
   res.render('ProfilePage', {
     user,
@@ -134,6 +135,18 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
     loggedIn: isLoggedIn,
     following: targetFollow,
   });
+}
+
+async function findUser(req: Request, res: Response): Promise<void> {
+  const { username } = req.body;
+
+  const user = await getUserByUsername(username);
+
+  if (!user) {
+    res.redirect('/search');
+  }
+
+  res.redirect(`/users/${user.userId}`);
 }
 
 async function resetProfileViews(req: Request, res: Response): Promise<void> {
@@ -303,6 +316,7 @@ export {
   logIn,
   getUserProfileData,
   getAllUserProfiles,
+  findUser,
   resetProfileViews,
   updateUserEmail,
   deleteAccount,

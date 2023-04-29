@@ -3,7 +3,7 @@ import { User } from './User';
 
 @Entity()
 export class Follow {
-  // followId is targetedUsername + requestingUsername
+  // followId is targetedUserId + requestingUserId
   @PrimaryColumn()
   followId: string;
 

@@ -19,6 +19,7 @@ import {
   registerUser,
   logIn,
   getUserProfileData,
+  findUser,
   updateUserEmail,
   deleteAccount,
   createReminder,
@@ -74,12 +75,13 @@ app.use(express.urlencoded({ extended: false }));
 
 // endpoints
 app.get('/api/users', getAllUserProfiles);
-app.post('/api/users', registerUser);
+app.post('/users', registerUser);
 
-app.post('/api/login', logIn);
+app.post('/login', logIn);
 app.get('/users/PreviewPage', renderPreviewPage);
 app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);
+app.post('/users/search', findUser);
 
 // Following/Followers
 app.get('/users/follow/:targetUserId', followUser);
