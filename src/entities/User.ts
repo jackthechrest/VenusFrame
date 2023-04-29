@@ -12,6 +12,7 @@ import { Answer } from './Answer';
 import { RulesOfLove } from './RulesOfLove';
 import { Reminder } from './Reminder';
 import { Anniversary } from './Anniversary';
+import { Follow } from './Follow';
 
 @Entity()
 export class User {
@@ -50,11 +51,12 @@ export class User {
   @JoinColumn()
   anniversary: Relation<Anniversary>;
 
-  @OneToMany(() => User, (user) => user.following, { cascade: ['insert', 'update'] })
-  following: Relation<User>[];
+  // follow
+  @OneToMany(() => Follow, (follow) => follow.targetedUser, { cascade: ['insert', 'update'] })
+  following: Relation<Follow>[];
 
-  @OneToMany(() => User, (user) => user.followers, { cascade: ['insert', 'update'] })
-  followers: Relation<User>[];
+  @OneToMany(() => Follow, (follow) => follow.requestingUser, { cascade: ['insert', 'update'] })
+  followers: Relation<Follow>[];
 
   // Rules Of Love
   @ManyToOne(() => RulesOfLove, (rol) => rol.players, { cascade: ['insert', 'update'] })
@@ -72,3 +74,4 @@ export class User {
   @Column({ default: false })
   inGame: boolean;
 }
+
