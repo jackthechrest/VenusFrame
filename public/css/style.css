@@ -270,3 +270,11 @@ p {
   font-weight: bold;
   text-align: center;
 }
+
+.center-btn {
+  text-align: center;
+}
+
+.space  {
+  margin-top: 40px;
+}
