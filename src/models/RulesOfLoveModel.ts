@@ -86,20 +86,25 @@ async function endROLById(gameId: string): Promise<void> {
 }
 
 async function removePlayerFromROL(gameId: string, player: User): Promise<void> {
-  const game = await getROLById(gameId);
+  let game = await getROLById(gameId);
 
-  const indexToRemove = game.players.indexOf(player);
+  let indexToRemove = -1;
+
+  if (game.players[0].userId === player.userId) {
+    indexToRemove = 0;
+  } else if (game.players[1].userId === player.userId) {
+    indexToRemove = 1;
+  }
 
   if (indexToRemove !== -1) {
     game.players.splice(indexToRemove, 1);
   }
 
-  console.log(game.players.length);
+  game = await rolRepository.save(game);
+
   if (game.players.length === 0) {
     await endROLById(gameId);
   }
-
-  await rolRepository.save(game);
 }
 
 async function clearAllROL(): Promise<void> {

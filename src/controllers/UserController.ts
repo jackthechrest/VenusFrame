@@ -32,9 +32,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
 
   try {
     // IMPORTANT: Store the `passwordHash` and NOT the plaintext password
-    const newUser = await addUser(username, email, passwordHash);
-    console.log(newUser);
-
+    await addUser(username, email, passwordHash);
     await sendEmail(
       email,
       'Welcome!',
@@ -49,7 +47,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
 }
 
 async function logIn(req: Request, res: Response): Promise<void> {
-  console.log(req.session);
+  // console.log(req.session);
 
   const now = new Date();
   // NOTES: We need to convert the date string back into a Date() object
@@ -123,7 +121,6 @@ async function getUserProfileData(req: Request, res: Response): Promise<void> {
 
   // Now update their profile views
   user = await incrementProfileViews(user);
-  // console.log(user);
 
   const { isLoggedIn, authenticatedUser } = req.session;
   const viewingUser = await getUserById(authenticatedUser.userId);

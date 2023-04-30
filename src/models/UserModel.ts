@@ -59,8 +59,6 @@ async function getUserById(userId: string): Promise<User | null> {
       'followers',
     ],
   });
-
-  console.log(JSON.stringify(user));
   return user;
 }
 

@@ -131,13 +131,27 @@ async function exitROL(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  // make sure game exists and that the player is in it
   const game = await getROLById(gameId);
-  if (!game || !game.players.includes(user)) {
-    res.redirect('/rulesoflove');
+  if (!game) {
+    res.redirect('/rulesoflove/play');
     return;
   }
 
-  await removePlayerFromROL(gameId, user);
+  let notValidPlayer = true;
+  for (const player of game.players) {
+    if (player.userId === user.userId) {
+      notValidPlayer = false;
+    }
+  }
+
+  if (notValidPlayer) {
+    res.redirect('/rulesoflove/play');
+    return;
+  }
+
+  await removePlayerFromROL(game.gameId, user);
+  res.redirect('/users/PreviewPage');
 }
 
 async function deleteAllROL(res: Response): Promise<void> {
