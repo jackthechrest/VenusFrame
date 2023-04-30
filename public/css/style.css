@@ -278,3 +278,14 @@ p {
 .space  {
   margin-top: 40px;
 }
+
+.container
+{
+  display: flex;
+}
+
+.container .middleRadio
+{
+  display: flex;
+  flex-direction: column;
+}

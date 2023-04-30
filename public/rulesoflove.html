@@ -50,22 +50,24 @@
   <form method = "POST" action = "/rulesoflove/play">
     <label for = "gameId"></label>
     <input name = "gameId" id = "gameId" class = "number" placeholder = "Game ID" type = "number" required>
+    <div class="container">
+      <div class = "middleRadio">
+        <div>
+          <input type="radio" id="newPlay" name="newPlay" value="Rock Candy Heart" required/>
+          <label for="newPlay">Rock Candy Heart</label>
+        </div>
 
-    <div>
-      <input type="radio" id="newPlay" name="newPlay" value="Rock Candy Heart" required/>
-      <label for="newPlay">Rock Candy Heart</label>
+        <div>
+          <input type="radio" id="newPlay" name="newPlay" value="Box of Chocolates" required/>
+          <label for="newPlay">Box of Chocolates</label>
+        </div>
+
+        <div>
+          <input type="radio" id="newPlay" name="newPlay" value="Candle" required/>
+          <label for="newPlay">Candle</label>
+        </div>
     </div>
-
-    <div>
-      <input type="radio" id="newPlay" name="newPlay" value="Box of Chocolates" required/>
-      <label for="newPlay">Box of Chocolates</label>
-    </div>
-
-    <div>
-      <input type="radio" id="newPlay" name="newPlay" value="Candle" required/>
-      <label for="newPlay">Candle</label>
-    </div>
-
+  </div>
     <div class="center-btn">
       <button class = "btn-large">PLAY</button>
     </div>
