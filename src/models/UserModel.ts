@@ -49,8 +49,18 @@ async function allUserData(): Promise<User[]> {
 async function getUserById(userId: string): Promise<User | null> {
   const user = await userRepository.findOne({
     where: { userId },
-    relations: ['partner', 'answers', 'reminders', 'anniversary', 'following', 'followers'],
+    relations: [
+      'rolInfo',
+      'partner',
+      'answers',
+      'reminders',
+      'anniversary',
+      'following',
+      'followers',
+    ],
   });
+
+  console.log(JSON.stringify(user));
   return user;
 }
 
@@ -119,9 +129,11 @@ async function addROL(
 }
 
 async function updateUserStreaksROL(winnerId: string, loserId: string): Promise<void> {
-  const winner = await getUserById(winnerId);
-  const loser = await getUserById(loserId);
+  // get users
+  let winner = await getUserById(winnerId);
+  let loser = await getUserById(loserId);
 
+  // update their win streaks
   winner.currentWinStreak += 1;
   loser.currentWinStreak = 0;
 
@@ -129,8 +141,9 @@ async function updateUserStreaksROL(winnerId: string, loserId: string): Promise<
     winner.highestWinStreak = winner.currentWinStreak;
   }
 
-  await userRepository.save(winner);
-  await userRepository.save(loser);
+  // save win streaks (not working???)
+  winner = await userRepository.save(winner);
+  loser = await userRepository.save(loser);
 }
 
 async function deleteUserById(userId: string): Promise<void> {

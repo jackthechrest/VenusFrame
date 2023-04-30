@@ -1,18 +1,23 @@
 import { Request, Response } from 'express';
-import { startROL, getROLById, joinROL, playROL, clearAllROL } from '../models/RulesOfLoveModel';
+import {
+  startROL,
+  getROLById,
+  joinROL,
+  playROL,
+  removePlayerFromROL,
+  clearAllROL,
+} from '../models/RulesOfLoveModel';
 import { getUserById, resetAllROL } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
 async function startRulesOfLove(req: Request, res: Response): Promise<void> {
+  // verify user is logged in and exists
   const { isLoggedIn, authenticatedUser } = req.session;
-
-  // verify logged in
   if (!isLoggedIn) {
     res.redirect('/login');
     return;
   }
 
-  // get user, make sure they exist
   const user = await getUserById(authenticatedUser.userId);
   if (!user) {
     res.redirect('/index');
@@ -31,11 +36,9 @@ async function startRulesOfLove(req: Request, res: Response): Promise<void> {
 
 async function playRulesOfLove(req: Request, res: Response): Promise<void> {
   const { gameId, newPlay } = req.body as RulesOfLoveBody;
-  // console.log(`GameId: ${gameId}\nnewPlay: ${newPlay}`);
 
-  // NOTES: Access the data from `req.session`
+  // make sure user is logged in and exists
   const { isLoggedIn, authenticatedUser } = req.session;
-
   if (!isLoggedIn) {
     res.redirect('/login');
     return;
@@ -61,8 +64,8 @@ async function playRulesOfLove(req: Request, res: Response): Promise<void> {
       const databaseErrorMessage = parseDatabaseError(err);
       res.status(500).json(databaseErrorMessage);
     }
-  } else if (game.players.length === 2 || game.players[0].userId === user.userId) {
-    // full game or player is joining game they already started
+  } else if (game.players.length === 2 || game.players[0].userId === user.userId || game.gameOver) {
+    // full game, player is joining game they already started, or game is over
     // console.log(`${user.username} FULL: ${JSON.stringify(game)}`);
     res.redirect('/rulesoflove');
   } else {
@@ -75,7 +78,7 @@ async function playRulesOfLove(req: Request, res: Response): Promise<void> {
 async function renderRulesOfLove(req: Request, res: Response): Promise<void> {
   const { gameId } = req.params;
 
-  // NOTES: Access the data from `req.session`
+  // make sure user is logged in, exists, and that game exists
   const { isLoggedIn, authenticatedUser } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login');
@@ -94,12 +97,14 @@ async function renderRulesOfLove(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  // check for draw (if game happened already)
   let isDraw = false;
 
   if (game.players[1] && game.players[0].currentPlay === game.players[1].currentPlay) {
     isDraw = true;
   }
 
+  // play game if there are 2 players and game hasn't already been played
   if (game.players.length === 2 && !game.gameOver) {
     game = await playROL(gameId, game.players[0], game.players[1]);
   }
@@ -111,10 +116,34 @@ async function renderRulesOfLove(req: Request, res: Response): Promise<void> {
   });
 }
 
+async function exitROL(req: Request, res: Response): Promise<void> {
+  const { gameId } = req.params;
+  // make sure user is logged in and exists
+  const { isLoggedIn, authenticatedUser } = req.session;
+  if (!isLoggedIn) {
+    res.redirect('/login');
+    return;
+  }
+
+  const user = await getUserById(authenticatedUser.userId);
+  if (!user) {
+    res.redirect('/index');
+    return;
+  }
+
+  const game = await getROLById(gameId);
+  if (!game || !game.players.includes(user)) {
+    res.redirect('/rulesoflove');
+    return;
+  }
+
+  await removePlayerFromROL(gameId, user);
+}
+
 async function deleteAllROL(res: Response): Promise<void> {
   await resetAllROL();
   await clearAllROL();
   res.redirect('/index');
 }
 
-export { startRulesOfLove, playRulesOfLove, renderRulesOfLove, deleteAllROL };
+export { startRulesOfLove, playRulesOfLove, renderRulesOfLove, exitROL, deleteAllROL };

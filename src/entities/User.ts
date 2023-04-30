@@ -70,7 +70,4 @@ export class User {
 
   @Column({ default: 0 })
   highestWinStreak: number;
-
-  @Column({ default: false })
-  inGame: boolean;
 }

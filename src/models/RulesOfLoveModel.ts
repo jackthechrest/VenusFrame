@@ -47,18 +47,21 @@ async function playROL(gameId: string, player1: User, player2: User): Promise<Ru
   ROL.winnerChoice = player1.currentPlay;
   ROL.loserName = player2.username;
   ROL.loserChoice = player2.currentPlay;
-  ROL.winnerStreak = player1.currentWinStreak;
 
   if (player1.currentPlay === player2.currentPlay) {
+    // check for draw
     console.log('DRAW');
   } else if (
     (player1.currentPlay === 'Rock Candy Heart' && player2.currentPlay === 'Candle') ||
     (player1.currentPlay === 'Box of Chocolates' && player2.currentPlay === 'Rock Candy Heart') ||
     (player1.currentPlay === 'Candle' && player2.currentPlay === 'Box of Chocolates')
   ) {
+    // player1 wins
     console.log(`${player1.username} WINS`);
     await updateUserStreaksROL(player1.userId, player2.userId);
+    ROL.winnerStreak = player1.currentWinStreak;
   } else {
+    // player2 wins
     console.log(`${player2.username} WINS`);
     ROL.winnerName = player2.username;
     ROL.winnerChoice = player2.currentPlay;
@@ -82,8 +85,25 @@ async function endROLById(gameId: string): Promise<void> {
     .execute();
 }
 
+async function removePlayerFromROL(gameId: string, player: User): Promise<void> {
+  const game = await getROLById(gameId);
+
+  const indexToRemove = game.players.indexOf(player);
+
+  if (indexToRemove !== -1) {
+    game.players.splice(indexToRemove, 1);
+  }
+
+  console.log(game.players.length);
+  if (game.players.length === 0) {
+    await endROLById(gameId);
+  }
+
+  await rolRepository.save(game);
+}
+
 async function clearAllROL(): Promise<void> {
   await rolRepository.createQueryBuilder('rol').delete().execute();
 }
 
-export { getROLById, startROL, joinROL, playROL, endROLById, clearAllROL };
+export { getROLById, startROL, joinROL, playROL, removePlayerFromROL, clearAllROL };

@@ -38,6 +38,7 @@ import {
   startRulesOfLove,
   playRulesOfLove,
   renderRulesOfLove,
+  exitROL,
   deleteAllROL,
 } from './controllers/RulesOfLoveController.js';
 import {
@@ -114,6 +115,7 @@ app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
 app.get('/rulesoflove/start', startRulesOfLove);
 app.post('/rulesoflove/play', playRulesOfLove);
 app.get('/rulesoflove/:gameId', renderRulesOfLove);
+app.get('/rulesoflove/:gameId/exit', exitROL);
 
 // anniversary
 app.get('/anniversaries/:targetUserId', renderaddAnniversaryPage);
