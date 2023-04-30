@@ -8,20 +8,7 @@
   <title><%= user.username %> Following | Venus Frame</title>
 </head>
 <body>
-  <style>
-    h1 {
-      font-size: 50px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    p {
-      font-size: 20px;
-      text-align: center;
-    }
-  </style>
-
-  <h1><%= user.username %> Following:</h1>
+  <h1 class = "follow-header"><%= user.username %> Following:</h1>
 
   <% if (user.following.length === 0) { %>
    <p>Not Following Anyone</p>

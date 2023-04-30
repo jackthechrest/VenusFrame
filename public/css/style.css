@@ -251,3 +251,22 @@ label {
 .transferReceiveMessage {
   background-color: rgb(246, 246, 246);
 }
+
+li {
+  font-size: 20px;
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 20px;
+  text-align: center;
+}
+
+.follow-header  {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+}
