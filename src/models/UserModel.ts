@@ -126,10 +126,9 @@ async function addROL(
   await userRepository.save(user);
 }
 
-async function updateUserStreaksROL(winnerId: string, loserId: string): Promise<void> {
-  // get users
-  let winner = await getUserById(winnerId);
-  let loser = await getUserById(loserId);
+async function updateUserStreaksROL(winnerData: User, loserData: User): Promise<void> {
+  const winner = winnerData;
+  const loser = loserData;
 
   // update their win streaks
   winner.currentWinStreak += 1;
@@ -140,8 +139,19 @@ async function updateUserStreaksROL(winnerId: string, loserId: string): Promise<
   }
 
   // save win streaks (not working???)
-  winner = await userRepository.save(winner);
-  loser = await userRepository.save(loser);
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ currentWinStreak: winner.currentWinStreak, highestWinStreak: winner.highestWinStreak })
+    .where({ userId: winner.userId })
+    .execute();
+
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ currentWinStreak: 0 })
+    .where({ userId: loser.userId })
+    .execute();
 }
 
 async function deleteUserById(userId: string): Promise<void> {

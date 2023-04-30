@@ -58,7 +58,7 @@ async function playROL(gameId: string, player1: User, player2: User): Promise<Ru
   ) {
     // player1 wins
     console.log(`${player1.username} WINS`);
-    await updateUserStreaksROL(player1.userId, player2.userId);
+    await updateUserStreaksROL(player1, player2);
     ROL.winnerStreak = player1.currentWinStreak;
   } else {
     // player2 wins
@@ -67,7 +67,7 @@ async function playROL(gameId: string, player1: User, player2: User): Promise<Ru
     ROL.winnerChoice = player2.currentPlay;
     ROL.loserName = player1.username;
     ROL.loserChoice = player1.currentPlay;
-    await updateUserStreaksROL(player2.userId, player1.userId);
+    await updateUserStreaksROL(player2, player1);
     ROL.winnerStreak = player2.currentWinStreak;
   }
 
