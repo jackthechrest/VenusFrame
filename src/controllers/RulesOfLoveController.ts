@@ -1,24 +1,50 @@
 import { Request, Response } from 'express';
-import { User } from '../entities/User';
-import { startROL, getROLById, joinROL, clearAllROL } from '../models/RulesOfLoveModel';
-import { getUserById } from '../models/UserModel';
+import { startROL, getROLById, joinROL, playROL, clearAllROL } from '../models/RulesOfLoveModel';
+import { getUserById, resetAllROL } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
-async function intermediateRulesOfLove(req: Request, res: Response): Promise<void> {
+async function startRulesOfLove(req: Request, res: Response): Promise<void> {
+  const { isLoggedIn, authenticatedUser } = req.session;
+
+  // verify logged in
+  if (!isLoggedIn) {
+    res.redirect('/login');
+    return;
+  }
+
+  // get user, make sure they exist
+  const user = await getUserById(authenticatedUser.userId);
+  if (!user) {
+    res.redirect('/index');
+    return;
+  }
+
+  // user not in game
+  if (!user.rolInfo) {
+    res.redirect('/rulesoflove');
+    return;
+  }
+
+  // user in game, redirect to it
+  res.redirect(`/rulesoflove/${user.rolInfo.gameId}`);
+}
+
+async function playRulesOfLove(req: Request, res: Response): Promise<void> {
   const { gameId, newPlay } = req.body as RulesOfLoveBody;
-  console.log(`GameId: ${gameId}\nnewPlay: ${newPlay}`);
+  // console.log(`GameId: ${gameId}\nnewPlay: ${newPlay}`);
 
   // NOTES: Access the data from `req.session`
   const { isLoggedIn, authenticatedUser } = req.session;
 
   if (!isLoggedIn) {
     res.redirect('/login');
+    return;
   }
 
   const user = await getUserById(authenticatedUser.userId);
   if (!user) {
-    // res.sendStatus(404); // 404 not found
     res.redirect('/index');
+    return;
   }
 
   // try to join game with the id
@@ -28,8 +54,8 @@ async function intermediateRulesOfLove(req: Request, res: Response): Promise<voi
   if (!game) {
     try {
       game = await startROL(gameId, user.userId, newPlay);
-      console.log(`${user.username} CREATE: ${JSON.stringify(game)}`);
-      res.redirect('/waitingRoom');
+      // console.log(`${user.username} CREATE: ${JSON.stringify(game)}`);
+      res.redirect(`/rulesoflove/${gameId}`);
     } catch (err) {
       console.error(err);
       const databaseErrorMessage = parseDatabaseError(err);
@@ -37,51 +63,58 @@ async function intermediateRulesOfLove(req: Request, res: Response): Promise<voi
     }
   } else if (game.players.length === 2 || game.players[0].userId === user.userId) {
     // full game or player is joining game they already started
-    console.log(`${user.username} FULL: ${JSON.stringify(game)}`);
+    // console.log(`${user.username} FULL: ${JSON.stringify(game)}`);
     res.redirect('/rulesoflove');
   } else {
     game = await joinROL(game.gameId, user.userId, newPlay);
-    console.log(`${user.username} JOIN: ${JSON.stringify(user.rolInfo)}`);
+    // console.log(`${user.username} JOIN: ${JSON.stringify(user.rolInfo)}`);
     res.redirect(`/rulesoflove/${gameId}`);
   }
 }
 
-async function playRulesOfLove(req: Request, res: Response): Promise<void> {
+async function renderRulesOfLove(req: Request, res: Response): Promise<void> {
   const { gameId } = req.params;
-  const game = await getROLById(gameId);
 
-  if (!game || game.players.length !== 2) {
-    res.redirect('/waitingRoom');
+  // NOTES: Access the data from `req.session`
+  const { isLoggedIn, authenticatedUser } = req.session;
+  if (!isLoggedIn) {
+    res.redirect('/login');
+    return;
   }
-  console.log(JSON.stringify(game));
 
-  const player1 = game.players[0];
-  const player2 = game.players[1];
+  const user = await getUserById(authenticatedUser.userId);
+  if (!user) {
+    res.redirect('/index');
+    return;
+  }
 
-  let isDraw: boolean = false;
-  let winner: User = player1;
-  let loser: User = player2;
+  let game = await getROLById(gameId);
+  if (!game) {
+    res.redirect('/rulesoflove');
+    return;
+  }
 
-  if (player1.currentPlay === player2.currentPlay) {
-    console.log('DRAW');
+  let isDraw = false;
+
+  if (game.players[1] && game.players[0].currentPlay === game.players[1].currentPlay) {
     isDraw = true;
-  } else if (
-    (player1.currentPlay === 'Rock Candy Heart' && player2.currentPlay === 'Candle') ||
-    (player1.currentPlay === 'Box of Chocolates' && player2.currentPlay === 'Rock Candy Heart') ||
-    (player1.currentPlay === 'Candle' && player2.currentPlay === 'Box of Chocolates')
-  ) {
-    console.log(`${player1.username} WINS`);
-  } else {
-    console.log(`${player2.username} WINS`);
-    winner = player2;
-    loser = player1;
   }
-  res.render('rolResults', { isDraw, winner, loser });
+
+  if (game.players.length === 2 && !game.gameOver) {
+    game = await playROL(gameId, game.players[0], game.players[1]);
+  }
+
+  res.render('rolResults', {
+    rol: game,
+    player1: game.players[0],
+    isDraw,
+  });
 }
 
-async function deleteAllROL(req: Request, res: Response): Promise<void> {
+async function deleteAllROL(res: Response): Promise<void> {
+  await resetAllROL();
   await clearAllROL();
   res.redirect('/index');
 }
 
-export { intermediateRulesOfLove, playRulesOfLove, deleteAllROL };
+export { startRulesOfLove, playRulesOfLove, renderRulesOfLove, deleteAllROL };

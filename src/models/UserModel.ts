@@ -94,6 +94,10 @@ async function resetAllProfileViews(): Promise<void> {
     .execute();
 }
 
+async function resetAllROL(): Promise<void> {
+  await userRepository.createQueryBuilder().update(User).set({ rolInfo: null }).execute();
+}
+
 async function updateEmailAddress(userId: string, newEmail: string): Promise<void> {
   await userRepository
     .createQueryBuilder()
@@ -112,6 +116,21 @@ async function addROL(
   user.currentPlay = newPlay;
   user.rolInfo = rol;
   await userRepository.save(user);
+}
+
+async function updateUserStreaksROL(winnerId: string, loserId: string): Promise<void> {
+  const winner = await getUserById(winnerId);
+  const loser = await getUserById(loserId);
+
+  winner.currentWinStreak += 1;
+  loser.currentWinStreak = 0;
+
+  if (winner.currentWinStreak > winner.highestWinStreak) {
+    winner.highestWinStreak = winner.currentWinStreak;
+  }
+
+  await userRepository.save(winner);
+  await userRepository.save(loser);
 }
 
 async function deleteUserById(userId: string): Promise<void> {
@@ -177,8 +196,10 @@ export {
   incrementProfileViews,
   allUserData,
   resetAllProfileViews,
+  resetAllROL,
   updateEmailAddress,
   addROL,
+  updateUserStreaksROL,
   deleteUserById,
   deleteAllUsers,
   getRemindersDueInOneDay,

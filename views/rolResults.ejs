@@ -4,15 +4,24 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rules of Love | Venus Frame</title>
+  <title>Rules of Love <%= rol.gameId %> | Venus Frame</title>
 </head>
 <body>
-  <% if (isDraw) { %>
-  <h1>DRAW!</h1>
-  <h2>Both players' win streaks stay the same</h2>
+  <h1>Rules of Love with Game ID: <%= rol.gameId %></h1>
+  <% if (!rol.gameOver) { %>
+    <h1>Player 1: <%= player1.username %> - <%= player1.currentPlay %></h1>
+    <h2>Waiting for Player 2...</h1>
+  <% } else if (isDraw) { %>
+    <h1>DRAW!</h1>
+    <h2><%= rol.winnerName %> and <%= rol.loserName %> both picked <%= rol.winnerChoice %>...</h2>
+    <h2>Both players' win streaks stay the same.</h2>
   <% } else { %>
-  <h1><%= winner.username %> beat <%= loser.username %> with <%= winner.currentPlay %> </h1>
-  <h2>Their win streak is now <%= winner.currentWinStreak + 1 %></h2>
+    <h1>Winner: <%= rol.winnerName %> - <%= rol.winnerChoice %></h1>
+    <h1>Loser: <%= rol.loserName %> - <%= rol.loserChoice %></h1>
+
+    <h1><%= rol.winnerName %> beat <%= rol.loserName %>!</h1>
+    <h2>Their win streak is now <%= rol.WinnerStreak %> games.</h2>
   <% } %>
+
 </body>
 </html>

@@ -1,6 +1,7 @@
 import { AppDataSource } from '../dataSource';
 import { RulesOfLove } from '../entities/RulesOfLove';
-import { addROL, getUserById } from './UserModel';
+import { User } from '../entities/User';
+import { getUserById, addROL, updateUserStreaksROL } from './UserModel';
 
 // rules of love repository
 const rolRepository = AppDataSource.getRepository(RulesOfLove);
@@ -38,8 +39,39 @@ async function joinROL(
   return updatedROL;
 }
 
-async function getAllROL(): Promise<RulesOfLove[]> {
-  return rolRepository.find();
+async function playROL(gameId: string, player1: User, player2: User): Promise<RulesOfLove> {
+  let ROL = await getROLById(gameId);
+
+  // placeholder for rendering purposes.
+  ROL.winnerName = player1.username;
+  ROL.winnerChoice = player1.currentPlay;
+  ROL.loserName = player2.username;
+  ROL.loserChoice = player2.currentPlay;
+  ROL.winnerStreak = player1.currentWinStreak;
+
+  if (player1.currentPlay === player2.currentPlay) {
+    console.log('DRAW');
+  } else if (
+    (player1.currentPlay === 'Rock Candy Heart' && player2.currentPlay === 'Candle') ||
+    (player1.currentPlay === 'Box of Chocolates' && player2.currentPlay === 'Rock Candy Heart') ||
+    (player1.currentPlay === 'Candle' && player2.currentPlay === 'Box of Chocolates')
+  ) {
+    console.log(`${player1.username} WINS`);
+    await updateUserStreaksROL(player1.userId, player2.userId);
+  } else {
+    console.log(`${player2.username} WINS`);
+    ROL.winnerName = player2.username;
+    ROL.winnerChoice = player2.currentPlay;
+    ROL.loserName = player1.username;
+    ROL.loserChoice = player1.currentPlay;
+    await updateUserStreaksROL(player2.userId, player1.userId);
+    ROL.winnerStreak = player2.currentWinStreak;
+  }
+
+  ROL.gameOver = true;
+  ROL = await rolRepository.save(ROL);
+
+  return ROL;
 }
 
 async function endROLById(gameId: string): Promise<void> {
@@ -54,4 +86,4 @@ async function clearAllROL(): Promise<void> {
   await rolRepository.createQueryBuilder('rol').delete().execute();
 }
 
-export { startROL, joinROL, getROLById, getAllROL, endROLById, clearAllROL };
+export { getROLById, startROL, joinROL, playROL, endROLById, clearAllROL };

@@ -35,9 +35,10 @@ import {
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
 import { addNewAnswer, renderAnswerPage } from './controllers/AnswerController';
 import {
-  deleteAllROL,
-  intermediateRulesOfLove,
+  startRulesOfLove,
   playRulesOfLove,
+  renderRulesOfLove,
+  deleteAllROL,
 } from './controllers/RulesOfLoveController.js';
 import {
   insertAnniversary,
@@ -110,8 +111,9 @@ app.get('/users/:userId/partner', handleFindPartner);
 app.post('/api/partner', insertTypeCode);
 app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
 // rules of love
-app.post('/rulesoflove/play', intermediateRulesOfLove);
-app.get('/rulesoflove/:gameId', playRulesOfLove);
+app.get('/rulesoflove/start', startRulesOfLove);
+app.post('/rulesoflove/play', playRulesOfLove);
+app.get('/rulesoflove/:gameId', renderRulesOfLove);
 
 // anniversary
 app.get('/anniversaries/:targetUserId', renderaddAnniversaryPage);
