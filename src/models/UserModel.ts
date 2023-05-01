@@ -126,32 +126,24 @@ async function addROL(
   await userRepository.save(user);
 }
 
-async function updateUserStreaksROL(winnerData: User, loserData: User): Promise<void> {
-  const winner = winnerData;
-  const loser = loserData;
+async function updateUserStreaksROL(userData: User, isWinner: boolean): Promise<User> {
+  let user = userData;
 
   // update their win streaks
-  winner.currentWinStreak += 1;
-  loser.currentWinStreak = 0;
+  if (isWinner) {
+    user.currentWinStreak += 1;
 
-  if (winner.currentWinStreak > winner.highestWinStreak) {
-    winner.highestWinStreak = winner.currentWinStreak;
+    if (user.currentWinStreak > user.highestWinStreak) {
+      user.highestWinStreak = user.currentWinStreak;
+    }
+  } else {
+    user.currentWinStreak = 0;
   }
 
-  // save win streaks (not working???)
-  await userRepository
-    .createQueryBuilder()
-    .update(User)
-    .set({ currentWinStreak: winner.currentWinStreak, highestWinStreak: winner.highestWinStreak })
-    .where({ userId: winner.userId })
-    .execute();
+  // save win streaks
+  user = await userRepository.save(user);
 
-  await userRepository
-    .createQueryBuilder()
-    .update(User)
-    .set({ currentWinStreak: 0 })
-    .where({ userId: loser.userId })
-    .execute();
+  return user;
 }
 
 async function deleteUserById(userId: string): Promise<void> {
