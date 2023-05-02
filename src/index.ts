@@ -54,6 +54,7 @@ import {
   renderFollowingPage,
   renderFollowersPage,
 } from './controllers/FollowController';
+import { validateNewUserBody, validateLoginBody } from './validators/authValidator';
 
 const app: Express = express();
 app.set('view engine', 'ejs');
@@ -77,9 +78,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // endpoints
 app.get('/api/users', getAllUserProfiles);
-app.post('/users', registerUser);
+app.post('/users', validateNewUserBody, registerUser);
 
-app.post('/login', logIn);
+app.post('/login', validateLoginBody, logIn);
 app.get('/users/PreviewPage', renderPreviewPage);
 app.get('/users/FindPartnerId', renderConnectPage);
 app.get('/users/:targetUserId', getUserProfileData);

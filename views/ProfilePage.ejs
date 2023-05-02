@@ -14,7 +14,7 @@
     <h3 class="big-text">Highest Win Streak in Rules of Love: <%= user.highestWinStreak %> Games</h3>
 
     <% if (user.partner) { %>
-      <h3 class="big-text">Taken By: <a href = '/users/<%= user.partner.userId %>'>user.partner.username</a></h3>
+      <h3 class="big-text">Taken By: <a href = '/users/<%= user.partner.userId %>'><%= user.partner.username %></a></h3>
     <% } else { %>
       <h3 class="big-text">Single</h3>
     <% } %>
