@@ -47,7 +47,7 @@ import {
   getAllAnniversaries,
 } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
-import { sendRemiderAnniversary } from './services/anniversaryReminderService';
+import { sendReminderAnniversary } from './services/anniversaryReminderService';
 import {
   followUser,
   unfollowUser,
@@ -178,6 +178,6 @@ socketServer.on('connection', (socket) => {
   });
 });
 
-scheduleJob('21 15 * * *', sendOneDayReminders);
+scheduleJob('0 12 * * *', sendOneDayReminders);
 
-scheduleJob('21 15 * * *', sendRemiderAnniversary);
+scheduleJob('0 12 * * *', sendReminderAnniversary);
