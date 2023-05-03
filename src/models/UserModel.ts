@@ -39,7 +39,10 @@ async function addUser(username: string, email: string, passwordHash: string): P
 }
 
 async function getUserByEmail(email: string): Promise<User | null> {
-  return userRepository.findOne({ where: { email } });
+  return userRepository.findOne({
+    where: { email },
+    relations: ['rolInfo', 'partner', 'anniversary'],
+  });
 }
 
 async function allUserData(): Promise<User[]> {
@@ -158,6 +161,12 @@ async function deleteAllUsers(): Promise<void> {
   await userRepository.createQueryBuilder('user').delete().execute();
 }
 
+async function deletePartnerByUserId(userId: string): Promise<void> {
+  const user = await getUserById(userId);
+  user.partner = null;
+  await userRepository.save(user);
+}
+
 async function getRemindersDueInOneDay(): Promise<User[]> {
   const users = await userRepository
     .createQueryBuilder('user')
@@ -215,6 +224,7 @@ export {
   updateUserStreaksROL,
   deleteUserById,
   deleteAllUsers,
+  deletePartnerByUserId,
   getRemindersDueInOneDay,
   generateTypeCode,
   addPartnerToUserByTypeCode,
