@@ -57,6 +57,19 @@ async function deleteAnswerById(answerId: string): Promise<void> {
     .execute();
 }
 
+async function deleteAnswersByUserId(userId: string): Promise<void> {
+  const user = await getUserById(userId);
+
+  while (user.answers.length > 0) {
+    const { answerId } = user.answers.pop();
+    await answerRepository
+      .createQueryBuilder('answer')
+      .delete()
+      .where('answerId = :answerId', { answerId })
+      .execute();
+  }
+}
+
 async function getAnswerByPartner(userId: string, questionId: string): Promise<Answer | null> {
   const answer = await answerRepository
     .createQueryBuilder('answer')
@@ -74,5 +87,6 @@ export {
   userHasAnswerForQuestion,
   answerBelongsToUser,
   deleteAnswerById,
+  deleteAnswersByUserId,
   getAnswerByPartner,
 };
