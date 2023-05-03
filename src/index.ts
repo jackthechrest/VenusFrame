@@ -25,7 +25,6 @@ import {
   createReminder,
   renderConnectPage,
   renderPreviewPage,
-  deleteAllAccounts,
   renderQuestionPage,
   renderaddAnniversaryPage,
   handleFindPartner,
@@ -39,7 +38,6 @@ import {
   playRulesOfLove,
   renderRulesOfLove,
   exitROL,
-  deleteAllROL,
 } from './controllers/RulesOfLoveController.js';
 import {
   insertAnniversary,
@@ -97,9 +95,10 @@ app.post('/users/delete', deleteAccount);
 app.post('/api/reminders', createReminder);
 
 // DEBUG
+/*
 app.get('/api/users/DELETEALL', deleteAllAccounts);
 app.get('/api/rulesoflove/DELETEALL', deleteAllROL);
-
+*/
 // questions
 app.get('/users/:targertUserId/QuestionPage', renderQuestionPage);
 app.get('/api/questions', getQuestion);
