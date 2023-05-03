@@ -17,7 +17,7 @@ setTimeout(() => {
     reloadOnRestart: true,
     ui: false,
     logLevel: 'silent',
-    ghostMode: false,
+    // ghostMode: false,
   });
 
   const uiPort = bs.getOption('port');
