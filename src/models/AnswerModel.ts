@@ -2,6 +2,7 @@ import { AppDataSource } from '../dataSource';
 import { Answer } from '../entities/Answer';
 import { User } from '../entities/User';
 import { Question } from '../entities/Question';
+import { getUserById } from './UserModel';
 
 const answerRepository = AppDataSource.getRepository(Answer);
 

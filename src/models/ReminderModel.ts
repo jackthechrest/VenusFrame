@@ -3,6 +3,7 @@ import { AppDataSource } from '../dataSource';
 import { Reminder } from '../entities/Reminder';
 
 import { User } from '../entities/User';
+import { getUserById } from './UserModel';
 
 const reminderRepository = AppDataSource.getRepository(Reminder);
 

@@ -26,9 +26,7 @@ import {
   renderConnectPage,
   renderPreviewPage,
   renderQuestionPage,
-  renderaddAnniversaryPage,
   handleFindPartner,
-  renderFoundPartnerPage,
   insertTypeCode,
 } from './controllers/UserController.js';
 import { addNewQuestion, getQuestion } from './controllers/QuestionController';
@@ -39,11 +37,7 @@ import {
   renderRulesOfLove,
   exitROL,
 } from './controllers/RulesOfLoveController.js';
-import {
-  insertAnniversary,
-  getAnniversaryProfileData,
-  getAllAnniversaries,
-} from './controllers/AnniversaryController';
+import { insertAnniversary, renderAnniversaryPage } from './controllers/AnniversaryController';
 import { sendOneDayReminders } from './services/reminderService';
 import { sendReminderAnniversary } from './services/anniversaryReminderService';
 import {
@@ -110,7 +104,7 @@ app.post('/api/question/:questionId/answers', addNewAnswer);
 // partners
 app.get('/users/:userId/partner', handleFindPartner);
 app.post('/api/partner', insertTypeCode);
-app.get('/users/:targetUserId/FoundPartner', renderFoundPartnerPage);
+
 // rules of love
 app.get('/rulesoflove/start', startRulesOfLove);
 app.post('/rulesoflove/play', playRulesOfLove);
@@ -118,10 +112,9 @@ app.get('/rulesoflove/:gameId', renderRulesOfLove);
 app.get('/rulesoflove/:gameId/exit', exitROL);
 
 // anniversary
-app.get('/anniversaries/:targetUserId', renderaddAnniversaryPage);
+app.get('/anniversaries/:targetUserId', renderAnniversaryPage);
 app.post('/api/anniversaries', insertAnniversary);
-app.get('/anniversaries/:targetAnniversaryId', getAnniversaryProfileData);
-app.get('/anniversaries', getAllAnniversaries);
+
 const server = app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
 });

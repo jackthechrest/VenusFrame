@@ -1,10 +1,23 @@
 import { Request, Response } from 'express';
-import { addAnniversary, getAnniversaryById, getAnniversaries } from '../models/AnniversaryModel';
+import {
+  addAnniversary,
+  getAnniversaryById,
+  getAnniversaries,
+  getAnniversaryByUserId,
+} from '../models/AnniversaryModel';
+import { getUserById } from '../models/UserModel';
 
 async function insertAnniversary(req: Request, res: Response): Promise<void> {
-  const { isLoggedIn } = req.session;
+  const { isLoggedIn, authenticatedUser } = req.session;
   if (!isLoggedIn) {
     res.redirect('/login');
+    return;
+  }
+
+  const user = await getUserById(authenticatedUser.userId);
+
+  if (!user) {
+    res.redirect('/anniversaries');
     return;
   }
 
@@ -16,21 +29,30 @@ async function insertAnniversary(req: Request, res: Response): Promise<void> {
     weddingAnniversary,
     birthday,
     specialday,
-    specialdate
+    specialdate,
+    user
   );
+
   console.log(anniversaryInfo);
   res.render('anniversaryPage', { anniversaryInfo });
 }
 
-async function getAnniversaryProfileData(req: Request, res: Response): Promise<void> {
-  const { targetAnniversaryId } = req.params as AnniversaryIdParam;
+async function renderAnniversaryPage(req: Request, res: Response): Promise<void> {
+  const { isLoggedIn } = req.session;
+  const { userId } = req.params;
 
-  const anniversaryInfo = await getAnniversaryById(targetAnniversaryId);
-
-  if (!anniversaryInfo) {
+  if (!isLoggedIn) {
     res.redirect('/login');
+  }
+
+  const user = await getUserById(userId);
+  const anniversaryInfo = await getAnniversaryByUserId(userId);
+
+  if (!user || !anniversaryInfo) {
+    res.redirect('/anniversaries');
     return;
   }
+
   console.log(anniversaryInfo);
   res.render('anniversaryPage', { anniversaryInfo });
 }
@@ -41,4 +63,4 @@ async function getAllAnniversaries(req: Request, res: Response): Promise<void> {
   res.render('anniversaryPage', { anniversaries });
 }
 
-export { insertAnniversary, getAnniversaryProfileData, getAllAnniversaries };
+export { insertAnniversary, getAnniversaryById, renderAnniversaryPage, getAllAnniversaries };

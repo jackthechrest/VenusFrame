@@ -14,12 +14,16 @@ import {
   deleteAllUsers,
   addPartnerToUserByTypeCode,
   typeCodeExists,
+  deletePartnerByUserId,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { sendEmail } from '../services/emailService';
-import { addReminder } from '../models/ReminderModel';
+import { addReminder, deleteRemindersByUserId } from '../models/ReminderModel';
 import { getTodayQuestion } from '../models/QuestionModel';
 import { clearFollowsById, deleteAllFollows, getFollowById } from '../models/FollowModel';
+import { removePlayerFromROL } from '../models/RulesOfLoveModel';
+import { deleteAnniversaryById } from '../models/AnniversaryModel';
+import { deleteAnswersByUserId } from '../models/AnswerModel';
 
 async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
   res.json(await allUserData());
@@ -214,7 +218,7 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
   if (!(await argon2.verify(passwordHash, password))) {
     res.redirect('/users/PreviewPage'); // 404 not found - user w/ email/password doesn't exist
   }
-  
+
   if (user.rolInfo) {
     await removePlayerFromROL(user.rolInfo.gameId, user);
   }
@@ -264,13 +268,6 @@ async function renderPreviewPage(req: Request, res: Response): Promise<void> {
   res.render('PreviewPage', { user });
 }
 
-async function renderaddAnniversaryPage(req: Request, res: Response): Promise<void> {
-  const { targetUserId } = req.params as UserIdParam;
-  const user = await getUserById(targetUserId);
-
-  res.render('addAnniversaryPage', { user });
-}
-
 async function renderConnectPage(req: Request, res: Response): Promise<void> {
   const { authenticatedUser } = req.session;
   console.log('render connect page');
@@ -297,14 +294,7 @@ async function handleFindPartner(req: Request, res: Response): Promise<void> {
     res.redirect('/login');
   }
 
-  res.render('FoundPartner', { user });
-}
-
-async function renderFoundPartnerPage(req: Request, res: Response): Promise<void> {
-  const { targetUserId } = req.params as UserIdParam;
-  const user = await getUserById(targetUserId);
-
-  res.render('FoundPartner', { user });
+  res.redirect(`/users/${user.partner.userId}`);
 }
 
 async function insertTypeCode(req: Request, res: Response): Promise<void> {
@@ -320,9 +310,10 @@ async function insertTypeCode(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  const typeCodeData = await addPartnerToUserByTypeCode(authenticatedUser.userId, typeCode);
+  await addPartnerToUserByTypeCode(authenticatedUser.userId, typeCode);
+  const user = await getUserById(authenticatedUser.userId);
 
-  res.render('FoundPartner', { typeCodeData });
+  res.redirect(`/users/${user.partner.userId}`);
 }
 
 export {
@@ -339,8 +330,6 @@ export {
   renderPreviewPage,
   renderConnectPage,
   renderQuestionPage,
-  renderaddAnniversaryPage,
   handleFindPartner,
-  renderFoundPartnerPage,
   insertTypeCode,
 };

@@ -1,29 +1,11 @@
 import { AppDataSource } from '../dataSource';
 import { Anniversary } from '../entities/Anniversary';
+import { User } from '../entities/User';
 
 const anniversaryRepository = AppDataSource.getRepository(Anniversary);
 
 async function getAnniversaries(): Promise<Anniversary[]> {
   return await anniversaryRepository.find({ relations: ['user'] });
-}
-
-async function addAnniversary(
-  datingAnniversary: number,
-  weddingAnniversary: number | undefined,
-  birthday: number,
-  specialday: string | undefined,
-  specialdate: number | undefined
-): Promise<Anniversary> {
-  // Create the anniversary
-  let newAnniversary = new Anniversary();
-  newAnniversary.datingAnniversary = datingAnniversary;
-  newAnniversary.weddingAnniversary = weddingAnniversary;
-  newAnniversary.birthday = birthday;
-  newAnniversary.specialday = specialday;
-  newAnniversary.specialdate = specialdate;
-  newAnniversary = await anniversaryRepository.save(newAnniversary);
-
-  return newAnniversary;
 }
 
 async function getAnniversaryByUserId(userId: string): Promise<Anniversary> {
@@ -34,6 +16,32 @@ async function getAnniversaryByUserId(userId: string): Promise<Anniversary> {
     .where('user.userId = :userId', { userId })
     .getOne();
   return anniversaries;
+}
+
+async function addAnniversary(
+  datingAnniversary: number,
+  weddingAnniversary: number | undefined,
+  birthday: number,
+  specialday: string | undefined,
+  specialdate: number | undefined,
+  user: User
+): Promise<Anniversary> {
+  let newAnniversary = await getAnniversaryByUserId(user.userId);
+  if (!newAnniversary) {
+    // Create the anniversary
+    newAnniversary = new Anniversary();
+    newAnniversary.user = user;
+  }
+
+  newAnniversary.datingAnniversary = datingAnniversary;
+  newAnniversary.weddingAnniversary = weddingAnniversary;
+  newAnniversary.birthday = birthday;
+  newAnniversary.specialday = specialday;
+  newAnniversary.specialdate = specialdate;
+
+  newAnniversary = await anniversaryRepository.save(newAnniversary);
+
+  return newAnniversary;
 }
 
 async function userHasAnniversary(userId: string, anniversaryId: string): Promise<boolean> {

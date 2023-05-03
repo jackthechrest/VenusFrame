@@ -10,8 +10,6 @@ import {
 import { parseDatabaseError } from '../utils/db-utils';
 import { getUserById } from '../models/UserModel';
 import { getQuestionById } from '../models/QuestionModel';
-// TODO: function that will show user how their partner answered a question
-// async function displayPartnerResponse(req: Request, res: Response): Promise<void> {}
 
 async function getAnswers(req: Request, res: Response): Promise<void> {
   const { answerId } = req.params as { answerId: string };

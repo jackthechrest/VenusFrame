@@ -25,9 +25,24 @@
         View Profile 👓
       </a></li>
 
-      <li><a href = "/users/FindPartnerId" class = "btn btn-large">
-        Connect with my Partner ❤️
-      </a></li>
+      <% if (user.partner) { %>
+        <li><a href = "/users/<%= user.partner.userId %>" class = "btn btn-large">
+          Connect with my Partner ❤️
+        </a></li>
+        <% if (user.answers.answerText) { %>
+          <li><a href = "/users/<%= user.userId %>/AnswerPage" class = "btn btn-large">
+            Daily Question 💌
+          </a></li>
+        <% } else { %>
+          <li><a href = "/users/<%= user.userId %>/QuestionPage" class = "btn btn-large">
+            Daily Question 💌
+          </a></li>
+      <% } %>
+      <% } else { %>
+        <li><a href = "/users/FindPartnerId" class = "btn btn-large">
+          Connect with my Partner ❤️
+        </a></li>
+      <% } %>
 
       <li><a href = "/chat" class = "btn btn-large">
         Chat with my Partner 💬
@@ -39,10 +54,6 @@
 
       <li><a href = "/anniversaries/<%= user.userId %>" class = "btn btn-large">
         Anniversary 🎉
-      </a></li>
-
-      <li><a href = "/users/<%= user.userId %>/QuestionPage" class = "btn btn-large">
-        Daily Question 💌
       </a></li>
 
       <li><a href = "/rulesoflove/start" class = "btn btn-large">
