@@ -313,7 +313,7 @@ async function insertTypeCode(req: Request, res: Response): Promise<void> {
   await addPartnerToUserByTypeCode(authenticatedUser.userId, typeCode);
   const user = await getUserById(authenticatedUser.userId);
 
-  res.redirect(`/users/${user.partner.userId}`);
+  res.redirect(`/users/${user.userId}`);
 }
 
 export {
