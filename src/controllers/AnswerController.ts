@@ -40,14 +40,17 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  const answer = await addAnswer(answerText, user, question);
   const answerExists = await userHasAnswerForQuestion(authenticatedUser.userId, questionId);
   if (answerExists) {
-    res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);
-    return;
+    const answer = await getAnswerById(authenticatedUser.userId);
+    if (answer) {
+      res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);
+      return;
+    }
   }
 
   try {
+    const answer = await addAnswer(answerText, user, question);
     console.log(answer);
     answer.user = undefined;
     res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);

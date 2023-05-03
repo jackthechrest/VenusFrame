@@ -29,7 +29,7 @@
         <li><a href = "/users/<%= user.partner.userId %>" class = "btn btn-large">
           Connect with my Partner ❤️
         </a></li>
-        <% if (user.answers.answerText) { %>
+        <% if (user.answers) { %>
           <li><a href = "/question/<%= questionId %>/answers/<%=answer.answerId %>" class = "btn btn-large">
             Daily Question 💌
           </a></li>
