@@ -10,14 +10,15 @@
 </head>
 
 <body>
-  <h3 class="big-text">The answers: <%= answer.answerText %></h3>
+  <h3 class="big-text">My answer: <%= answer.answerText %></h3>
   <% if (!partnerAnswer) { %>
    Partner has not answered yet.
 <% } else { %>
-  <h3 class="big-text">Partners answers: <%= partnerAnswer.answerText %></h3>
+  <h3 class="big-text">Partner's answer: <%= partnerAnswer.answerText %></h3>
 
 
   <% } %>
+  <button class="btn-large"><a href = '/users/PreviewPage'>Return to Preview</a></button>
 </body>
 
 </html>

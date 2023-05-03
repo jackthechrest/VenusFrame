@@ -39,14 +39,15 @@ async function addNewAnswer(req: Request, res: Response): Promise<void> {
     res.sendStatus(404);
     return;
   }
+
+  const answer = await addAnswer(answerText, user, question);
   const answerExists = await userHasAnswerForQuestion(authenticatedUser.userId, questionId);
   if (answerExists) {
-    res.sendStatus(409); // 409 Conflict
+    res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);
     return;
   }
 
   try {
-    const answer = await addAnswer(answerText, user, question);
     console.log(answer);
     answer.user = undefined;
     res.redirect(`/question/${questionId}/answers/${answer.answerId}/`);
@@ -87,6 +88,6 @@ async function renderAnswerPage(req: Request, res: Response): Promise<void> {
   const user = await getUserById(authenticatedUser.userId);
   const partnerId = user.partner.userId;
   const partnerAnswer = await getAnswerByPartner(partnerId, questionId);
-  res.render('answerPage', { answer, partnerAnswer });
+  res.render('answerPage', { questionId, answerId, answer, partnerAnswer });
 }
 export { getAnswers, addNewAnswer, addAnswerForQuestion, deleteUserAnswer, renderAnswerPage };

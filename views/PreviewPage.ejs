@@ -30,7 +30,7 @@
           Connect with my Partner ❤️
         </a></li>
         <% if (user.answers.answerText) { %>
-          <li><a href = "/users/<%= user.userId %>/AnswerPage" class = "btn btn-large">
+          <li><a href = "/question/<%= questionId %>/answers/<%=answer.answerId %>" class = "btn btn-large">
             Daily Question 💌
           </a></li>
         <% } else { %>
