@@ -214,6 +214,22 @@ async function deleteAccount(req: Request, res: Response): Promise<void> {
   if (!(await argon2.verify(passwordHash, password))) {
     res.redirect('/users/PreviewPage'); // 404 not found - user w/ email/password doesn't exist
   }
+  
+  if (user.rolInfo) {
+    await removePlayerFromROL(user.rolInfo.gameId, user);
+  }
+
+  if (user.partner) {
+    await deletePartnerByUserId(user.partner.userId);
+    await deletePartnerByUserId(user.userId);
+  }
+
+  if (user.anniversary) {
+    await deleteAnniversaryById(user.anniversary.anniversaryId);
+  }
+
+  await deleteRemindersByUserId(user.userId);
+  await deleteAnswersByUserId(user.userId);
 
   await clearFollowsById(user.userId);
   await deleteUserById(user.userId);
