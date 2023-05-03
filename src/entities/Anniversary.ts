@@ -21,7 +21,7 @@ export class Anniversary {
   @Column({ nullable: true })
   specialdate: number;
 
-  @OneToOne(() => User, (user) => user.anniversary)
+  @OneToOne(() => User, (user) => user.anniversary, { cascade: ['insert', 'update'] })
   @JoinColumn()
   user: Relation<User>;
 }
