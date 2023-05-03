@@ -41,13 +41,13 @@ export class User {
   @JoinColumn()
   partner: Relation<User>;
 
-  @OneToMany(() => Answer, (answer) => answer.user)
+  @OneToMany(() => Answer, (answer) => answer.user, { cascade: ['insert', 'update'] })
   answers: Relation<Answer>[];
 
-  @OneToMany(() => Reminder, (reminder) => reminder.user)
+  @OneToMany(() => Reminder, (reminder) => reminder.user, { cascade: ['insert', 'update'] })
   reminders: Reminder[];
 
-  @OneToOne(() => Anniversary, (anniversary) => anniversary.user)
+  @OneToOne(() => Anniversary, (anniversary) => anniversary.user, { cascade: ['insert', 'update'] })
   @JoinColumn()
   anniversary: Relation<Anniversary>;
 
