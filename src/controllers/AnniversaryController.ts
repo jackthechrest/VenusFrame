@@ -7,6 +7,7 @@ async function insertAnniversary(req: Request, res: Response): Promise<void> {
     res.redirect('/login');
     return;
   }
+
   const { datingAnniversary, weddingAnniversary, birthday, specialday, specialdate } =
     req.body as NewAnniversaryRequest;
 

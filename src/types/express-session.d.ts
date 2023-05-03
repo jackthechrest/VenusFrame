@@ -12,6 +12,5 @@ declare module 'express-session' {
     isLoggedIn: boolean;
     logInAttempts: number;
     logInTimeout: string;
-    chat: string;
   }
 }
