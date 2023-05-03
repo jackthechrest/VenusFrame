@@ -62,10 +62,20 @@ async function getAnniversaryById(anniversaryId: string): Promise<Anniversary | 
     ])
     .getOne();
 }
+
+async function deleteAnniversaryById(anniversaryId: string): Promise<void> {
+  await anniversaryRepository
+    .createQueryBuilder('anniversary')
+    .delete()
+    .where('anniversaryId = :anniversaryId', { anniversaryId })
+    .execute();
+}
+
 export {
   addAnniversary,
   getAnniversaryByUserId,
   userHasAnniversary,
   getAnniversaryById,
   getAnniversaries,
+  deleteAnniversaryById,
 };
