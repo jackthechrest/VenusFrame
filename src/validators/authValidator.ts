@@ -2,7 +2,8 @@ import Joi from 'joi';
 import { makeValidator } from '../utils/makeValidator';
 
 const newUserSchema = Joi.object({
-  username: Joi.string().lowercase().required(),
+  username: Joi.string().required(),
+
   email: Joi.string().email().lowercase().required(),
 
   password: Joi.string().min(5).required(),
