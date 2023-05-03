@@ -22,4 +22,17 @@ async function addReminder(
   return newReminder;
 }
 
-export { addReminder };
+async function deleteRemindersByUserId(userId: string): Promise<void> {
+  const user = await getUserById(userId);
+
+  while (user.reminders.length > 0) {
+    const { reminderId } = user.reminders.pop();
+    await reminderRepository
+      .createQueryBuilder('reminder')
+      .delete()
+      .where('reminderId = :reminderId', { reminderId })
+      .execute();
+  }
+}
+
+export { addReminder, deleteRemindersByUserId };
